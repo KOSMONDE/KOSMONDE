@@ -4,28 +4,19 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'KOSMONDE – Création de sites web et solutions digitales',
+  description: 'KOSMONDE vous accompagne dans la création de sites web modernes, performants et adaptés à vos besoins.',
   generator: 'v0.dev',
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <head>
-        <style>{`
-html {
-  font-family: ${GeistSans.style.fontFamily};
-  --font-sans: ${GeistSans.variable};
-  --font-mono: ${GeistMono.variable};
-}
-        `}</style>
-      </head>
-      <body>{children}</body>
+      <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
+        {children}
+      </body>
     </html>
   )
 }

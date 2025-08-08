@@ -9,8 +9,8 @@ import { useParams } from "next/navigation"
 const projectsData = {
   "1": {
     id: 1,
-    title: "E-Commerce Luxe",
-    subtitle: "Boutique en ligne premium",
+    title: "SEKOBA",
+    subtitle: "Sekoba",
     description:
       "Une plateforme e-commerce haut de gamme développée pour une marque de luxe française. L'interface élégante et l'expérience utilisateur premium offrent une navigation fluide et intuitive.",
     fullDescription:
@@ -32,7 +32,7 @@ const projectsData = {
     },
     accent: "cyan",
     glowColor: "shadow-cyan-500/25",
-    demoUrl: "#",
+    demoUrl: "https://sekoba.kosmonde.com/",
     githubUrl: "#",
   },
   "2": {
