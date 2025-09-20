@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, Lightbulb, Target, TrendingUp, Users, Zap } from "lucide-react"
+import { CheckCircle, Lightbulb, Target, TrendingUp, Users, Zap, Rocket } from "lucide-react"
 import Link from "next/link"
 
 export default function ConsultingDigitalPage() {
@@ -23,13 +23,11 @@ export default function ConsultingDigitalPage() {
         <div className="relative max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="mb-6">
-              <img
-                src="/rotating-planet-animation-gif.png"
-                alt="Planète en rotation"
-                className="mx-auto animate-spin w-16 h-16"
-                style={{ animationDuration: "10s" }}
-              />
-            </div>
+  <div className="w-24 h-24 mx-auto bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full flex items-center justify-center animate-float">
+    <Rocket className="h-12 w-12 text-white" />
+  </div>
+</div>
+
             <Badge variant="outline" className="mb-4 border-cyan-400/30 text-cyan-300 bg-cyan-400/10">
               Expertise Stratégique
             </Badge>

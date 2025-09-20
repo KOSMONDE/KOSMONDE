@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
+import Link from "next/link"
 
 const scrollToContact = () => {
   const contactSection = document.getElementById("contact")
   if (contactSection) {
     contactSection.scrollIntoView({ behavior: "smooth" })
-    // Focus on form after scroll
     setTimeout(() => {
       const firstInput = contactSection.querySelector("input")
       if (firstInput) {
@@ -33,32 +33,33 @@ export function Header() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-background border-b border-border"
+        isScrolled
+          ? "bg-background/80 backdrop-blur-md border-b border-border"
+          : "bg-background border-b border-border"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-primary">KOSMONDE</h1>
+            <Link href="/" className="text-2xl font-bold text-primary">
+              KOSMONDE
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <a href="#accueil" className="text-foreground hover:text-primary transition-colors">
-              Accueil
-            </a>
-            <a href="#services" className="text-foreground hover:text-primary transition-colors">
+            <Link href="/#services" className="text-foreground hover:text-primary transition-colors">
               Services
-            </a>
-            <a href="#portfolio" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link href="/#portfolio" className="text-foreground hover:text-primary transition-colors">
               Portfolio
-            </a>
-            <a href="#apropos" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link href="/#apropos" className="text-foreground hover:text-primary transition-colors">
               À propos
-            </a>
-            <a href="#contact" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link href="/#contact" className="text-foreground hover:text-primary transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
 
           <div className="hidden md:flex">
@@ -77,41 +78,41 @@ export function Header() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-card border-t border-border">
-              <a
-                href="#accueil"
+              <Link
+                href="/"
                 className="block px-3 py-2 text-foreground hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Accueil
-              </a>
-              <a
-                href="#services"
+              </Link>
+              <Link
+                href="/#services"
                 className="block px-3 py-2 text-foreground hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Services
-              </a>
-              <a
-                href="#portfolio"
+              </Link>
+              <Link
+                href="/#portfolio"
                 className="block px-3 py-2 text-foreground hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Portfolio
-              </a>
-              <a
-                href="#apropos"
+              </Link>
+              <Link
+                href="/#apropos"
                 className="block px-3 py-2 text-foreground hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
                 À propos
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              <Link
+                href="/#contact"
                 className="block px-3 py-2 text-foreground hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
-              </a>
+              </Link>
               <div className="px-3 py-2">
                 <Button
                   className="w-full"
