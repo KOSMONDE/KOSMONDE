@@ -20,11 +20,28 @@ export default function ContactSection() {
     message: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log("Form submitted:", formData)
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+
+  try {
+    const res = await fetch("/api/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+
+    if (res.ok) {
+      alert("Votre message a bien été envoyé ✅")
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" }) // reset form
+    } else {
+      alert("Une erreur est survenue ❌")
+    }
+  } catch (err) {
+    console.error(err)
+    alert("Impossible d'envoyer le message ❌")
   }
+}
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
