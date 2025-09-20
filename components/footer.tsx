@@ -33,7 +33,7 @@ export function Footer() {
               </h3>
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
-              Votre partenaire de confiance pour la création de sites web modernes et performants. Nous transformons vos
+              Votre partenaire de test confiance pour la création de sites web modernes et performants. Nous transformons vos
               idées en expériences digitales exceptionnelles.
             </p>
             <div className="flex space-x-4">
