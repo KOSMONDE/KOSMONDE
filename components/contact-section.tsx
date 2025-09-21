@@ -9,9 +9,11 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function ContactSection() {
-  // ---- Form state
+  const { toast } = useToast()
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,27 +23,38 @@ export default function ContactSection() {
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  try {
-    const res = await fetch("/api/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
+    try {
+      const res = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
 
-    if (res.ok) {
-      alert("Votre message a bien été envoyé ✅")
-      setFormData({ name: "", email: "", phone: "", subject: "", message: "" }) // reset form
-    } else {
-      alert("Une erreur est survenue ❌")
+      if (res.ok) {
+        toast({
+          title: "✅ Succès",
+          description: "Votre message a bien été envoyé.",
+          variant: "success",
+        })
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
+      } else {
+        toast({
+          title: "❌ Erreur",
+          description: "Une erreur est survenue lors de l'envoi.",
+          variant: "destructive",
+        })
+      }
+    } catch (err) {
+      console.error(err)
+      toast({
+        title: "⚠️ Erreur réseau",
+        description: "Impossible d'envoyer le message.",
+        variant: "destructive",
+      })
     }
-  } catch (err) {
-    console.error(err)
-    alert("Impossible d'envoyer le message ❌")
   }
-}
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -72,7 +85,6 @@ export default function ContactSection() {
     >
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-slate-900/40 to-slate-900"></div>
 
-      {/* Particules affichées uniquement côté client après montage */}
       {mounted && (
         <div className="absolute inset-0 pointer-events-none">
           {dots.map((d, i) => (
@@ -101,7 +113,7 @@ export default function ContactSection() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Contact Info */}
+          {/* Infos de contact */}
           <div className="space-y-6">
             <Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all duration-300 group">
               <CardContent className="p-6">
@@ -160,7 +172,7 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Formulaire */}
           <div className="lg:col-span-2">
             <Card className="bg-white/10 backdrop-blur-sm border-white/20">
               <CardHeader>
