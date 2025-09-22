@@ -9,11 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "sonner" // ✅ utilisation de Sonner
 
 export default function ContactSection() {
-  const { toast } = useToast()
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -33,26 +31,14 @@ export default function ContactSection() {
       })
 
       if (res.ok) {
-        toast({
-          title: "✅ Succès",
-          description: "Votre message a bien été envoyé.",
-          variant: "success",
-        })
+        toast.success("✅ Succès : Votre message a bien été envoyé.")
         setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
       } else {
-        toast({
-          title: "❌ Erreur",
-          description: "Une erreur est survenue lors de l'envoi.",
-          variant: "destructive",
-        })
+        toast.error("❌ Erreur : Une erreur est survenue lors de l'envoi.")
       }
     } catch (err) {
       console.error(err)
-      toast({
-        title: "⚠️ Erreur réseau",
-        description: "Impossible d'envoyer le message.",
-        variant: "destructive",
-      })
+      toast.error("⚠️ Erreur réseau : Impossible d'envoyer le message.")
     }
   }
 
@@ -63,7 +49,7 @@ export default function ContactSection() {
     })
   }
 
-  // ---- Hydration-safe particles (évite Math.random() au SSR)
+  // ---- Hydration-safe particles
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 

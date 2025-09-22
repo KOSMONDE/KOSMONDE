@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
-import { Toaster } from "@/components/ui/use-toast"
+import { Toaster } from "sonner"  // 👈 sonner
 
 export const metadata: Metadata = {
   title: "KOSMONDE - Création de Sites Web & Services Numériques",
@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="fr">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
-        <Toaster />
+        <Toaster position="bottom-right" richColors /> {/* 👈 zone des toasts */}
       </body>
     </html>
   )
