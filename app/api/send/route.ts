@@ -8,10 +8,12 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { name, email, phone, subject, message } = body;
 
-    // 1️⃣ Email envoyé à TOI (admin)
+    console.log("API KEY:", process.env.RESEND_API_KEY ? "✅ Chargée" : "❌ Manquante");
+
+    // 1️⃣ Mail admin
     await resend.emails.send({
-      from: "Kosmonde <contact@kosmonde.fr>",
-      to: "contact@kosmonde.fr",
+      from: `Kosmonde <${process.env.EMAIL_FROM}>`,
+      to: process.env.EMAIL_TO!,
       replyTo: email,
       subject: subject || "Nouveau message depuis le site",
       html: `
@@ -21,29 +23,17 @@ export async function POST(req: Request) {
         <p><strong>Téléphone :</strong> ${phone}</p>
         <p><strong>Sujet :</strong> ${subject}</p>
         <p><strong>Message :</strong><br/>${message}</p>
-        <hr/>
-        <p style="font-size:12px;color:#666">Cet email a été généré automatiquement par le site kosmonde.fr</p>
       `,
     });
 
-    // 2️⃣ Email de confirmation pour le VISITEUR
+    // 2️⃣ Mail visiteur
     await resend.emails.send({
-      from: "Kosmonde <contact@kosmonde.fr>",
-      to: email, // le mail du visiteur
+      from: `Kosmonde <${process.env.EMAIL_FROM}>`,
+      to: email,
       subject: "✅ Nous avons bien reçu votre demande",
       html: `
         <h2>Merci ${name} 🙏</h2>
         <p>Nous avons bien reçu votre demande et nous reviendrons vers vous rapidement.</p>
-        
-        <p><strong>Résumé de votre message :</strong></p>
-        <ul>
-          <li><strong>Sujet :</strong> ${subject}</li>
-          <li><strong>Message :</strong> ${message}</li>
-        </ul>
-
-        <p>📧 Si besoin, vous pouvez répondre directement à cet email.</p>
-        <br/>
-        <p>— L'équipe <strong>Kosmonde</strong></p>
       `,
     });
 
