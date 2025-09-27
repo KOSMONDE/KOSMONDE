@@ -32,12 +32,13 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border"
-          : "bg-background border-b border-border"
-      }`}
-    >
+  className={`sticky top-0 z-50 transition-all duration-300 ${
+    isScrolled
+      ? "bg-slate-900/80 backdrop-blur-md border-b border-slate-700"
+      : "bg-slate-900 border-b border-slate-800"
+  }`}
+>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
@@ -54,23 +55,30 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="/#services" className="text-foreground hover:text-primary transition-colors">
-              Services
-            </Link>
-            <Link href="/#portfolio" className="text-foreground hover:text-primary transition-colors">
-              Portfolio
-            </Link>
-            <Link href="/#apropos" className="text-foreground hover:text-primary transition-colors">
-              À propos
-            </Link>
-            <Link href="/#contact" className="text-foreground hover:text-primary transition-colors">
-              Contact
-            </Link>
-          </nav>
+  <Link href="/#services" className="text-gray-200 hover:text-cyan-400 transition-colors">
+    Services
+  </Link>
+  <Link href="/#portfolio" className="text-gray-200 hover:text-cyan-400 transition-colors">
+    Portfolio
+  </Link>
+  <Link href="/#apropos" className="text-gray-200 hover:text-cyan-400 transition-colors">
+    À propos
+  </Link>
+  <Link href="/#contact" className="text-gray-200 hover:text-cyan-400 transition-colors">
+    Contact
+  </Link>
+</nav>
+
 
           <div className="hidden md:flex">
-            <Button onClick={scrollToContact}>Devis gratuit</Button>
-          </div>
+  <Button 
+    onClick={scrollToContact} 
+    className="bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:from-cyan-500 hover:to-purple-600"
+  >
+    Devis gratuit
+  </Button>
+</div>
+
 
           {/* Mobile menu button */}
           <div className="md:hidden">

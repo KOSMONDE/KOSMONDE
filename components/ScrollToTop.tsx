@@ -1,14 +1,13 @@
 "use client"
-
-import { useEffect, useState } from "react"
-import { ArrowUp } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Rocket } from "lucide-react"
 
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 200) {
+      if (window.scrollY > 300) {
         setIsVisible(true)
       } else {
         setIsVisible(false)
@@ -19,21 +18,17 @@ export default function ScrollToTop() {
   }, [])
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    })
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
-  if (!isVisible) return null
-
   return (
-    <button
-      onClick={scrollToTop}
-      className="fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition"
-      aria-label="Remonter en haut"
-    >
-      <ArrowUp className="h-5 w-5" />
-    </button>
+    isVisible && (
+      <button
+        onClick={scrollToTop}
+        className="fixed bottom-6 right-6 p-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-lg hover:from-cyan-500 hover:to-purple-600 transition-all"
+      >
+        <Rocket className="h-6 w-6" />
+      </button>
+    )
   )
 }
