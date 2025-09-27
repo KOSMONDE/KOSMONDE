@@ -11,12 +11,12 @@ export async function POST(req: Request) {
     const FROM = process.env.EMAIL_FROM
     const TO = process.env.EMAIL_TO
 
-    // 🔎 Logs pour debug sur Vercel
-    console.log("===== DEBUG MAIL CONFIG =====")
-    console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY ? "✅ chargée" : "❌ manquante")
-    console.log("EMAIL_FROM:", FROM || "❌ undefined")
-    console.log("EMAIL_TO:", TO || "❌ undefined")
-    console.log("=============================")
+    // 🔎 Debug complet
+    console.log("===================")
+    console.log("RESEND_API_KEY:", process.env.RESEND_API_KEY ? "✅ OK" : "❌ ABSENT")
+    console.log("EMAIL_FROM:", FROM || "❌ ABSENT")
+    console.log("EMAIL_TO:", TO || "❌ ABSENT")
+    console.log("===================")
 
     // 1️⃣ Mail admin
     await resend.emails.send({

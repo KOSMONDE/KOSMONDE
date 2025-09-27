@@ -2,7 +2,8 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
-import { Toaster } from "sonner"  // 👈 sonner
+import { Toaster } from "sonner"  
+import ScrollToTop from "@/components/ScrollToTop" // 👈 import du composant
 
 export const metadata: Metadata = {
   title: "KOSMONDE - Création de Sites Web & Services Numériques",
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         {children}
         <Toaster position="bottom-right" richColors /> {/* 👈 zone des toasts */}
+        <ScrollToTop /> {/* 👈 bouton retour en haut */}
       </body>
     </html>
   )
