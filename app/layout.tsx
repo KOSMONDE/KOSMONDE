@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   description:
     "Agence web française spécialisée dans la création de sites web professionnels et services numériques sur mesure.",
   generator: "v0.app",
+  icons: {
+    icon: "/rocket.svg", // 👈 favicon fusée
+  },
 }
 
 export default function RootLayout({
