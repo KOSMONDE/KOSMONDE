@@ -123,7 +123,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">Téléphone</h3>
-                    <p className="text-gray-300">+33 1 23 45 67 89</p>
+                    <p className="text-gray-300">+33 6 86 11 43 97</p>
                   </div>
                 </div>
               </CardContent>
@@ -138,9 +138,7 @@ export default function ContactSection() {
                   <div>
                     <h3 className="font-semibold text-white">Adresse</h3>
                     <p className="text-gray-300">
-                      123 Avenue des Champs-Élysées
-                      <br />
-                      75008 Paris, France
+                      Haute-Savoie (74)
                     </p>
                   </div>
                 </div>
