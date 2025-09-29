@@ -32,12 +32,16 @@ export function Header() {
       {/* ✅ Header sticky seul */}
       <div className="sticky top-0 z-50">
         <header
-          className={`transition-all duration-300 ${
-            isScrolled
-              ? "bg-slate-900/80 backdrop-blur-md border-b border-slate-700"
-              : "bg-slate-900 border-b border-slate-800"
-          }`}
-        >
+  className={`transition-all duration-300 ${
+    isScrolled
+      ? "bg-gradient-to-r from-purple-900/90 via-indigo-900/80 to-blue-900/90 backdrop-blur-md border-b border-purple-700/50"
+      : "bg-gradient-to-r from-purple-950 via-indigo-950 to-blue-950 border-b border-purple-800/50"
+  }`}
+>
+
+
+
+
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               {/* Logo */}
