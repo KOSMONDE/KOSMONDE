@@ -7,11 +7,7 @@ export default function ScrollToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
+      setIsVisible(window.scrollY > 300)
     }
     window.addEventListener("scroll", toggleVisibility)
     return () => window.removeEventListener("scroll", toggleVisibility)
@@ -25,7 +21,11 @@ export default function ScrollToTop() {
     isVisible && (
       <button
         onClick={scrollToTop}
-        className="fixed bottom-6 right-6 p-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-lg hover:from-cyan-500 hover:to-purple-600 transition-all"
+        aria-label="Remonter en haut"
+        className="fixed bottom-20 right-6 z-50 p-3 rounded-full 
+                   bg-gradient-to-r from-cyan-400 to-purple-500 text-white 
+                   shadow-lg hover:from-cyan-500 hover:to-purple-600 
+                   transition-all animate-bounce"
       >
         <Rocket className="h-6 w-6" />
       </button>
