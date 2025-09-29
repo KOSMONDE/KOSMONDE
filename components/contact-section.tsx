@@ -94,7 +94,7 @@ export default function ContactSection() {
             Contactez-nous
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto text-pretty">
-            Prêt à démarrer votre projet ? Contactez-nous dès aujourd'hui pour un devis gratuit et personnalisé.
+            Démarrez votre projet dès aujourd’hui. Demandez votre devis gratuit et personnalisé.
           </p>
         </div>
 
@@ -124,22 +124,6 @@ export default function ContactSection() {
                   <div>
                     <h3 className="font-semibold text-white">Téléphone</h3>
                     <p className="text-gray-300">+33 6 86 11 43 97</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all duration-300 group">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <MapPin className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">Adresse</h3>
-                    <p className="text-gray-300">
-                      Haute-Savoie (74)
-                    </p>
                   </div>
                 </div>
               </CardContent>

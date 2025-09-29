@@ -75,7 +75,7 @@ export function Header() {
     onClick={scrollToContact} 
     className="bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:from-cyan-500 hover:to-purple-600"
   >
-    Devis gratuit
+    Réserver une consultation
   </Button>
 </div>
 
