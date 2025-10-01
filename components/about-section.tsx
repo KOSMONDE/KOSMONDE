@@ -5,10 +5,10 @@ import { Users, Award, Clock, Heart } from "lucide-react"
 import { useEffect, useRef } from "react"
 
 const stats = [
-  { icon: Users, label: "Clients satisfaits", value: "150+" },
-  { icon: Award, label: "Projets réalisés", value: "200+" },
-  { icon: Clock, label: "Années d'expérience", value: "8+" },
-  { icon: Heart, label: "Taux de satisfaction", value: "98%" },
+  { icon: Users, label: "Clients satisfaits", value: "5" },
+  { icon: Award, label: "Projets réalisés", value: "3" },
+  { icon: Clock, label: "Années d'expérience", value: "5" },
+  { icon: Heart, label: "Taux de satisfaction", value: "100%" },
 ]
 
 export default function AboutSection() {
@@ -46,7 +46,7 @@ export default function AboutSection() {
             <h2 className="text-3xl md:text-4xl font-bold cosmic-title mb-6">À propos de KOSMONDE</h2>
             <div className="space-y-4 text-slate-600">
               <p className="text-lg">
-                Depuis 2016, KOSMONDE accompagne les entreprises françaises dans leur transformation digitale. Notre
+                Depuis 2020, KOSMONDE accompagne les entreprises françaises dans leur transformation digitale. Notre
                 équipe passionnée combine créativité et expertise technique pour créer des solutions web qui dépassent
                 vos attentes.
               </p>

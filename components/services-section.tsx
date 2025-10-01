@@ -91,8 +91,7 @@ export default function ServicesSection() {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold cosmic-title mb-4">Nos Services</h2>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto text-pretty">
-            Une gamme complète de services digitaux pour accompagner votre croissance et maximiser votre impact en
-            ligne.
+            Services digitaux complets pour booster votre croissance et votre impact en ligne.
           </p>
         </div>
 

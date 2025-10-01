@@ -96,18 +96,13 @@ export function Footer() {
                 <Phone className="h-4 w-4 text-purple-400" />
                 <span className="text-gray-300 text-sm">+33 6 86 11 43 97</span>
               </div>
-              <div className="flex items-start space-x-3">
-                <MapPin className="h-4 w-4 text-blue-400 mt-0.5" />
-                <span className="text-gray-300 text-sm">
-                  Haute-Savoie (74)
-                </span>
-              </div>
+             
             </div>
           </div>
         </div>
 
         <div className="border-t border-white/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm">© 2024 KOSMONDE. Tous droits réservés.</p>
+          <p className="text-gray-400 text-sm">© 2025 KOSMONDE. Tous droits réservés.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-gray-400 hover:text-cyan-400 text-sm transition-colors">
               Mentions légales
