@@ -193,15 +193,16 @@ export default function ContactSection() {
 
                   {/* 🕵️‍♂️ Champ honeypot caché */}
                   <input
-                    id="website"
-                    name="website"
-                    value={formData.website}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    tabIndex={-1}
-                    aria-hidden="true"
-                    style={{ position: "absolute", left: "-9999px", opacity: 0 }}
-                  />
+  id="website"
+  name="website"
+  value={formData.website}
+  onChange={handleChange}
+  autoComplete="off"
+  tabIndex={-1}
+  aria-hidden="true"
+  style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+/>
+
 
                   <Button
                     type="submit"
