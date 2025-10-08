@@ -51,8 +51,9 @@ export default function CreationSitesWebPage() {
               </span>
             </h1>
             <p className="text-xl text-gray-200 max-w-3xl mx-auto text-pretty">
-              Nous concevons des sites web modernes, performants et sur mesure qui reflètent parfaitement votre identité
-              de marque et convertissent vos visiteurs en clients.
+            Nous concevons des sites web uniques, modernes et performants,
+pensés pour exprimer votre identité, renforcer votre impact digital
+et transformer durablement vos visiteurs en clients fidèles.
             </p>
           </div>
 
@@ -128,7 +129,7 @@ export default function CreationSitesWebPage() {
       </section>
 
       {/* Process Section */}
-      <section className="relative py-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900/50 to-slate-900">
+      <section className="relative pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         {/* Subtle cosmic background */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-10 left-1/4 w-1 h-1 bg-cyan-400 rounded-full animate-pulse"></div>

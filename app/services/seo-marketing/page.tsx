@@ -89,7 +89,8 @@ export default function SEOMarketingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-slate-900 via-purple-900/50 to-slate-900 text-white">
+      <section className="relative pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
+
         <div className="max-w-6xl mx-auto relative z-10">
           <h2 className="text-3xl font-bold text-center mb-12">Notre Approche SEO</h2>
 
@@ -136,68 +137,101 @@ export default function SEOMarketingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-slate-800 via-purple-600 to-slate-800 bg-clip-text text-transparent">
-            Nos Formules Marketing
-          </h2>
+      <section className="relative py-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+  <div className="max-w-4xl mx-auto relative z-10">
+    <h2 className="text-3xl font-bold text-center mb-12 text-white">
+      Nos Formules Marketing
+    </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: "SEO Starter", price: "890€", perks: ["Audit SEO initial", "Optimisation on-page", "Rapport mensuel", "Support email"], type: "outline" },
-              { name: "SEO Pro", price: "1 590€", perks: ["Tout du SEO Starter", "Content marketing", "Link building", "Suivi concurrence"], type: "highlight" },
-              { name: "SEO Enterprise", price: "2 890€", perks: ["Tout du SEO Pro", "Campagnes publicitaires", "Social media management", "Support prioritaire"], type: "outline" },
-            ].map((plan, i) => (
-              <Card
-                key={i}
-                className={`group transition-all duration-300 ${
+    <div className="grid md:grid-cols-3 gap-8">
+      {[
+        {
+          name: "SEO Starter",
+          price: "890€",
+          perks: [
+            "Audit SEO initial",
+            "Optimisation on-page",
+            "Rapport mensuel",
+            "Support email",
+          ],
+          type: "outline",
+        },
+        {
+          name: "SEO Pro",
+          price: "1 590€",
+          perks: [
+            "Tout du SEO Starter",
+            "Content marketing",
+            "Link building",
+            "Suivi concurrence",
+          ],
+          type: "highlight",
+        },
+        {
+          name: "SEO Enterprise",
+          price: "2 890€",
+          perks: [
+            "Tout du SEO Pro",
+            "Campagnes publicitaires",
+            "Social media management",
+            "Support prioritaire",
+          ],
+          type: "outline",
+        },
+      ].map((plan, i) => (
+        <Card
+          key={i}
+          className={`group transition-all duration-300 border-0 backdrop-blur-sm ${
+            plan.type === "highlight"
+              ? "bg-white/10 hover:shadow-purple-500/20 border-2 border-purple-400/40"
+              : "bg-white/5 hover:shadow-cyan-500/20"
+          }`}
+        >
+          <CardContent className="p-6 text-white">
+            {plan.type === "highlight" && (
+              <Badge className="mb-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white">
+                Populaire
+              </Badge>
+            )}
+            <h3 className="text-xl font-semibold mb-2">{plan.name}</h3>
+            <div className="text-3xl font-bold mb-4">
+              <span
+                className={`${
                   plan.type === "highlight"
-                    ? "hover:shadow-purple-500/20 border-2 border-purple-500/30 bg-white/90 backdrop-blur-sm"
-                    : "hover:shadow-xl hover:shadow-cyan-500/20 border-0 bg-white/80 backdrop-blur-sm"
-                }`}
+                    ? "bg-gradient-to-r from-purple-400 to-pink-500"
+                    : "bg-gradient-to-r from-cyan-400 to-blue-500"
+                } bg-clip-text text-transparent`}
               >
-                <CardContent className="p-6">
-                  {plan.type === "highlight" && (
-                    <Badge className="mb-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white">Populaire</Badge>
-                  )}
-                  <h3 className="text-xl font-semibold mb-2 text-slate-800">{plan.name}</h3>
-                  <div className="text-3xl font-bold mb-4 text-slate-800">
-                    <span
-                      className={`${
-                        plan.type === "highlight"
-                          ? "bg-gradient-to-r from-purple-500 to-pink-600"
-                          : "bg-gradient-to-r from-cyan-500 to-blue-600"
-                      } bg-clip-text text-transparent`}
-                    >
-                      {plan.price}
-                    </span>
-                    /mois
-                  </div>
-                  <ul className="space-y-2 mb-6">
-                    {plan.perks.map((perk, j) => (
-                      <li key={j} className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-cyan-500" />
-                        <span className="text-sm">{perk}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    className={`w-full ${
-                      plan.type === "highlight"
-                        ? "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-full"
-                        : "bg-transparent border-slate-300 text-slate-700 hover:bg-slate-50"
-                    }`}
-                    variant={plan.type === "highlight" ? "default" : "outline"}
-                    asChild
-                  >
-                    <Link href="/#contact">Commencer</Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+                {plan.price}
+              </span>
+              <span className="text-gray-300 text-lg font-normal">/mois</span>
+            </div>
+            <ul className="space-y-2 mb-6">
+              {plan.perks.map((perk, j) => (
+                <li key={j} className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-cyan-400" />
+                  <span className="text-gray-200 text-sm">{perk}</span>
+                </li>
+              ))}
+            </ul>
+            <Button
+              className={`w-full rounded-full transition-all duration-300 ${
+                plan.type === "highlight"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white"
+                  : "bg-transparent border border-cyan-400/40 text-cyan-300 hover:bg-cyan-400/10"
+              }`}
+              variant={plan.type === "highlight" ? "default" : "outline"}
+              asChild
+            >
+              <Link href="/#contact">Commencer</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* CTA Section */}
       <section className="relative py-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">

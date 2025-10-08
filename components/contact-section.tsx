@@ -8,8 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react"
-import { toast } from "sonner" // ✅ utilisation de Sonner
+import { Mail, Phone, Send, Sparkles } from "lucide-react"
+import { toast } from "sonner"
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -18,10 +18,22 @@ export default function ContactSection() {
     phone: "",
     subject: "",
     message: "",
+    website: "", // 👈 honeypot
   })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Bloque les bots si le honeypot est rempli
+    if (formData.website) {
+      console.warn("🚨 Spam détecté :", formData.website)
+      toast.error("Requête bloquée (spam détecté).")
+      return
+    }
 
     try {
       const res = await fetch("/api/send", {
@@ -31,28 +43,38 @@ export default function ContactSection() {
       })
 
       if (res.ok) {
-        toast.success("✅ Succès : Votre message a bien été envoyé.")
-        setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
+        toast.success("✅ Message envoyé avec succès.")
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+          website: "",
+        })
       } else {
-        toast.error("❌ Erreur : Une erreur est survenue lors de l'envoi.")
+        const { error } = await res.json().catch(() => ({ error: "Erreur inconnue." }))
+        toast.error(`❌ Erreur : ${error}`)
       }
     } catch (err) {
       console.error(err)
-      toast.error("⚠️ Erreur réseau : Impossible d'envoyer le message.")
+      toast.error("⚠️ Erreur réseau : impossible d'envoyer le message.")
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
+  // 🔁 Synchronise le champ caché et le state React
+  useEffect(() => {
+    const el = document.querySelector<HTMLInputElement>("#website")
+    if (!el) return
 
-  // ---- Hydration-safe particles
+    const sync = () => setFormData((f) => ({ ...f, website: el.value }))
+    el.addEventListener("input", sync)
+    return () => el.removeEventListener("input", sync)
+  }, [])
+
+  // --- Animation décorative (pas touche)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-
   const dots = useMemo(
     () =>
       Array.from({ length: 50 }).map(() => ({
@@ -69,8 +91,6 @@ export default function ContactSection() {
       id="contact"
       className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-slate-900/40 to-slate-900"></div>
-
       {mounted && (
         <div className="absolute inset-0 pointer-events-none">
           {dots.map((d, i) => (
@@ -99,32 +119,28 @@ export default function ContactSection() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Infos de contact */}
+          {/* --- Infos contact --- */}
           <div className="space-y-6">
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all duration-300 group">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Mail className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">Email</h3>
-                    <p className="text-gray-300">contact@kosmonde.fr</p>
-                  </div>
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+              <CardContent className="p-6 flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
+                  <Mail className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white">Email</h3>
+                  <p className="text-gray-300">contact@kosmonde.fr</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/15 transition-all duration-300 group">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Phone className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">Téléphone</h3>
-                    <p className="text-gray-300">+33 6 86 11 43 97</p>
-                  </div>
+            <Card className="bg-white/10 backdrop-blur-sm border-white/20">
+              <CardContent className="p-6 flex items-center space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+                  <Phone className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white">Téléphone</h3>
+                  <p className="text-gray-300">+33 6 86 11 43 97</p>
                 </div>
               </CardContent>
             </Card>
@@ -140,7 +156,7 @@ export default function ContactSection() {
             </div>
           </div>
 
-          {/* Formulaire */}
+          {/* --- Formulaire --- */}
           <div className="lg:col-span-2">
             <Card className="bg-white/10 backdrop-blur-sm border-white/20">
               <CardHeader>
@@ -150,86 +166,47 @@ export default function ContactSection() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name" className="text-gray-300">
-                        Nom complet *
-                      </Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        placeholder="Votre nom"
-                        className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400"
-                      />
+                      <Label htmlFor="name" className="text-gray-300">Nom complet *</Label>
+                      <Input id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Votre nom" className="bg-white/10 border-white/20 text-white" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-300">
-                        Email *
-                      </Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="votre@email.fr"
-                        className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400"
-                      />
+                      <Label htmlFor="email" className="text-gray-300">Email *</Label>
+                      <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="votre@email.fr" className="bg-white/10 border-white/20 text-white" />
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-gray-300">
-                        Téléphone
-                      </Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+33 1 23 45 67 89"
-                        className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400"
-                      />
+                      <Label htmlFor="phone" className="text-gray-300">Téléphone</Label>
+                      <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="+33 1 23 45 67 89" className="bg-white/10 border-white/20 text-white" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="subject" className="text-gray-300">
-                        Sujet *
-                      </Label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        required
-                        placeholder="Objet de votre demande"
-                        className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400"
-                      />
+                      <Label htmlFor="subject" className="text-gray-300">Sujet *</Label>
+                      <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} required placeholder="Objet de votre demande" className="bg-white/10 border-white/20 text-white" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-gray-300">
-                      Message *
-                    </Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={6}
-                      placeholder="Décrivez votre projet en détail..."
-                      className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-purple-400 resize-none"
-                    />
+                    <Label htmlFor="message" className="text-gray-300">Message *</Label>
+                    <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6} placeholder="Décrivez votre projet..." className="bg-white/10 border-white/20 text-white resize-none" />
                   </div>
+
+                  {/* 🕵️‍♂️ Champ honeypot caché */}
+                  <input
+                    id="website"
+                    name="website"
+                    value={formData.website}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                    style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+                  />
 
                   <Button
                     type="submit"
                     size="lg"
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg"
                   >
                     <Send className="mr-2 h-5 w-5" />
                     Envoyer le message

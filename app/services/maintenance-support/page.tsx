@@ -90,49 +90,59 @@ export default function MaintenanceSupportPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-gradient-to-br from-slate-900 via-purple-900/50 to-slate-900 text-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Ce Qui Est Inclus</h2>
+      <section className="relative pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+  <div className="max-w-6xl mx-auto relative z-10">
+    <h2 className="text-3xl font-bold text-center mb-12 text-white">
+      Ce Qui Est Inclus
+    </h2>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            {[
-              {
-                title: "Maintenance Technique",
-                points: [
-                  ["Mises à jour automatiques", "CMS, plugins et frameworks toujours à jour"],
-                  ["Sauvegardes quotidiennes", "Sauvegarde automatique avec restauration rapide"],
-                  ["Monitoring 24/7", "Surveillance continue de la disponibilité"],
-                  ["Optimisation performance", "Cache, compression et optimisation images"],
-                ],
-              },
-              {
-                title: "Support Client",
-                points: [
-                  ["Support prioritaire", "Réponse garantie sous 2h en jours ouvrés"],
-                  ["Corrections de bugs", "Résolution rapide des problèmes techniques"],
-                  ["Modifications mineures", "Petites modifications de contenu incluses"],
-                  ["Rapports mensuels", "Statistiques et recommandations détaillées"],
-                ],
-              },
-            ].map((block, i) => (
-              <div key={i}>
-                <h3 className="text-2xl font-semibold mb-6">{block.title}</h3>
-                <div className="space-y-4">
-                  {block.points.map(([title, desc], j) => (
-                    <div key={j} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-cyan-400 mt-1" />
-                      <div>
-                        <h4 className="font-semibold">{title}</h4>
-                        <p className="text-gray-300 text-sm">{desc}</p>
-                      </div>
-                    </div>
-                  ))}
+    <div className="grid md:grid-cols-2 gap-12">
+      {[
+        {
+          title: "Maintenance Technique",
+          points: [
+            ["Mises à jour automatiques", "CMS, plugins et frameworks toujours à jour"],
+            ["Sauvegardes quotidiennes", "Sauvegarde automatique avec restauration rapide"],
+            ["Monitoring 24/7", "Surveillance continue de la disponibilité"],
+            ["Optimisation performance", "Cache, compression et optimisation images"],
+          ],
+        },
+        {
+          title: "Support Client",
+          points: [
+            ["Support prioritaire", "Réponse garantie sous 2h en jours ouvrés"],
+            ["Corrections de bugs", "Résolution rapide des problèmes techniques"],
+            ["Modifications mineures", "Petites modifications de contenu incluses"],
+            ["Rapports mensuels", "Statistiques et recommandations détaillées"],
+          ],
+        },
+      ].map((block, i) => (
+        <div key={i} className="animate-fade-in-up">
+          <h3 className="text-2xl font-semibold mb-6 text-white">
+            {block.title}
+          </h3>
+          <div className="space-y-4">
+            {block.points.map(([title, desc], j) => (
+              <div
+                key={j}
+                className="flex items-start gap-3 group hover:translate-x-1 transition-transform duration-300"
+              >
+                <CheckCircle className="h-5 w-5 text-cyan-400 mt-1 group-hover:text-cyan-300 transition-colors duration-300" />
+                <div>
+                  <h4 className="font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300">
+                    {title}
+                  </h4>
+                  <p className="text-gray-300 text-sm">{desc}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Pricing Section */}
       <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
