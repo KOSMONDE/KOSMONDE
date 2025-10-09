@@ -1,20 +1,18 @@
-export const runtime = "nodejs"
+export const runtime = "nodejs";
 
-import { NextResponse } from "next/server"
-import { Resend } from "resend"
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
-// petit rate-limit mémoire
-const WINDOW_MS = 60_000
-const MAX_REQ = 5
-const hits = new Map<string, { n: number; t: number }>()
+// rate limit mémoire simple
+const WINDOW_MS = 60_000;
+const MAX_REQ = 5;
+const hits = new Map<string, { n: number; t: number }>();
 
 function isEmail(s: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s)
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 }
 function clip(s: string, max = 2000) {
-  return String(s || "").toString().slice(0, max)
+  return String(s || "").slice(0, max);
 }
 
 export async function POST(req: Request) {
@@ -22,87 +20,86 @@ export async function POST(req: Request) {
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       // @ts-ignore
-      req.ip ||
-      "unknown"
+      (req as any).ip ||
+      "unknown";
 
-    // anti-abus basique
-    const now = Date.now()
-    const h = hits.get(ip)
+    // rate limit
+    const now = Date.now();
+    const h = hits.get(ip);
     if (h && now - h.t < WINDOW_MS && h.n >= MAX_REQ) {
-      console.warn(`⚠️ Rate limit ${ip}`)
-      return NextResponse.json({ success: false, error: "Trop de requêtes" }, { status: 429 })
+      return NextResponse.json({ success: false, error: "Trop de requêtes" }, { status: 429 });
     }
-    hits.set(ip, h && now - h.t < WINDOW_MS ? { n: h.n + 1, t: h.t } : { n: 1, t: now })
+    hits.set(ip, h && now - h.t < WINDOW_MS ? { n: h.n + 1, t: h.t } : { n: 1, t: now });
 
-    const body = await req.json()
-    const { name, email, phone, subject, message, website } = body || {}
+    const body = await req.json().catch(() => ({}));
+    const { name, email, phone, subject, message, website } = body || {};
 
-    console.log("📩 Données reçues :", { ip, name, email, website })
-
-    // 🕵️‍♂️ 1) Honeypot
-    if (website && website.trim() !== "") {
-      console.warn("🚫 Spam détecté via honeypot :", website)
-      return NextResponse.json({ success: false, error: "Spam détecté" }, { status: 400 })
+    // honeypot
+    if (website && String(website).trim() !== "") {
+      return NextResponse.json({ success: false, error: "Spam détecté" }, { status: 400 });
     }
 
-    // 🔎 2) Validation basique
+    // validations basiques
     if (!name || !email || !subject || !message) {
-      return NextResponse.json({ success: false, error: "Champs manquants" }, { status: 400 })
+      return NextResponse.json({ success: false, error: "Champs manquants" }, { status: 400 });
     }
     if (!isEmail(email)) {
-      return NextResponse.json({ success: false, error: "Email invalide" }, { status: 400 })
+      return NextResponse.json({ success: false, error: "Email invalide" }, { status: 400 });
     }
 
-    // ⚙️ 3) Configuration email
-    const FROM = process.env.EMAIL_FROM
-    const TO = process.env.EMAIL_TO
-    if (!process.env.RESEND_API_KEY || !FROM || !TO) {
-      console.error("❌ Config email manquante.")
-      return NextResponse.json({ success: false, error: "Config manquante" }, { status: 500 })
+    // env requis
+    const FROM = process.env.EMAIL_FROM;
+    const TO = process.env.EMAIL_TO;
+    const KEY = process.env.RESEND_API_KEY;
+    if (!KEY || !FROM || !TO) {
+      console.error("Config email manquante: ",
+        { hasKey: !!KEY, hasFrom: !!FROM, hasTo: !!TO });
+      return NextResponse.json({ success: false, error: "Config manquante" }, { status: 500 });
     }
+
+    // instanciation DANS le handler
+    const resend = new Resend(KEY);
 
     const safe = {
       name: clip(name, 200),
       email: clip(email, 320),
-      phone: clip(phone, 50),
+      phone: clip(phone ?? "", 50),
       subject: clip(subject, 200),
       message: clip(message, 4000),
-    }
+    };
 
-    // ✉️ 4) Envoi au site (admin)
+    // mail admin
     await resend.emails.send({
       from: `Kosmonde <${FROM}>`,
       to: TO,
       replyTo: safe.email,
-      subject: `📨 ${safe.subject}`,
+      subject: `Nouveau message: ${safe.subject}`,
       html: `
-        <h2>📩 Nouveau message via Kosmonde.fr</h2>
-        <p><strong>Nom :</strong> ${safe.name}</p>
-        <p><strong>Email :</strong> ${safe.email}</p>
-        <p><strong>Téléphone :</strong> ${safe.phone || "-"}</p>
-        <p><strong>Sujet :</strong> ${safe.subject}</p>
-        <p><strong>Message :</strong><br/>${safe.message.replace(/\n/g, "<br/>")}</p>
+        <h2>Nouveau message</h2>
+        <p><strong>Nom:</strong> ${safe.name}</p>
+        <p><strong>Email:</strong> ${safe.email}</p>
+        <p><strong>Téléphone:</strong> ${safe.phone || "-"}</p>
+        <p><strong>Sujet:</strong> ${safe.subject}</p>
+        <p><strong>Message:</strong><br/>${safe.message.replace(/\n/g, "<br/>")}</p>
         <hr/>
-        <p style="color:#888;font-size:12px">IP : ${ip}</p>
+        <p style="color:#888;font-size:12px">IP: ${ip}</p>
       `,
-    })
+    });
 
-    // 📬 5) Confirmation au visiteur
+    // accusé de réception
     await resend.emails.send({
       from: `Kosmonde <${FROM}>`,
       to: safe.email,
-      subject: "✅ Nous avons bien reçu votre message",
+      subject: "Nous avons bien reçu votre message",
       html: `
         <p>Bonjour ${safe.name},</p>
-        <p>Merci pour votre message ! Nous vous répondrons très bientôt.</p>
-        <p>– L'équipe Kosmonde 🚀</p>
+        <p>Merci pour votre message. Nous revenons vers vous rapidement.</p>
       `,
-    })
+    });
 
-    console.log("✅ Email envoyé avec succès :", safe.email)
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("💥 Erreur serveur :", err)
-    return NextResponse.json({ success: false, error: "Erreur interne" }, { status: 500 })
+    console.error("Erreur API /api/send:", err);
+    return NextResponse.json({ success: false, error: "Erreur interne" }, { status: 500 });
   }
 }
