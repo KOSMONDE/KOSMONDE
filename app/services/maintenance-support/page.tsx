@@ -1,87 +1,180 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
+"use client"
+
+import Header from "@/components/header"
+import Footer from "@/components/footer"
+import Link from "next/link"
+import { useMemo } from "react"
+import {
+  BadgeCheck,
+  ShieldCheck,
+  Database,
+  Wrench,
+  Rocket,
+  CheckCircle2,
+  Star,
+  Quote,
+} from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { CheckCircle, Shield, Clock, Wrench, Zap, Rocket } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button"
+
+type Plan = {
+  id: string
+  title: string
+  price: string
+  popular?: boolean
+  dot: string
+  features: string[]
+  sub: string
+}
+
+const PLANS: Plan[] = [
+  {
+    id: "std",
+    title: "Maintenance Standard",
+    price: "49,99 CHF",
+    popular: true, // badge Populaire sur l’offre 1
+    dot: "bg-cyan-500",
+    sub: "Idéal sites vitrine · Support email",
+    features: [
+      "Surveillance uptime 24/7",
+      "Sauvegardes hebdomadaires",
+      "Mises à jour WordPress + plugins",
+      "Corrections mineures",
+      "Rapport mensuel",
+    ],
+  },
+  {
+    id: "pro",
+    title: "Maintenance Pro",
+    price: "99,99 CHF",
+    dot: "bg-purple-500",
+    sub: "PME / blogs / e-commerce · Réactivité garantie",
+    features: [
+      "Sauvegardes quotidiennes",
+      "Sécurité renforcée + pare-feu",
+      "Optimisation performance continue",
+      "Mises à jour testées en préprod",
+      "Support prioritaire < 24h",
+      "Restauration en cas de panne",
+    ],
+  },
+  {
+    id: "prem",
+    title: "Support Premium",
+    price: "199,99 CHF",
+    dot: "bg-blue-600",
+    sub: "Grand comptes / critiques · Support 7j/7",
+    features: [
+      "Audit technique mensuel",
+      "Gestion serveur + CDN",
+      "Interventions illimitées sous SLA",
+      "Core Web Vitals avancés",
+      "Anti-spam, anti-bruteforce, DDoS",
+      "Conseil trimestriel d’évolution",
+    ],
+  },
+]
+
+const DOMAINS = [
+  {
+    icon: ShieldCheck,
+    title: "Sécurité & Mises à jour",
+    desc: "Protection contre les menaces, pare-feu et correctifs de sécurité.",
+  },
+  {
+    icon: Database,
+    title: "Sauvegardes & Restauration",
+    desc: "Backups automatiques avec restauration rapide en cas d’incident.",
+  },
+  {
+    icon: Wrench,
+    title: "Optimisation & Support",
+    desc: "Maintenance technique, corrections et assistance personnalisée.",
+  },
+  {
+    icon: Rocket,
+    title: "Performance & Analytics",
+    desc: "Amélioration continue, Core Web Vitals et suivi d’indicateurs.",
+  },
+]
+
+const TESTIMONIALS = [
+  {
+    quote:
+      "Notre nouveau site a doublé les demandes de devis en deux mois. Design propre, chargement rapide, rien à redire.",
+    author: "Sophie Martin",
+    role: "Fondatrice",
+    company: "Atelier Nomade",
+  },
+  {
+    quote:
+      "Exécution maîtrisée de bout en bout. L’équipe a challengé nos idées et livré un résultat meilleur qu’attendu.",
+    author: "Yann Dupuis",
+    role: "COO",
+    company: "KappaTech",
+    highlight: true, // carte centrale en violet
+  },
+  {
+    quote:
+      "Migration e-commerce fluide. Paiements, catalogue et SEO bien posés. Support réactif après lancement.",
+    author: "Carine Lopez",
+    role: "Directrice",
+    company: "Maison Lunea",
+  },
+]
 
 export default function MaintenanceSupportPage() {
+  const gradient = useMemo(
+    () => "bg-gradient-to-b from-[#1a1740] via-[#3c1670] to-[#0f1226]",
+    [],
+  )
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        {/* Cosmic background */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-10 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-1 h-1 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: "1s" }}></div>
-          <div className="absolute bottom-32 left-1/4 w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" style={{ animationDelay: "2s" }}></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <div className="mb-6">
-              <div className="w-24 h-24 mx-auto bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full flex items-center justify-center animate-float">
-                <Rocket className="h-12 w-12 text-white" />
-              </div>
-            </div>
-            <Badge variant="outline" className="mb-4 border-cyan-400/50 text-cyan-300 bg-cyan-400/10">
-              Support 24/7
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-              Maintenance &{" "}
-              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                Support
-              </span>
-            </h1>
-            <p className="text-xl text-gray-200 max-w-3xl mx-auto">
-              Gardez votre site web performant et sécurisé avec nos services de maintenance et support technique
-              professionnel.
-            </p>
+      {/* HERO */}
+      <section className={`relative overflow-hidden ${gradient}`}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16 text-center">
+          <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-500 grid place-items-center shadow-xl">
+            <BadgeCheck className="h-8 w-8 text-white" />
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 rounded-full px-8"
-              asChild
-            >
-              <Link href="/#contact">Souscrire un Plan</Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 bg-transparent"
-              asChild
-            >
-              <Link href="/#contact">Support d'Urgence</Link>
-            </Button>
-          </div>
+          <h1 className="text-[34px] md:text-6xl font-extrabold text-white">
+            Maintenance & Support{" "}
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Professionnels
+            </span>
+          </h1>
+          <p className="mt-5 text-lg md:text-xl text-white/80 max-w-4xl mx-auto">
+            Gardez votre site rapide, sécurisé et disponible. Nous assurons
+            mises à jour, sauvegardes, surveillance et optimisation continue.
+          </p>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-slate-800 via-purple-600 to-slate-800 bg-clip-text text-transparent">
-            Services de Maintenance
+      {/* DOMAINES — fond blanc */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 text-center mb-10">
+            Nos Domaines d’Intervention
           </h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { icon: Shield, title: "Sécurité", text: "Mises à jour de sécurité, sauvegardes automatiques et monitoring 24/7." },
-              { icon: Zap, title: "Performance", text: "Optimisation continue des performances et temps de chargement." },
-              { icon: Wrench, title: "Corrections", text: "Résolution rapide des bugs et problèmes techniques." },
-            ].map((item, i) => (
-              <Card key={i} className="group hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm">
+          <div className="grid gap-8 md:grid-cols-4">
+            {DOMAINS.map((d, i) => (
+              <Card
+                key={i}
+                className="border-0 shadow-lg bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white"
+              >
                 <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 mx-auto bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <item.icon className="h-8 w-8 text-white" />
+                  <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-white/20 grid place-items-center">
+                    <d.icon className="h-7 w-7 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 text-slate-800">{item.title}</h3>
-                  <p className="text-slate-600">{item.text}</p>
+                  <h3 className="text-lg md:text-xl font-semibold leading-tight break-words hyphens-auto">
+                    {d.title}
+                  </h3>
+                  <p className="mt-3 text-sm text-white/90 leading-relaxed">
+                    {d.desc}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -89,162 +182,156 @@ export default function MaintenanceSupportPage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-  <div className="max-w-6xl mx-auto relative z-10">
-    <h2 className="text-3xl font-bold text-center mb-12 text-white">
-      Ce Qui Est Inclus
-    </h2>
-
-    <div className="grid md:grid-cols-2 gap-12">
-      {[
-        {
-          title: "Maintenance Technique",
-          points: [
-            ["Mises à jour automatiques", "CMS, plugins et frameworks toujours à jour"],
-            ["Sauvegardes quotidiennes", "Sauvegarde automatique avec restauration rapide"],
-            ["Monitoring 24/7", "Surveillance continue de la disponibilité"],
-            ["Optimisation performance", "Cache, compression et optimisation images"],
-          ],
-        },
-        {
-          title: "Support Client",
-          points: [
-            ["Support prioritaire", "Réponse garantie sous 2h en jours ouvrés"],
-            ["Corrections de bugs", "Résolution rapide des problèmes techniques"],
-            ["Modifications mineures", "Petites modifications de contenu incluses"],
-            ["Rapports mensuels", "Statistiques et recommandations détaillées"],
-          ],
-        },
-      ].map((block, i) => (
-        <div key={i} className="animate-fade-in-up">
-          <h3 className="text-2xl font-semibold mb-6 text-white">
-            {block.title}
-          </h3>
-          <div className="space-y-4">
-            {block.points.map(([title, desc], j) => (
-              <div
-                key={j}
-                className="flex items-start gap-3 group hover:translate-x-1 transition-transform duration-300"
-              >
-                <CheckCircle className="h-5 w-5 text-cyan-400 mt-1 group-hover:text-cyan-300 transition-colors duration-300" />
-                <div>
-                  <h4 className="font-semibold text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300">
-                    {title}
-                  </h4>
-                  <p className="text-gray-300 text-sm">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-
-      {/* Pricing Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-slate-800 via-purple-600 to-slate-800 bg-clip-text text-transparent">
-            Plans de Maintenance
+      {/* OFFRES — fond violet */}
+      <section className="py-16 bg-gradient-to-br from-[#2b1d6b] via-[#5a1b9b] to-[#1b123f] text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
+            Nos Formules de Maintenance
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: "Essentiel", price: "89€", perks: ["Sauvegardes hebdomadaires", "Mises à jour sécurité", "Monitoring de base", "Support email"], type: "outline" },
-              { name: "Professionnel", price: "189€", perks: ["Tout du plan Essentiel", "Sauvegardes quotidiennes", "Optimisation performance", "Support prioritaire", "2h modifications/mois"], type: "highlight" },
-              { name: "Premium", price: "349€", perks: ["Tout du plan Pro", "Support 24/7", "5h modifications/mois", "Rapports détaillés", "Conseils stratégiques"], type: "outline" },
-            ].map((plan, i) => (
+          <div className="grid gap-8 md:grid-cols-3 items-stretch">
+            {PLANS.map((p) => (
               <Card
-                key={i}
-                className={`group transition-all duration-300 ${
-                  plan.type === "highlight"
-                    ? "hover:shadow-purple-500/20 border-2 border-purple-500/30 bg-white/90 backdrop-blur-sm"
-                    : "hover:shadow-xl hover:shadow-cyan-500/20 border-0 bg-white/80 backdrop-blur-sm"
+                key={p.id}
+                className={`border-0 rounded-2xl shadow-xl h-full ${
+                  p.popular ? "ring-2 ring-cyan-200" : ""
                 }`}
               >
-                <CardContent className="p-6">
-                  {plan.type === "highlight" && (
-                    <Badge className="mb-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white">Recommandé</Badge>
-                  )}
-                  <h3 className="text-xl font-semibold mb-2 text-slate-800">{plan.name}</h3>
-                  <div className="text-3xl font-bold mb-4 text-slate-800">
-                    <span
-                      className={`${
-                        plan.type === "highlight"
-                          ? "bg-gradient-to-r from-purple-500 to-pink-600"
-                          : "bg-gradient-to-r from-cyan-500 to-blue-600"
-                      } bg-clip-text text-transparent`}
-                    >
-                      {plan.price}
-                    </span>
-                    /mois
+                <CardContent className="p-6 bg-white text-slate-900 rounded-2xl h-full flex flex-col">
+                  {/* Badges au-dessus du titre */}
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="secondary" className="bg-slate-100 text-slate-700">
+                      Engagement 12 mois
+                    </Badge>
+                    {p.popular && (
+                      <Badge className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
+                        Populaire
+                      </Badge>
+                    )}
                   </div>
-                  <ul className="space-y-2 mb-6">
-                    {plan.perks.map((perk, j) => (
-                      <li key={j} className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-cyan-500" />
-                        <span className="text-sm">{perk}</span>
+
+                  {/* Titre + pastille */}
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-semibold leading-tight whitespace-normal">
+                      {p.title}
+                    </h3>
+                    <span aria-hidden className={`inline-block h-2.5 w-2.5 rounded-full ${p.dot}`} />
+                  </div>
+
+                  {/* Prix */}
+                  <div className="mt-3">
+                    <p className="text-3xl font-extrabold">
+                      {p.price} <span className="text-slate-600 text-xl">/ mois</span>
+                    </p>
+                    <p className="mt-1 text-slate-500 text-sm">{p.sub}</p>
+                  </div>
+
+                  {/* Features */}
+                  <ul className="mt-4 grow space-y-2">
+                    {p.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 text-violet-600" />
+                        <span className="leading-snug">{f}</span>
                       </li>
                     ))}
                   </ul>
-                  <Button
-                    className={`w-full ${
-                      plan.type === "highlight"
-                        ? "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-full"
-                        : "bg-transparent border-slate-300 text-slate-700 hover:bg-slate-50"
-                    }`}
-                    variant={plan.type === "highlight" ? "default" : "outline"}
-                    asChild
-                  >
-                    <Link href="/#contact">Choisir ce plan</Link>
-                  </Button>
+
+                  {/* CTA */}
+                  <div className="pt-6 mt-auto">
+                    <Button
+                      asChild
+                      className={`w-full ${
+                        p.id === "pro"
+                          ? "bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg"
+                          : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      }`}
+                    >
+                      <Link href={`/?offer=${p.id}#contact`}>Choisir cette formule</Link>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
+
+          <p className="text-sm text-white/80 text-center mt-8">
+            Tarifs mensuels, engagement de 12 mois.
+          </p>
         </div>
       </section>
 
-      {/* Emergency Support Section */}
-      <section className="relative py-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-center">
-        <div className="max-w-4xl mx-auto relative z-10">
-          <Clock className="h-16 w-16 text-red-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold mb-4 text-white">Support d'Urgence</h2>
-          <p className="text-gray-300 mb-6">
-            Votre site est en panne ? Notre équipe d'urgence intervient dans l'heure pour résoudre les problèmes critiques.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white border-0 rounded-full px-8"
-              asChild
-            >
-              <Link href="/#contact">Intervention d'Urgence</Link>
-            </Button>
-            <div className="text-sm text-gray-300">Tarif : 150€/heure • Intervention garantie sous 1h</div>
+      {/* AVIS — fond blanc, cartes alignées */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900">
+              Ils nous font confiance
+            </h2>
+            <p className="mt-3 text-lg text-slate-600">
+              Une sélection d&apos;avis vérifiés de clients heureux.
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-slate-800 via-purple-600 to-slate-800 bg-clip-text text-transparent">
-            Protégez Votre Investissement Digital
-          </h2>
-          <p className="text-xl text-slate-700 mb-8">
-            Ne laissez pas les problèmes techniques nuire à votre business. Choisissez un plan de maintenance adapté.
-          </p>
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 rounded-full px-8"
-            asChild
-          >
-            <Link href="/#contact">Choisir un Plan</Link>
-          </Button>
+          <div className="grid gap-8 md:grid-cols-3 items-stretch">
+            {TESTIMONIALS.map((t, i) => {
+              const highlight = Boolean(t.highlight)
+              return (
+                <Card
+                  key={i}
+                  className={`border-0 rounded-2xl shadow-xl h-full ${
+                    highlight
+                      ? "bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white"
+                      : "bg-white"
+                  }`}
+                >
+                  <CardContent className="p-7 md:p-8 h-full flex flex-col">
+                    {/* Stars */}
+                    <div className="flex items-center gap-1 mb-5">
+                      {Array.from({ length: 5 }).map((_, s) => (
+                        <Star
+                          key={s}
+                          className={`h-5 w-5 ${
+                            highlight ? "text-amber-300" : "text-amber-500"
+                          } fill-current`}
+                        />
+                      ))}
+                    </div>
+
+                    {/* Citation */}
+                    <div className="flex gap-3">
+                      <Quote
+                        className={`mt-1 h-6 w-6 flex-none ${
+                          highlight ? "text-white/70" : "text-slate-400"
+                        }`}
+                      />
+                      <p
+                        className={`leading-relaxed ${
+                          highlight ? "text-white/95" : "text-slate-700"
+                        } min-h-[140px] md:min-h-[120px]`}
+                      >
+                        {t.quote}
+                      </p>
+                    </div>
+
+                    {/* Divider pour la carte highlight */}
+                    {highlight && <div className="my-6 h-px w-full bg-white/20" />}
+
+                    {/* Auteur aligné en bas */}
+                    <div className={`mt-auto pt-6 ${highlight ? "text-white" : "text-slate-900"}`}>
+                      <p className="font-semibold">{t.author}</p>
+                      <p
+                        className={`text-sm ${
+                          highlight ? "text-white/80" : "text-slate-500"
+                        }`}
+                      >
+                        {t.role} • {t.company}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
         </div>
       </section>
 

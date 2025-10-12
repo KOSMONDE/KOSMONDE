@@ -1,335 +1,280 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+"use client"
+
+import Header from "@/components/header"
+import Footer from "@/components/footer"
+import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { CheckCircle, Globe, Smartphone, Zap, Rocket } from "lucide-react"
-import Link from "next/link"
+import { CheckCircle2, Rocket, Star, Quote } from "lucide-react"
 
 export default function CreationSitesWebPage() {
+  const plans = [
+    {
+      id: "vitrine",
+      title: "Site Vitrine",
+      price: "199,99",
+      currency: "CHF",
+      note: "Livré en 2–3 semaines · Paiement en 2 fois",
+      popular: true,
+      accentDot: "bg-cyan-500",
+      checkColor: "text-cyan-500",
+    },
+    {
+      id: "ecommerce",
+      title: "E-commerce WordPress",
+      price: "299,99",
+      currency: "CHF",
+      note: "Paiement en 3 fois · Support de mise en ligne",
+      popular: false,
+      accentDot: "bg-pink-500",
+      checkColor: "text-pink-500",
+    },
+    {
+      id: "premium",
+      title: "Site Premium",
+      price: "399,99",
+      currency: "CHF",
+      note: "Roadmap trimestrielle · 2 cycles de retours inclus",
+      popular: false,
+      accentDot: "bg-blue-600",
+      checkColor: "text-blue-600",
+    },
+  ] as const
+
+  const included: Record<(typeof plans)[number]["id"], string[]> = {
+    vitrine: [
+      "Design UX/UI sur mesure",
+      "Intégration responsive mobile-first",
+      "Jusqu’à 5 pages clés",
+      "Formulaire sécurisé anti-spam + notifications",
+      "Performance ≥ 90 (Lighthouse mobile)",
+    ],
+    ecommerce: [
+      "WooCommerce configuré",
+      "10 produits initiaux + catégories",
+      "Paiements Stripe/PayPal + e-mails transactionnels",
+      "TVA, zones d’expédition, Click&Collect",
+      "Thème optimisé Core Web Vitals",
+    ],
+    premium: [
+      "Architecture de contenu + wireframes",
+      "Design system (tokens, composants)",
+      "Gabarits de landing pages réutilisables",
+      "Blog complet avec recherche et catégories",
+      "Intégrations CRM & formulaires avancés",
+    ],
+  }
+
+  const Testimonials = () => (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900">
+            Ils nous font confiance
+          </h2>
+          <p className="mt-3 text-slate-600">
+            Une sélection d&apos;avis vérifiés de clients heureux.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3 items-stretch">
+          {/* Left card */}
+          <Card className="bg-white border-slate-200 shadow-md rounded-2xl">
+            <CardContent className="p-7 flex flex-col h-full">
+              <div className="flex gap-1 text-amber-500 mb-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-amber-500" />
+                ))}
+              </div>
+              <Quote className="h-6 w-6 text-slate-400" />
+              <p className="mt-3 text-slate-800 leading-relaxed">
+                Notre nouveau site a doublé les demandes de devis en deux mois.
+                Design propre, chargement rapide, rien à redire.
+              </p>
+              <div className="mt-auto pt-6">
+                <p className="font-semibold text-slate-900">Sophie Martin</p>
+                <p className="text-slate-500 text-sm">Fondatrice · Atelier Nomade</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Middle highlighted card */}
+          <Card className="border-0 shadow-xl rounded-2xl bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white">
+            <CardContent className="p-7 flex flex-col h-full">
+              <div className="flex gap-1 text-amber-300 mb-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-amber-300" />
+                ))}
+              </div>
+              <Quote className="h-6 w-6 text-white/70" />
+              <p className="mt-3 text-white/95 leading-relaxed">
+                Exécution maîtrisée de bout en bout. L&apos;équipe a challengé nos idées
+                et livré un résultat meilleur qu&apos;attendu.
+              </p>
+              <div className="mt-auto pt-6 border-t border-white/20" />
+              <div className="pt-4">
+                <p className="font-semibold">Yann Dupuis</p>
+                <p className="text-white/80 text-sm">COO · KappaTech</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Right card */}
+          <Card className="bg-white border-slate-200 shadow-md rounded-2xl">
+            <CardContent className="p-7 flex flex-col h-full">
+              <div className="flex gap-1 text-amber-500 mb-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-amber-500" />
+                ))}
+              </div>
+              <Quote className="h-6 w-6 text-slate-400" />
+              <p className="mt-3 text-slate-800 leading-relaxed">
+                Migration e-commerce fluide. Paiements, catalogue et SEO bien posés.
+                Support réactif après lancement.
+              </p>
+              <div className="mt-auto pt-6">
+                <p className="font-semibold text-slate-900">Carine Lopez</p>
+                <p className="text-slate-500 text-sm">Directrice · Maison Lunea</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </section>
+  )
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col">
       <Header />
 
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        {/* Cosmic background effects */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-10 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-          <div
-            className="absolute top-40 right-20 w-1 h-1 bg-purple-400 rounded-full animate-pulse"
-            style={{ animationDelay: "1s" }}
-          ></div>
-          <div
-            className="absolute bottom-32 left-1/4 w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"
-            style={{ animationDelay: "2s" }}
-          ></div>
-          <div
-            className="absolute top-60 right-1/3 w-1 h-1 bg-cyan-300 rounded-full animate-pulse"
-            style={{ animationDelay: "0.5s" }}
-          ></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <div className="mb-6">
-              <div className="relative inline-block">
-                <div className="w-24 h-24 mx-auto bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center animate-float">
-                  <Rocket className="h-12 w-12 text-white" />
-                </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full animate-pulse"></div>
-              </div>
-            </div>
-            <Badge variant="outline" className="mb-4 border-cyan-400/50 text-cyan-300 bg-cyan-400/10">
-              Service Premium
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance text-white">
-              Création de Sites Web
-              <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                {" "}
-                Professionnels
-              </span>
-            </h1>
-            <p className="text-xl text-gray-200 max-w-3xl mx-auto text-pretty">
-            Nous concevons des sites web uniques, modernes et performants,
-pensés pour exprimer votre identité, renforcer votre impact digital
-et transformer durablement vos visiteurs en clients fidèles.
-            </p>
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#1a1740] via-[#3c1670] to-[#0f1226]">
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center text-white">
+          <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-500 grid place-items-center shadow-xl">
+            <Rocket className="h-7 w-7 text-white" />
           </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 rounded-full px-8"
-              asChild
-            >
-              <Link href="/#contact">Demander un Devis</Link>
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-white/30 text-white hover:bg-white/10 rounded-full px-8 bg-transparent"
-              asChild
-            >
-              <Link href="/#portfolio">Voir nos Réalisations</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-slate-800 via-purple-600 to-slate-800 bg-clip-text text-transparent">
-            Pourquoi Choisir KOSMONDE ?
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="group hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm animate-fade-in-up">
-              <CardContent className="p-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Globe className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3 text-slate-800">Design Moderne</h3>
-                <p className="text-slate-600">
-                  Interfaces élégantes et intuitives qui captivent vos visiteurs dès la première seconde.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="group hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm animate-fade-in-up"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <CardContent className="p-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Smartphone className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3 text-slate-800">100% Responsive</h3>
-                <p className="text-slate-600">
-                  Parfaitement optimisé pour tous les appareils : mobile, tablette et desktop.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="group hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm animate-fade-in-up"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <CardContent className="p-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Zap className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3 text-slate-800">Performance Optimale</h3>
-                <p className="text-slate-600">Sites ultra-rapides avec un temps de chargement optimisé pour le SEO.</p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Process Section */}
-      <section className="relative pt-24 pb-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        {/* Subtle cosmic background */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 left-1/4 w-1 h-1 bg-cyan-400 rounded-full animate-pulse"></div>
-          <div
-            className="absolute bottom-20 right-1/4 w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"
-            style={{ animationDelay: "1.5s" }}
-          ></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          <h2 className="text-3xl font-bold text-center mb-12 text-white">Notre Processus de Création</h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center group animate-fade-in-up">
-              <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl font-bold text-white">1</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">Analyse</h3>
-              <p className="text-gray-300 text-sm">Étude de vos besoins et de votre marché cible</p>
-            </div>
-
-            <div className="text-center group animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl font-bold text-white">2</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">Design</h3>
-              <p className="text-gray-300 text-sm">Création de maquettes personnalisées</p>
-            </div>
-
-            <div className="text-center group animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl font-bold text-white">3</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">Développement</h3>
-              <p className="text-gray-300 text-sm">Codage avec les dernières technologies</p>
-            </div>
-
-            <div className="text-center group animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
-                <span className="text-2xl font-bold text-white">4</span>
-              </div>
-              <h3 className="text-lg font-semibold mb-2 text-white">Livraison</h3>
-              <p className="text-gray-300 text-sm">Mise en ligne et formation</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 bg-gradient-to-r from-slate-800 via-purple-600 to-slate-800 bg-clip-text text-transparent">
-            Nos Formules
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="group hover:shadow-xl hover:shadow-cyan-500/20 transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm animate-fade-in-up">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-slate-800">Site Vitrine</h3>
-                <div className="text-3xl font-bold mb-4 text-slate-800">
-                  À partir de{" "}
-                  <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">
-                    1 500€
-                  </span>
-                </div>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Design sur mesure</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Responsive design</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">SEO optimisé</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Formulaire de contact</span>
-                  </li>
-                </ul>
-                <Button
-                  className="w-full bg-transparent border-slate-300 text-slate-700 hover:bg-slate-50"
-                  variant="outline"
-                  asChild
-                >
-                  <Link href="/#contact">Choisir cette formule</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="group hover:shadow-xl hover:shadow-purple-500/20 transition-all duration-300 border-2 border-purple-500/30 bg-white/90 backdrop-blur-sm animate-fade-in-up"
-              style={{ animationDelay: "0.1s" }}
-            >
-              <CardContent className="p-6">
-                <Badge className="mb-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white">Populaire</Badge>
-                <h3 className="text-xl font-semibold mb-2 text-slate-800">Site Business</h3>
-                <div className="text-3xl font-bold mb-4 text-slate-800">
-                  À partir de{" "}
-                  <span className="bg-gradient-to-r from-purple-500 to-pink-600 bg-clip-text text-transparent">
-                    3 500€
-                  </span>
-                </div>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Tout du Site Vitrine</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">CMS intégré</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Blog professionnel</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Analytics avancés</span>
-                  </li>
-                </ul>
-                <Button
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white rounded-full"
-                  asChild
-                >
-                  <Link href="/#contact">Choisir cette formule</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card
-              className="group hover:shadow-xl hover:shadow-blue-500/20 transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm animate-fade-in-up"
-              style={{ animationDelay: "0.2s" }}
-            >
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-slate-800">Site Premium</h3>
-                <div className="text-3xl font-bold mb-4 text-slate-800">
-                  À partir de{" "}
-                  <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
-                    6 500€
-                  </span>
-                </div>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Tout du Site Business</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Fonctionnalités avancées</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Intégrations tierces</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-cyan-500" />
-                    <span className="text-sm">Support prioritaire</span>
-                  </li>
-                </ul>
-                <Button
-                  className="w-full bg-transparent border-slate-300 text-slate-700 hover:bg-slate-50"
-                  variant="outline"
-                  asChild
-                >
-                  <Link href="/#contact">Choisir cette formule</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative py-16 px-4 overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-10 right-10 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-          <div
-            className="absolute bottom-10 left-10 w-1.5 h-1.5 bg-purple-400 rounded-full animate-pulse"
-            style={{ animationDelay: "1s" }}
-          ></div>
-        </div>
-
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-3xl font-bold mb-6 text-white">Prêt à Lancer Votre Projet ?</h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Contactez-nous dès aujourd'hui pour discuter de votre projet et recevoir un devis personnalisé.
+          <h1 className="text-[34px] md:text-6xl font-extrabold">
+            Création de Sites Web{" "}
+            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Professionnels
+            </span>
+          </h1>
+          <p className="mt-5 text-lg md:text-xl text-white/80 max-w-4xl mx-auto">
+            Sites modernes et performants. Identité renforcée. Conversion optimisée.
+            Chaque projet est conçu sur mesure pour une expérience fluide et impactante.
           </p>
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white border-0 rounded-full px-8"
-            asChild
-          >
-            <Link href="/#contact">Demander un Devis Gratuit</Link>
-          </Button>
+          <div className="mt-8 flex justify-center">
+            <Button asChild variant="outline" className="border-white/25 text-white bg-white/5 hover:bg-white/10">
+              <Link href="/portfolio">Voir nos Réalisations</Link>
+            </Button>
+          </div>
         </div>
       </section>
+
+      {/* PROCESS — gris clair */}
+      <section className="py-16 bg-[#f3f5f8]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-10">Notre Processus de Création</h2>
+          <div className="grid md:grid-cols-4 gap-8">
+            {[
+              { n: "1", title: "Analyse & Stratégie", desc: "Compréhension des besoins, étude du marché et objectifs." },
+              { n: "2", title: "Design & Prototype", desc: "Maquettes UX/UI sur mesure pour une expérience fluide." },
+              { n: "3", title: "Développement", desc: "Intégration moderne, performances et qualité de code." },
+              { n: "4", title: "Lancement & Suivi", desc: "Mise en ligne, tests finaux et accompagnement." },
+            ].map((s) => (
+              <Card key={s.n} className="border-0 bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white shadow-lg">
+                <CardContent className="p-6 text-center">
+                  <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-white/20 grid place-items-center text-xl font-bold">
+                    {s.n}
+                  </div>
+                  <h3 className="text-lg font-semibold">{s.title}</h3>
+                  <p className="mt-3 text-sm text-white/90">{s.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PLANS — violet */}
+      <section className="py-16 bg-gradient-to-br from-[#2b1d6b] via-[#5a1b9b] to-[#1b123f] text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold">Nos Formules</h2>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-3 items-stretch">
+            {plans.map((p) => (
+              <Card
+                key={p.id}
+                className={`border-0 shadow-xl h-full flex flex-col rounded-2xl ${p.popular ? "ring-2 ring-cyan-200" : ""}`}
+              >
+                <CardContent className="p-6 flex flex-col h-full bg-white text-slate-900 rounded-2xl">
+                  {/* badges au-dessus du titre */}
+                  <div className="mb-2 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-700 ring-1 ring-slate-200">
+                        Paiement unique
+                      </span>
+                      {p.popular && (
+                        <Badge className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
+                          Populaire
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* titre + dot */}
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-xl font-semibold">{p.title}</h3>
+                    <span className={`h-2.5 w-2.5 rounded-full ${p.accentDot}`} />
+                  </div>
+
+                  {/* prix */}
+                  <div className="mt-3">
+                    <p className="text-3xl font-extrabold">
+                      {p.price} <span className="text-slate-600">{p.currency}</span>
+                    </p>
+                    <p className="mt-1 text-slate-500 text-sm">{p.note}</p>
+                  </div>
+
+                  {/* inclus */}
+                  <ul className="mt-4 grow space-y-2">
+                    {included[p.id].map((f) => (
+                      <li key={f} className="flex items-start gap-2">
+                        <CheckCircle2 className={`mt-0.5 h-4 w-4 ${p.checkColor}`} />
+                        <span className="leading-snug">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  <div className="pt-6 mt-auto">
+                    <Button
+                      asChild
+                      className={`w-full ${
+                        p.id === "ecommerce"
+                          ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg"
+                          : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      }`}
+                    >
+                      <Link href={`/?offer=${p.id}#contact`}>Choisir cette formule</Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <p className="text-sm text-white/80 text-center mt-8">
+            Tarifs affichés en francs suisses. Paiement unique sans abonnement.
+          </p>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS — blanc */}
+      <Testimonials />
 
       <Footer />
     </div>

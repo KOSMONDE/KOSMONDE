@@ -2,109 +2,114 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Code, Palette, Zap, Search, Wrench, ShoppingCart, ArrowRight } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Code, Wrench, Palette, ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useRef } from "react"
 
+// --- Données : 3 services principaux ---
 const services = [
   {
     icon: Code,
     title: "Création de Sites Web",
-    description: "Sites vitrine, corporate et sur mesure avec design moderne et responsive.",
+    description:
+      "Sites vitrine modernes, rapides et optimisés pour le référencement. Conçus sur mesure pour refléter votre image de marque.",
     slug: "creation-sites-web",
-  },
-  {
-    icon: ShoppingCart,
-    title: "E-commerce",
-    description: "Boutiques en ligne performantes avec gestion complète des ventes.",
-    slug: "e-commerce",
-  },
-  {
-    icon: Zap,
-    title: "Applications Web",
-    description: "Développement d'applications web sur mesure et performantes.",
-    slug: "applications-web",
-  },
-  {
-    icon: Search,
-    title: "SEO & Marketing Digital",
-    description: "Référencement naturel et stratégies marketing pour booster votre visibilité.",
-    slug: "seo-marketing",
   },
   {
     icon: Wrench,
     title: "Maintenance & Support",
-    description: "Suivi, mises à jour et support technique réactif pour vos projets.",
+    description:
+      "Sécurité, mises à jour et surveillance continue pour garantir la stabilité et la performance de votre site.",
     slug: "maintenance-support",
   },
   {
     icon: Palette,
     title: "Consulting Digital",
-    description: "Accompagnement stratégique pour votre transformation digitale.",
+    description:
+      "Audit, stratégie et accompagnement sur mesure pour optimiser vos projets web et votre présence digitale.",
     slug: "consulting-digital",
+    badge: "Nouveauté", // badge affiché à côté du titre
   },
 ]
 
+// --- Scroll fluide vers la section contact ---
 const scrollToContact = () => {
   const contactSection = document.getElementById("contact")
   if (contactSection) {
     contactSection.scrollIntoView({ behavior: "smooth" })
-    setTimeout(() => {
-      const firstInput = contactSection.querySelector("input")
-      if (firstInput) {
-        firstInput.focus()
-      }
-    }, 500)
+    setTimeout(() => contactSection.querySelector("input")?.focus(), 500)
   }
 }
 
 export default function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
+  // Animation d’apparition
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const cards = entry.target.querySelectorAll(".service-card")
-            cards.forEach((card, index) => {
-              setTimeout(() => {
-                card.classList.add("fade-in-up")
-              }, index * 100)
-            })
+            entry.target
+              .querySelectorAll(".service-card")
+              .forEach((card, index) =>
+                setTimeout(() => card.classList.add("fade-in-up"), index * 100),
+              )
           }
         })
       },
       { threshold: 0.1 },
     )
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
 
+  // --- Rendu ---
   return (
     <section ref={sectionRef} id="services" className="py-20 px-4 sm:px-6 lg:px-8 cosmic-light-bg">
       <div className="max-w-7xl mx-auto">
+        {/* En-tête */}
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold cosmic-title mb-4">Nos Services</h2>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto text-pretty">
-            Services digitaux complets pour booster votre croissance et votre impact en ligne.
+            Trois solutions clés pour construire, maintenir et développer votre présence digitale.
           </p>
         </div>
 
+        {/* Cartes */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <Card key={index} className="h-full cosmic-card bg-white/80 service-card opacity-0">
+            <Card
+              key={index}
+              className="h-full cosmic-card bg-white/80 service-card opacity-0"
+            >
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 rounded-lg flex items-center justify-center mb-4">
                   <service.icon className="h-6 w-6 cosmic-icon" />
                 </div>
-                <CardTitle className="text-xl text-slate-800">{service.title}</CardTitle>
-                <CardDescription className="text-base text-slate-600">{service.description}</CardDescription>
+
+                {/* Titre + badge */}
+                <div className="flex items-center gap-2 mb-1">
+                  <CardTitle className="text-xl text-slate-800 flex-1">
+                    {service.title}
+                  </CardTitle>
+                  {service.badge && (
+                    <span
+                      className="rounded-full px-2.5 py-0.5 text-xs font-semibold
+                      bg-gradient-to-r from-cyan-500 to-purple-500 text-white shadow-sm"
+                    >
+                      {service.badge}
+                    </span>
+                  )}
+                </div>
+
+                <CardDescription className="text-base text-slate-600">
+                  {service.description}
+                </CardDescription>
               </CardHeader>
+
               <CardContent>
                 <Link href={`/services/${service.slug}`}>
                   <Button
@@ -120,6 +125,7 @@ export default function ServicesSection() {
           ))}
         </div>
 
+        {/* CTA principal */}
         <div className="text-center mt-12">
           <Button
             size="lg"
