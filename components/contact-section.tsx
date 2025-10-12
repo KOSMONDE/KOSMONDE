@@ -1,6 +1,5 @@
 "use client"
 
-import type React from "react"
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
 
@@ -12,26 +11,17 @@ import { Label } from "@/components/ui/label"
 import { Mail, Phone, Send, Sparkles } from "lucide-react"
 import { toast } from "sonner"
 
-/* ========================================================================
-   Offres disponibles (Création, Maintenance, Consulting)
-   ======================================================================== */
+/* Offres (Création, Maintenance, Consulting) */
 const OFFER_LABELS = {
-  // Création de site
   vitrine: "Site Vitrine – 199,99 CHF",
   ecommerce: "E-commerce WordPress – 299,99 CHF",
   premium: "Site Premium – 399,99 CHF",
-
-  // Maintenance & Support
   std: "Maintenance Standard – 49,99 CHF / mois",
   pro: "Maintenance Pro – 99,99 CHF / mois",
   prem: "Support Premium – 199,99 CHF / mois",
-
-  // Consulting Digital
   social: "Social Media Starter – 590 CHF",
   branding: "Branding Essentials – 790 CHF",
   print: "Pack Print & Brand – 990 CHF",
-
-  // Autre
   custom: "Devis sur mesure",
 } as const
 type OfferKey = keyof typeof OFFER_LABELS
@@ -49,38 +39,31 @@ export default function ContactSection() {
     offer: "custom" as OfferKey,
   })
 
-  // Préremplissage via /?offer=...
+  // Préremplir via /?offer=...
   useEffect(() => {
     const q = (searchParams.get("offer") || "").toLowerCase() as OfferKey
     if (q in OFFER_LABELS) {
       setFormData((f) => ({ ...f, offer: q }))
-      const first = document.getElementById("name") as HTMLInputElement | null
-      first?.focus()
+      document.getElementById("name")?.focus()
     }
   }, [searchParams])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  ) => setFormData({ ...formData, [e.target.name]: e.target.value })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Honeypot anti-bots
     if (formData.website) {
       toast.error("Requête bloquée (spam détecté).")
       return
     }
-
     try {
       const res = await fetch("/api/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
-
       if (res.ok) {
         toast.success("Message envoyé avec succès.")
         setFormData({
@@ -101,7 +84,7 @@ export default function ContactSection() {
     }
   }
 
-  // Synchronise le champ caché (honeypot) et le state
+  // Synchronise le honeypot caché
   useEffect(() => {
     const el = document.querySelector<HTMLInputElement>("#website")
     if (!el) return
@@ -189,7 +172,9 @@ export default function ContactSection() {
                 <Sparkles className="h-5 w-5 text-purple-400 mr-2" />
                 <h3 className="font-semibold text-purple-300">Devis gratuit</h3>
               </div>
-              <p className="text-sm text-gray-300">Obtenez une estimation personnalisée pour votre projet en moins de 24h.</p>
+              <p className="text-sm text-gray-300">
+                Obtenez une estimation personnalisée pour votre projet en moins de 24h.
+              </p>
             </div>
           </div>
 

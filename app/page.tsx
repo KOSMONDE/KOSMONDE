@@ -1,3 +1,5 @@
+import { Suspense } from "react"
+
 import Header from "@/components/header"
 import HeroSection from "@/components/hero-section"
 import ServicesSection from "@/components/services-section"
@@ -15,7 +17,9 @@ export default function HomePage() {
         <ServicesSection />
         <PortfolioSection />
         <AboutSection />
-        <ContactSection />
+        <Suspense fallback={null}>
+          <ContactSection />
+        </Suspense>
       </main>
       <Footer />
     </div>
