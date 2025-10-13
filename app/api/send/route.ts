@@ -101,7 +101,6 @@ export async function POST(req: Request) {
       <tr>
         <td style="padding:28px;background:${HEADER};">
           <img src="${LOGO}" alt="Kosmonde" width="48" height="48" style="border-radius:10px;display:block;margin:0 auto 10px;">
-          <div style="color:#fff;font:400 15px/1.4 'Helvetica Neue',Arial,sans-serif;margin-bottom:8px;">Kosmonde</div>
           <span style="display:inline-block;padding:7px 14px;border-radius:999px;background:${BADGE};color:#fff;font:400 12px/1 'Helvetica Neue',Arial,sans-serif;">Nouveau message</span>
         </td>
       </tr>
@@ -132,10 +131,10 @@ export async function POST(req: Request) {
     });
     if (send1.error) throw send1.error;
 
-    /* ------------ Accusé client: centrage et alignements fixes ------------ */
+    /* ------------ Accusé client: sans texte sous logo, sans bouton ------------ */
     const msgPreview = escapeHtml(safe.message).slice(0, 800);
     const ackHtml = `
-<!doctype html><html><head><meta name="color-scheme" content="light"><meta charset="utf-8"><title>Kosmonde — Accusé</title></head>
+<!doctype html><html><head><meta name="color-scheme" content="light"><meta charset="utf-8"><title>Accusé de réception</title></head>
 <body style="margin:0;padding:0;background:${BG};">
 <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" style="padding:24px 12px;">
   <tr><td align="center">
@@ -144,7 +143,6 @@ export async function POST(req: Request) {
       <tr>
         <td style="padding:26px;background:${HEADER};">
           <img src="${LOGO}" alt="Kosmonde" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px;">
-          <div style="color:#fff;font:400 15px/1.3 'Helvetica Neue',Arial,sans-serif;margin-bottom:8px;">Kosmonde</div>
           <span style="display:inline-block;padding:7px 14px;border-radius:999px;background:${BADGE};color:#fff;font:400 12px/1 'Helvetica Neue',Arial,sans-serif;">Accusé de réception</span>
         </td>
       </tr>
@@ -160,7 +158,7 @@ export async function POST(req: Request) {
         </td>
       </tr>
 
-      <!-- Récap (grille fixe 520px, 160/360) -->
+      <!-- Récap (bloc 520 px, colonnes 160 / 360) -->
       <tr>
         <td style="padding:10px 32px 0 32px;">
           <div style="color:${LINK};font:400 14px/1.6 'Helvetica Neue',Arial,sans-serif;margin:0 0 10px 0;">Récapitulatif</div>
@@ -177,11 +175,11 @@ export async function POST(req: Request) {
         </td>
       </tr>
 
-      <!-- Message client (bloc 520px centré) -->
+      <!-- Message client centré -->
       ${
         msgPreview
           ? `<tr>
-               <td style="padding:14px 32px 0 32px;">
+               <td style="padding:14px 32px 22px 32px;">
                  <div style="color:${MUTED};font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;">Votre message</div>
                  <table role="presentation" cellpadding="0" cellspacing="0" align="center" width="520" style="margin:6px auto 0 auto;">
                    <tr>
@@ -194,13 +192,6 @@ export async function POST(req: Request) {
              </tr>`
           : ""
       }
-
-      <!-- CTA -->
-      <tr>
-        <td style="padding:22px 24px 28px 24px;">
-          <a href="https://www.kosmonde.ch" style="display:inline-block;padding:12px 18px;border-radius:12px;background:#0ea5e9;color:#fff;text-decoration:none;font:400 14px/1 'Helvetica Neue',Arial,sans-serif;">Visiter kosmonde.ch</a>
-        </td>
-      </tr>
 
       <!-- Footer -->
       <tr>
@@ -216,7 +207,7 @@ export async function POST(req: Request) {
     const send2 = await resend.emails.send({
       from: FROM,
       to: String(safe.email),
-      subject: "Kosmonde — Accusé de réception",
+      subject: "Accusé de réception",
       html: ackHtml,
     });
     if (send2.error) throw send2.error;
