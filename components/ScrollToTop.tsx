@@ -1,11 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Image from "next/image"
 
-const WHATSAPP_NUMBER = "33775867250" // format international sans +
+const WHATSAPP_NUMBER = "33775867250"
 const WHATSAPP_TEXT = encodeURIComponent("Bonjour KOSMONDE, j’ai un projet.")
-const ICON_PATH = "/WhatsApp.svg.webp" // placé dans /public
 
 export default function WhatsAppFab() {
   const [visible, setVisible] = useState(false)
@@ -23,18 +21,25 @@ export default function WhatsAppFab() {
       href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Contacter sur WhatsApp"
-      className="fixed right-5 z-50 rounded-full shadow-xl hover:shadow-2xl transition"
-      style={{ bottom: "calc(env(safe-area-inset-bottom) + 5rem)" }} // au-dessus du bandeau bas
+      aria-label="WhatsApp"
+      className="fixed right-5 z-50 block"
+      style={{ bottom: "calc(env(safe-area-inset-bottom) + 5rem)" }}
     >
-      <Image
-        src={ICON_PATH}
-        alt="WhatsApp Business"
-        width={64}
-        height={64}
-        priority
+      {/* IMPORTANT: <img>, pas <Image>, aucune coupe */}
+      <img
+        src="/WhatsApp.svg.webp"
+        alt="WhatsApp"
+        width={68}
+        height={68}
+        decoding="async"
         draggable={false}
-        className="block rounded-full"
+        className="block"
+        style={{
+          /* évite la coupe et le halo */
+          padding: "2px",                 // micro-espace pour la pointe
+          background: "transparent",
+          filter: "drop-shadow(0 6px 12px rgba(0,0,0,.25))",
+        }}
       />
     </a>
   )
