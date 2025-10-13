@@ -27,7 +27,7 @@ const OFFER_LABELS = {
 } as const;
 type OfferKey = keyof typeof OFFER_LABELS;
 
-/* ------------ Logo public ------------ */
+/* ------------ Logo ------------ */
 const LOGO = "https://www.kosmonde.ch/email-logo.png?v=2";
 
 /* ------------ POST /api/send ------------ */
@@ -64,9 +64,9 @@ export async function POST(req: Request) {
     }
 
     // ENV
-    const KEY  = process.env.RESEND_API_KEY;
+    const KEY = process.env.RESEND_API_KEY;
     const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM; // 'Kosmonde <contact@kosmonde.ch>'
-    const TO   = process.env.EMAIL_TO   ?? process.env.MAIL_TO;   // 'contact@kosmonde.ch'
+    const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO; // 'contact@kosmonde.ch'
     if (!KEY || !FROM || !TO) {
       console.error("Config email manquante", { hasKey: !!KEY, hasFrom: !!FROM, hasTo: !!TO });
       return NextResponse.json({ success: false, error: "Config manquante." }, { status: 500 });
@@ -85,14 +85,16 @@ export async function POST(req: Request) {
     };
     const offerLabel = OFFER_LABELS[safe.offer] ?? OFFER_LABELS.custom;
 
-    /* ------------ HTML clair + centré (monocolonne) ------------ */
+    /* ------------ Palette (gris clair) ------------ */
     const BG = "#f5f7fb";
     const CARD = "#ffffff";
     const BORDER = "#eef2f7";
     const TEXT = "#111827";
-    const MUTED = "#64748b";
+    const MUTED = "#6b7280";
     const LINK = "#0ea5e9";
+    const STRIP = "#e5e7eb"; // header clair
 
+    /* ------------ HTML admin (monocolonne centrée, sans gras) ------------ */
     const htmlAdmin = `
 <!doctype html>
 <html>
@@ -108,10 +110,10 @@ export async function POST(req: Request) {
         <td align="center">
           <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="width:640px;max-width:100%;background:${CARD};border-radius:16px;border:1px solid ${BORDER};box-shadow:0 4px 20px rgba(18,24,40,.06);overflow:hidden;text-align:center;">
             <tr>
-              <td style="padding:24px;background:linear-gradient(90deg,#6b46c1,#111827);">
+              <td style="padding:22px;background:${STRIP};">
                 <img src="${LOGO}" alt="Kosmonde" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px auto;">
-                <div style="color:#E6E6E6;font:600 18px/1 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;margin-bottom:10px;">Kosmonde</div>
-                <span style="display:inline-block;padding:8px 14px;border-radius:999px;background:#16a34a;color:#fff;font:600 12px/1 ui-sans-serif;">Nouveau message</span>
+                <div style="color:${TEXT};font:400 16px/1.2 ui-sans-serif;margin-bottom:10px;">Kosmonde • Nouveau message</div>
+                <span style="display:inline-block;padding:8px 14px;border-radius:999px;background:#16a34a;color:#fff;font:400 12px/1 ui-sans-serif;">Nouveau message</span>
               </td>
             </tr>
 
@@ -124,7 +126,7 @@ export async function POST(req: Request) {
             ${safe.page ? block("Page", linkUrl(String(safe.page), LINK)) : ""}
 
             <tr>
-              <td style="padding:18px 16px;background:${CARD};border-top:1px solid ${BORDER};">
+              <td style="padding:16px;background:${CARD};border-top:1px solid ${BORDER};">
                 <div style="color:${MUTED};font:400 12px/1.6 ui-sans-serif;">
                   IP : ${escapeHtml(ip)} • <a href="https://www.kosmonde.ch" style="color:${LINK};text-decoration:none;">www.kosmonde.ch</a>
                 </div>
@@ -138,7 +140,7 @@ export async function POST(req: Request) {
   </body>
 </html>`.trim();
 
-    // admin
+    // envoi admin
     const send1 = await resend.emails.send({
       from: FROM,
       to: TO,
@@ -148,13 +150,13 @@ export async function POST(req: Request) {
     });
     if (send1.error) throw send1.error;
 
-    // accusé client
+    // accusé client (sobre, sans gras)
     const ackHtml = `
       <div style="background:${BG};padding:24px 12px;">
         <div style="max-width:640px;margin:0 auto;background:${CARD};border:1px solid ${BORDER};border-radius:12px;padding:24px;text-align:center;">
-          <p style="margin:0 0 8px 0;color:${TEXT};font:600 16px/1.4 ui-sans-serif;">Bonjour ${escapeHtml(safe.name)},</p>
+          <p style="margin:0 0 8px 0;color:${TEXT};font:400 16px/1.4 ui-sans-serif;">Bonjour ${escapeHtml(safe.name)},</p>
           <p style="margin:0;color:${MUTED};font:400 14px/1.7 ui-sans-serif;">Nous avons bien reçu votre message. Nous revenons vers vous rapidement.</p>
-          <p style="margin:16px 0 0 0;color:${MUTED};font:400 14px/1.7 ui-sans-serif;">— Kosmonde</p>
+          <p style="margin:16px 0 0 0;color:${MUTED};font:400 14px/1.7 ui-sans-serif;">Kosmonde</p>
         </div>
       </div>
     `.trim();
@@ -174,13 +176,13 @@ export async function POST(req: Request) {
   }
 }
 
-/* ------------ Helpers HTML (centrés) ------------ */
+/* ------------ Helpers HTML (centrés, sans gras) ------------ */
 function block(label: string, value: string) {
   return `
     <tr>
-      <td style="padding:18px 16px;background:#ffffff;border-bottom:1px solid #eef2f7;text-align:center;">
-        <div style="color:#64748b;font:600 12px/1 ui-sans-serif;letter-spacing:.02em;text-transform:uppercase;margin-bottom:6px;">${escapeHtml(label)}</div>
-        <div style="color:#111827;font:600 16px/1.5 ui-sans-serif;">${value}</div>
+      <td style="padding:16px;background:#ffffff;border-bottom:1px solid #eef2f7;text-align:center;">
+        <div style="color:#94a3b8;font:400 11px/1 ui-sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">${escapeHtml(label)}</div>
+        <div style="color:#111827;font:400 16px/1.55 ui-sans-serif;">${value}</div>
       </td>
     </tr>`;
 }
@@ -196,7 +198,7 @@ function nl2br(s: string) {
   return s.replace(/\n/g, "<br/>");
 }
 function escapeHtml(s: string) {
-  return s
+  return String(s ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
