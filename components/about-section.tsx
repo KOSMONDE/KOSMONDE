@@ -30,17 +30,14 @@ export default function AboutSection() {
       },
       { threshold: 0.1 },
     )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
   }, [])
 
   return (
     <section ref={sectionRef} id="apropos" className="py-20 px-4 sm:px-6 lg:px-8 cosmic-light-bg">
       <div className="max-w-7xl mx-auto">
+        {/* Colonne texte + stats en style d'origine (clair) */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold cosmic-title mb-6">À propos de KOSMONDE</h2>
@@ -80,36 +77,53 @@ export default function AboutSection() {
           </div>
         </div>
 
-        <div className="mt-16 cosmic-card bg-white/60 backdrop-blur-md rounded-lg p-8 border border-white/30">
-          <h3 className="text-2xl font-bold text-center mb-8 cosmic-title">Notre Processus</h3>
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg">
-                1
+        {/* Notre Processus — SEUL bloc en violet */}
+        <div className="mt-16 rounded-lg p-8 border border-white/20 text-white relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+          {/* décor léger */}
+          <div className="pointer-events-none absolute inset-0 opacity-20">
+            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse delay-1000" />
+            <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse delay-500" />
+            <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-blue-400 rounded-full animate-pulse delay-700" />
+          </div>
+
+          <div className="relative z-10">
+            <h3 className="text-2xl font-semibold text-center mb-8 bg-gradient-to-r from-cyan-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+              Notre Processus
+            </h3>
+
+            <div className="grid md:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
+                  1
+                </div>
+                <h4 className="font-medium mb-2">Analyse</h4>
+                <p className="text-sm text-slate-200">Étude des besoins et définition des objectifs</p>
               </div>
-              <h4 className="font-semibold mb-2 text-slate-800">Analyse</h4>
-              <p className="text-sm text-slate-600">Étude de vos besoins et définition des objectifs</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg">
-                2
+
+              <div className="text-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
+                  2
+                </div>
+                <h4 className="font-medium mb-2">Conception</h4>
+                <p className="text-sm text-slate-200">Design et architecture de la solution</p>
               </div>
-              <h4 className="font-semibold mb-2 text-slate-800">Conception</h4>
-              <p className="text-sm text-slate-600">Design et architecture technique de votre solution</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-cyan-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg">
-                3
+
+              <div className="text-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-cyan-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
+                  3
+                </div>
+                <h4 className="font-medium mb-2">Développement</h4>
+                <p className="text-sm text-slate-200">Réalisation avec les meilleures technologies</p>
               </div>
-              <h4 className="font-semibold mb-2 text-slate-800">Développement</h4>
-              <p className="text-sm text-slate-600">Réalisation avec les meilleures technologies</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold shadow-lg">
-                4
+
+              <div className="text-center">
+                <div className="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
+                  4
+                </div>
+                <h4 className="font-medium mb-2">Lancement</h4>
+                <p className="text-sm text-slate-200">Mise en ligne et accompagnement continu</p>
               </div>
-              <h4 className="font-semibold mb-2 text-slate-800">Lancement</h4>
-              <p className="text-sm text-slate-600">Mise en ligne et accompagnement continu</p>
             </div>
           </div>
         </div>
