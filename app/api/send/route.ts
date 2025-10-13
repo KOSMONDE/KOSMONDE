@@ -123,7 +123,6 @@ export async function POST(req: Request) {
             ${block("Téléphone", safe.phone ? escapeHtml(safe.phone) : "—")}
             ${block("Sujet", escapeHtml(safe.subject))}
             ${block("Message", nl2br(escapeHtml(safe.message)))}
-            ${safe.page ? block("Page", linkUrl(String(safe.page), LINK)) : ""}
 
             <tr>
               <td style="padding:16px;background:${CARD};border-top:1px solid ${BORDER};">
