@@ -2,20 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Rocket } from "lucide-react"
+import { Menu, X, Rocket, MessageCircle } from "lucide-react"
 import Link from "next/link"
 import CosmicMarquee from "@/components/cosmic-marquee"
 
-const scrollToContact = () => {
-  const contactSection = document.getElementById("contact")
-  if (contactSection) {
-    contactSection.scrollIntoView({ behavior: "smooth" })
-    setTimeout(() => {
-      const firstInput = contactSection.querySelector("input")
-      if (firstInput) firstInput.focus()
-    }, 500)
-  }
-}
+const WHATSAPP_NUMBER = "33775867250" // ex: +41 22 000 00 00 -> 41220000000
+const WHATSAPP_TEXT = encodeURIComponent("Bonjour KOSMONDE, j’ai un projet.")
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -32,16 +24,12 @@ export function Header() {
       {/* ✅ Header sticky seul */}
       <div className="sticky top-0 z-50">
         <header
-  className={`transition-all duration-300 ${
-    isScrolled
-      ? "bg-gradient-to-r from-purple-900/90 via-indigo-900/80 to-blue-900/90 backdrop-blur-md border-b border-purple-700/50"
-      : "bg-gradient-to-r from-purple-950 via-indigo-950 to-blue-950 border-b border-purple-800/50"
-  }`}
->
-
-
-
-
+          className={`transition-all duration-300 ${
+            isScrolled
+              ? "bg-gradient-to-r from-purple-900/90 via-indigo-900/80 to-blue-900/90 backdrop-blur-md border-b border-purple-700/50"
+              : "bg-gradient-to-r from-purple-950 via-indigo-950 to-blue-950 border-b border-purple-800/50"
+          }`}
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center h-16">
               {/* Logo */}
@@ -71,13 +59,16 @@ export function Header() {
               </nav>
 
               {/* CTA Desktop */}
-              <div className="hidden md:flex">
-                <Button
-                  onClick={scrollToContact}
-                  className="bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:from-cyan-500 hover:to-purple-600"
+              <div className="hidden md:flex items-center gap-3">
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl px-3 py-2 bg-emerald-500 text-slate-950 hover:bg-emerald-400"
                 >
-                  Devis gratuit
-                </Button>
+                  <MessageCircle className="h-4 w-4" />
+                  WhatsApp
+                </a>
               </div>
 
               {/* Mobile menu button */}
@@ -113,16 +104,17 @@ export function Header() {
                   <Link href="/#contact" className="block px-3 py-2 text-gray-200 hover:text-cyan-400" onClick={() => setIsMenuOpen(false)}>
                     Contact
                   </Link>
+
                   <div className="px-3 py-2">
-                    <Button
-                      className="w-full bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:from-cyan-500 hover:to-purple-600"
-                      onClick={() => {
-                        scrollToContact()
-                        setIsMenuOpen(false)
-                      }}
+                    <a
+                      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
+                      className="w-full inline-flex justify-center rounded-xl px-3 py-2 bg-emerald-500 text-slate-950 text-center hover:bg-emerald-400"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsMenuOpen(false)}
                     >
-                      Réserver une consultation
-                    </Button>
+                      WhatsApp
+                    </a>
                   </div>
                 </div>
               </div>
