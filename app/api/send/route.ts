@@ -4,8 +4,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
 /* ---------- constants ---------- */
-const LOGO =
-  "https://www.kosmonde.ch/8de897e7-d5ab-43d6-968c-1e6dff5cc7de.png"; // image publique (URL absolue)
+const LOGO ="/8de897e7-d5ab-43d6-968c-1e6dff5cc7de.png"; // image publique (URL absolue)
 const SITE = "https://www.kosmonde.ch";
 
 /* ---------- simple rate-limit mémoire (1 min) ---------- */
