@@ -1,22 +1,26 @@
-export const runtime = "nodejs";
-
-import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import fs from "node:fs";
 import path from "node:path";
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
-/* ---------- logo (inline base64 ou URL) ---------- */
+export const runtime = "nodejs";
+
+/* ---------- logo inline ou fallback URL ---------- */
 const LOGO_DATA_URI = (() => {
   try {
-    const p = path.join(process.cwd(), "public", "email-logo.png");
-    const buf = fs.readFileSync(p);
-    return `data:image/png;base64,${buf.toString("base64")}`;
-  } catch {
+    const file = path.join(process.cwd(), "public", "email-logo.png");
+    const data = fs.readFileSync(file);
+    return `data:image/png;base64,${data.toString("base64")}`;
+  } catch (err) {
+    console.warn("⚠️ Logo introuvable, fallback sur l’URL publique.");
     return "";
   }
 })();
-const LOGO_URL = "https://www.kosmonde.ch/email-logo.png?v=1";
+
+// URL absolue (vers ton site)
+const LOGO_URL = "https://www.kosmonde.ch/email-logo.png";
 const LOGO = LOGO_DATA_URI || LOGO_URL;
+
 
 const SITE = "https://www.kosmonde.ch";
 
