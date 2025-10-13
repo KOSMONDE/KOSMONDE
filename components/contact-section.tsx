@@ -37,10 +37,15 @@ export default function ContactSection() {
     message: "",
     website: "", // honeypot
     offer: "custom" as OfferKey,
+    page: "", // URL d'origine
   })
 
-  // Préremplir via /?offer=...
+  // Préremplir l’URL et l’offre via /?offer=...
   useEffect(() => {
+    try {
+      setFormData((f) => ({ ...f, page: window.location.href }))
+    } catch {}
+
     const q = (searchParams.get("offer") || "").toLowerCase() as OfferKey
     if (q in OFFER_LABELS) {
       setFormData((f) => ({ ...f, offer: q }))
@@ -66,7 +71,7 @@ export default function ContactSection() {
       })
       if (res.ok) {
         toast.success("Message envoyé avec succès.")
-        setFormData({
+        setFormData((f) => ({
           name: "",
           email: "",
           phone: "",
@@ -74,7 +79,8 @@ export default function ContactSection() {
           message: "",
           website: "",
           offer: "custom",
-        })
+          page: f.page, // conserve l’URL
+        }))
       } else {
         const { error } = await res.json().catch(() => ({ error: "Erreur inconnue." }))
         toast.error(`Erreur : ${error}`)
