@@ -12,15 +12,18 @@ export default function PortfolioPage() {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="pt-20">
+      {/* Si ton Header est fixed/sticky, décommente la ligne suivante et ajuste la hauteur */}
+      {/* <div className="h-16" /> */}
+
+      <main>
         <section className="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-          {/* Cosmic background elements */}
+          {/* Éléments de fond */}
           <div className="absolute inset-0 opacity-20">
-            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
-            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse delay-1000"></div>
-            <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse delay-500"></div>
-            <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-blue-400 rounded-full animate-pulse delay-700"></div>
-            <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-violet-400 rounded-full animate-pulse delay-300"></div>
+            <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse delay-1000" />
+            <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-pink-400 rounded-full animate-pulse delay-500" />
+            <div className="absolute top-1/2 right-1/4 w-1 h-1 bg-blue-400 rounded-full animate-pulse delay-700" />
+            <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-violet-400 rounded-full animate-pulse delay-300" />
           </div>
 
           <div className="max-w-7xl mx-auto relative z-10">
@@ -59,17 +62,19 @@ export default function PortfolioPage() {
                       </Link>
                     </div>
                   </div>
+
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1 rounded-full">
                         {project.category}
                       </span>
                     </div>
+
                     <h3 className="text-xl font-semibold mb-2 text-white">{project.title}</h3>
                     <p className="text-gray-300 mb-4 text-sm">{project.description}</p>
+
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.map((tag, tagIndex) => (
-                        /* Updated tags with colorful cosmic theme */
                         <span
                           key={tagIndex}
                           className={`text-xs px-2 py-1 rounded-full text-white ${
@@ -84,6 +89,7 @@ export default function PortfolioPage() {
                         </span>
                       ))}
                     </div>
+
                     <Link href={`/portfolio/${project.id}`}>
                       <Button
                         variant="outline"
@@ -101,6 +107,7 @@ export default function PortfolioPage() {
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   )
