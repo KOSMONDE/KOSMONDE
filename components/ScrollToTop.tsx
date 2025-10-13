@@ -1,34 +1,41 @@
 "use client"
-import { useState, useEffect } from "react"
-import { Rocket } from "lucide-react"
 
-export default function ScrollToTop() {
-  const [isVisible, setIsVisible] = useState(false)
+import { useEffect, useState } from "react"
+import Image from "next/image"
+
+const WHATSAPP_NUMBER = "33775867250" // format international sans +
+const WHATSAPP_TEXT = encodeURIComponent("Bonjour KOSMONDE, j’ai un projet.")
+const ICON_PATH = "/WhatsApp.svg.webp" // placé dans /public
+
+export default function WhatsAppFab() {
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const toggleVisibility = () => {
-      setIsVisible(window.scrollY > 300)
-    }
-    window.addEventListener("scroll", toggleVisibility)
-    return () => window.removeEventListener("scroll", toggleVisibility)
+    const onScroll = () => setVisible(window.scrollY > 300)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+  if (!visible) return null
 
   return (
-    isVisible && (
-      <button
-        onClick={scrollToTop}
-        aria-label="Remonter en haut"
-        className="fixed bottom-20 right-6 z-50 p-3 rounded-full 
-                   bg-gradient-to-r from-cyan-400 to-purple-500 text-white 
-                   shadow-lg hover:from-cyan-500 hover:to-purple-600 
-                   transition-all animate-bounce"
-      >
-        <Rocket className="h-6 w-6" />
-      </button>
-    )
+    <a
+      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Contacter sur WhatsApp"
+      className="fixed right-5 z-50 rounded-full shadow-xl hover:shadow-2xl transition"
+      style={{ bottom: "calc(env(safe-area-inset-bottom) + 5rem)" }} // au-dessus du bandeau bas
+    >
+      <Image
+        src={ICON_PATH}
+        alt="WhatsApp Business"
+        width={64}
+        height={64}
+        priority
+        draggable={false}
+        className="block rounded-full"
+      />
+    </a>
   )
 }
