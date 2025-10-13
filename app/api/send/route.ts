@@ -12,7 +12,7 @@ const hits = new Map<string, { n: number; t: number }>();
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 const clip = (s: unknown, max = 2000) => String(s ?? "").slice(0, max);
 
-/* ------------ Libellés offres (identiques au site) ------------ */
+/* ------------ Libellés offres ------------ */
 const OFFER_LABELS = {
   vitrine: "Site Vitrine – 199,99 CHF",
   ecommerce: "E-commerce WordPress – 299,99 CHF",
@@ -48,7 +48,7 @@ export async function POST(req: Request) {
 
     // payload
     const body = await req.json().catch(() => ({} as any));
-    const { name, email, phone, subject, message, website, offer, page } = body || {};
+    const { name, email, phone, subject, message, website, offer } = body || {};
 
     // honeypot
     if (website && String(website).trim() !== "") {
@@ -65,10 +65,10 @@ export async function POST(req: Request) {
 
     // ENV
     const KEY = process.env.RESEND_API_KEY;
-    const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM; // 'Kosmonde <contact@kosmonde.ch>'
-    const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO; // 'contact@kosmonde.ch'
+    const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM;
+    const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO;
     if (!KEY || !FROM || !TO) {
-      console.error("Config email manquante", { hasKey: !!KEY, hasFrom: !!FROM, hasTo: !!TO });
+      console.error("Config email manquante");
       return NextResponse.json({ success: false, error: "Config manquante." }, { status: 500 });
     }
 
@@ -81,39 +81,34 @@ export async function POST(req: Request) {
       subject: clip(subject, 200),
       message: clip(message, 4000),
       offer: (String(offer ?? "custom").toLowerCase() as OfferKey),
-      page: clip(page ?? "", 2000),
     };
     const offerLabel = OFFER_LABELS[safe.offer] ?? OFFER_LABELS.custom;
 
-    /* ------------ Palette (gris clair) ------------ */
-    const BG = "#f5f7fb";
+    /* ------------ Style ------------ */
+    const BG = "#f7f8fa";
     const CARD = "#ffffff";
-    const BORDER = "#eef2f7";
-    const TEXT = "#111827";
+    const BORDER = "#e5e7eb";
+    const TEXT = "#1f2937";
     const MUTED = "#6b7280";
     const LINK = "#0ea5e9";
-    const STRIP = "#e5e7eb"; // header clair
 
-    /* ------------ HTML admin (monocolonne centrée, sans gras) ------------ */
+    /* ------------ HTML admin ------------ */
     const htmlAdmin = `
 <!doctype html>
 <html>
   <head>
     <meta name="color-scheme" content="light">
-    <meta name="supported-color-schemes" content="light">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta charset="utf-8">
   </head>
-  <body bgcolor="${BG}" style="margin:0;padding:0;background:${BG};">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" style="background:${BG};padding:24px 12px;">
+  <body style="margin:0;padding:0;background:${BG};">
+    <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" style="padding:24px 12px;">
       <tr>
         <td align="center">
-          <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="width:640px;max-width:100%;background:${CARD};border-radius:16px;border:1px solid ${BORDER};box-shadow:0 4px 20px rgba(18,24,40,.06);overflow:hidden;text-align:center;">
+          <table width="600" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:600px;border-radius:16px;border:1px solid ${BORDER};box-shadow:0 2px 12px rgba(0,0,0,0.04);text-align:center;">
             <tr>
-              <td style="padding:22px;background:${STRIP};">
-                <img src="${LOGO}" alt="Kosmonde" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px auto;">
-                <div style="color:${TEXT};font:400 16px/1.2 ui-sans-serif;margin-bottom:10px;">Kosmonde • Nouveau message</div>
-                <span style="display:inline-block;padding:8px 14px;border-radius:999px;background:#16a34a;color:#fff;font:400 12px/1 ui-sans-serif;">Nouveau message</span>
+              <td style="padding:22px;background:#f3f4f6;">
+                <img src="${LOGO}" alt="Kosmonde" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px;">
+                <div style="color:${TEXT};font:400 15px/1.4 'Helvetica Neue',Arial,sans-serif;">Kosmonde • Nouveau message</div>
               </td>
             </tr>
 
@@ -126,10 +121,13 @@ export async function POST(req: Request) {
 
             <tr>
               <td style="padding:16px;background:${CARD};border-top:1px solid ${BORDER};">
-                <div style="color:${MUTED};font:400 12px/1.6 ui-sans-serif;">
-                  IP : ${escapeHtml(ip)} • <a href="https://www.kosmonde.ch" style="color:${LINK};text-decoration:none;">www.kosmonde.ch</a>
+                <div style="color:${MUTED};font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;">
+                  IP : ${escapeHtml(ip)} • 
+                  <a href="https://www.kosmonde.ch" style="color:${LINK};text-decoration:none;">www.kosmonde.ch</a>
                 </div>
-                <div style="color:#9ca3af;font:400 12px/1.6 ui-sans-serif;margin-top:6px;">© ${new Date().getFullYear()} Kosmonde — Tous droits réservés.</div>
+                <div style="color:#9ca3af;font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;margin-top:6px;">
+                  © ${new Date().getFullYear()} Kosmonde — Tous droits réservés.
+                </div>
               </td>
             </tr>
           </table>
@@ -139,7 +137,7 @@ export async function POST(req: Request) {
   </body>
 </html>`.trim();
 
-    // envoi admin
+    // Envoi admin
     const send1 = await resend.emails.send({
       from: FROM,
       to: TO,
@@ -149,13 +147,13 @@ export async function POST(req: Request) {
     });
     if (send1.error) throw send1.error;
 
-    // accusé client (sobre, sans gras)
+    // Réponse client
     const ackHtml = `
       <div style="background:${BG};padding:24px 12px;">
-        <div style="max-width:640px;margin:0 auto;background:${CARD};border:1px solid ${BORDER};border-radius:12px;padding:24px;text-align:center;">
-          <p style="margin:0 0 8px 0;color:${TEXT};font:400 16px/1.4 ui-sans-serif;">Bonjour ${escapeHtml(safe.name)},</p>
-          <p style="margin:0;color:${MUTED};font:400 14px/1.7 ui-sans-serif;">Nous avons bien reçu votre message. Nous revenons vers vous rapidement.</p>
-          <p style="margin:16px 0 0 0;color:${MUTED};font:400 14px/1.7 ui-sans-serif;">Kosmonde</p>
+        <div style="max-width:600px;margin:0 auto;background:${CARD};border:1px solid ${BORDER};border-radius:12px;padding:24px;text-align:center;">
+          <p style="margin:0 0 8px 0;color:${TEXT};font:400 15px/1.4 'Helvetica Neue',Arial,sans-serif;">Bonjour ${escapeHtml(safe.name)},</p>
+          <p style="margin:0;color:${MUTED};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;">Nous avons bien reçu votre message. Nous reviendrons vers vous rapidement.</p>
+          <p style="margin:16px 0 0 0;color:${MUTED};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;">Kosmonde</p>
         </div>
       </div>
     `.trim();
@@ -175,23 +173,19 @@ export async function POST(req: Request) {
   }
 }
 
-/* ------------ Helpers HTML (centrés, sans gras) ------------ */
+/* ------------ Helpers ------------ */
 function block(label: string, value: string) {
   return `
     <tr>
-      <td style="padding:16px;background:#ffffff;border-bottom:1px solid #eef2f7;text-align:center;">
-        <div style="color:#94a3b8;font:400 11px/1 ui-sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">${escapeHtml(label)}</div>
-        <div style="color:#111827;font:400 16px/1.55 ui-sans-serif;">${value}</div>
+      <td style="padding:16px;background:#ffffff;border-bottom:1px solid #e5e7eb;text-align:center;">
+        <div style="color:#9ca3af;font:400 11px/1 'Helvetica Neue',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(label)}</div>
+        <div style="color:#1f2937;font:400 15px/1.55 'Helvetica Neue',Arial,sans-serif;">${value}</div>
       </td>
     </tr>`;
 }
 function linkMail(addr: string, color: string) {
   const a = escapeHtml(addr);
   return `<a href="mailto:${a}" style="color:${color};text-decoration:none;">${a}</a>`;
-}
-function linkUrl(url: string, color: string) {
-  const u = escapeHtml(url);
-  return `<a href="${u}" style="color:${color};text-decoration:none;">${u}</a>`;
 }
 function nl2br(s: string) {
   return s.replace(/\n/g, "<br/>");
