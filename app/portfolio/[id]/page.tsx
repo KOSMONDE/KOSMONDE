@@ -37,7 +37,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   const project = getProjectById(params.id)
   if (!project) notFound()
 
-  // statut avec fallback si absent dans les données
   const st = (project as any).status ?? "termine"
   const { label: statusLabel, text: statusText, bg: statusBg, Icon: StatusIcon } =
     STATUS_UI[st as keyof typeof STATUS_UI]
@@ -45,7 +44,10 @@ export default function ProjectPage({ params }: ProjectPageProps) {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="pt-20">
+      {/* Si Header est fixed/sticky et ~64px de haut, décommente : */}
+      {/* <div className="h-16" /> */}
+
+      <main>
         <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-20">
           <div className="absolute inset-0 opacity-30">
             <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
@@ -110,7 +112,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                     </h3>
 
                     <div className="space-y-6">
-                      {/* Client */}
                       <div className="flex items-start gap-4">
                         <div className="p-2 bg-purple-100 rounded-lg">
                           <User className="h-5 w-5 text-purple-600" />
@@ -121,7 +122,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                         </div>
                       </div>
 
-                      {/* Durée */}
                       <div className="flex items-start gap-4">
                         <div className="p-2 bg-blue-100 rounded-lg">
                           <Clock className="h-5 w-5 text-blue-600" />
@@ -132,7 +132,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                         </div>
                       </div>
 
-                      {/* Statut dynamique */}
                       <div className="flex items-start gap-4">
                         <div className={`p-2 rounded-lg ${statusBg}`}>
                           <StatusIcon className={`h-5 w-5 ${statusText}`} />
@@ -143,7 +142,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                         </div>
                       </div>
 
-                      {/* Technologies */}
                       <div>
                         <p className="font-semibold mb-3 text-gray-900">Technologies</p>
                         <div className="flex flex-wrap gap-2">
@@ -166,7 +164,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                         </div>
                       </div>
 
-                      {/* Tags */}
                       <div>
                         <p className="font-semibold mb-3 text-gray-900">Tags</p>
                         <div className="flex flex-wrap gap-2">
@@ -209,7 +206,6 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                 </Card>
               </div>
 
-              {/* Colonne droite */}
               <div className="lg:col-span-2">
                 <div className="mb-12">
                   <h3 className="text-3xl font-bold mb-8 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -314,6 +310,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   )
