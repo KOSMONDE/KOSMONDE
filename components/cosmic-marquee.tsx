@@ -9,9 +9,10 @@ interface CosmicMarqueeProps {
 }
 
 const defaultMessages = [
-  "🚀 -20% sur votre premier site vitrine",
-  "🌍 Hébergement offert la 1ère année",
-  "✨ Maintenance gratuite pendant 3 mois",
+  "🏆 100 % de nos clients recommandent KOSMONDE",
+  "🧠 Conception sur mesure, pensée pour votre marque ",
+  "🚀 Mettez votre site en ligne en moins de 7 jours",
+  "🔒 Sécurité et performance garanties"
 ]
 
 export default function CosmicMarquee({
