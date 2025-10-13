@@ -15,23 +15,20 @@ export default function AboutSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const obs = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const cards = entry.target.querySelectorAll(".about-card")
-            cards.forEach((card, index) => {
-              setTimeout(() => {
-                card.classList.add("fade-in-up")
-              }, index * 100)
-            })
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.querySelectorAll(".about-card").forEach((el, i) =>
+              setTimeout(() => el.classList.add("fade-in-up"), i * 100)
+            )
           }
         })
       },
-      { threshold: 0.1 },
+      { threshold: 0.1 }
     )
-    if (sectionRef.current) observer.observe(sectionRef.current)
-    return () => observer.disconnect()
+    if (sectionRef.current) obs.observe(sectionRef.current)
+    return () => obs.disconnect()
   }, [])
 
   return (
@@ -40,7 +37,7 @@ export default function AboutSection() {
       id="apropos"
       className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
     >
-      {/* petites étoiles comme ailleurs */}
+      {/* étoiles */}
       <div className="pointer-events-none absolute inset-0 opacity-20">
         <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
         <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse delay-1000" />
@@ -50,32 +47,31 @@ export default function AboutSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Colonne texte */}
+          {/* Texte */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-6">
               À propos de KOSMONDE
             </h2>
             <div className="space-y-4 text-slate-200">
               <p className="text-lg">
-                Depuis 2020, KOSMONDE accompagne les entreprises françaises dans leur transformation digitale. Notre
-                équipe passionnée combine créativité et expertise technique pour créer des solutions web qui dépassent vos attentes.
+                Depuis 2020, KOSMONDE accompagne les entreprises françaises dans leur transformation digitale.
+                Notre équipe allie créativité et expertise technique pour créer des solutions web efficaces.
               </p>
               <p>
-                Nous croyons que chaque projet est unique et mérite une approche personnalisée. C’est pourquoi nous
-                prenons le temps de comprendre vos objectifs, votre secteur d’activité et vos utilisateurs pour créer des expériences digitales qui génèrent de vrais résultats.
+                Chaque projet est unique. Nous analysons vos objectifs, votre secteur et vos utilisateurs pour
+                concevoir des expériences qui génèrent des résultats.
               </p>
               <p>
-                Notre philosophie : allier excellence technique, design moderne et accompagnement humain pour faire de
-                votre projet web un véritable succès.
+                Notre philosophie : excellence technique, design moderne, accompagnement humain.
               </p>
             </div>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 gap-6">
-            {stats.map((stat, index) => (
+            {stats.map((stat, i) => (
               <Card
-                key={index}
+                key={i}
                 className="about-card opacity-0 text-center p-6 bg-white/10 border-white/20 backdrop-blur-md rounded-xl hover:bg-white/15 transition-all duration-300"
               >
                 <CardContent className="p-0">
@@ -90,7 +86,7 @@ export default function AboutSection() {
           </div>
         </div>
 
-        {/* Processus */}
+        {/* Notre Processus */}
         <div className="mt-16 rounded-lg p-8 border border-white/20 bg-white/10 backdrop-blur-md">
           <h3 className="text-2xl font-semibold text-center mb-8 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
             Notre Processus
@@ -101,14 +97,14 @@ export default function AboutSection() {
                 1
               </div>
               <h4 className="font-medium mb-2 text-white">Analyse</h4>
-              <p className="text-sm text-slate-200">Étude de vos besoins et définition des objectifs</p>
+              <p className="text-sm text-slate-200">Étude des besoins et définition des objectifs</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
                 2
               </div>
               <h4 className="font-medium mb-2 text-white">Conception</h4>
-              <p className="text-sm text-slate-200">Design et architecture technique de votre solution</p>
+              <p className="text-sm text-slate-200">Design et architecture de la solution</p>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-cyan-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
