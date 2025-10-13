@@ -94,7 +94,7 @@ export async function POST(req: Request) {
     const HEADER = "linear-gradient(90deg,#6b46c1,#111827)";
     const BADGE = "#16a34a";
 
-    /* ------------ HTML admin (inchangé, centré) ------------ */
+    /* ------------ HTML admin (identique) ------------ */
     const htmlAdmin = `
 <!doctype html>
 <html>
@@ -132,18 +132,14 @@ export async function POST(req: Request) {
   </body>
 </html>`.trim();
 
-    // Envoi admin
     const send1 = await resend.emails.send({
-      from: FROM,
-      to: TO,
-      replyTo: String(safe.email),
-      subject: `Nouveau message — ${offerLabel}`,
-      html: htmlAdmin,
+      from: FROM, to: TO, replyTo: String(safe.email),
+      subject: `Nouveau message — ${offerLabel}`, html: htmlAdmin,
     });
     if (send1.error) throw send1.error;
 
-    /* ------------ Accusé client (texte + récap aligné) ------------ */
-    const msgPreview = escapeHtml(safe.message).slice(0, 240);
+    /* ------------ Accusé client parfaitement symétrique ------------ */
+    const msgPreview = escapeHtml(safe.message).slice(0, 500);
     const ackHtml = `
 <!doctype html>
 <html>
@@ -151,7 +147,7 @@ export async function POST(req: Request) {
   <body style="margin:0;padding:0;background:${BG};">
     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" style="padding:24px 12px;">
       <tr><td align="center">
-        <table width="600" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:600px;border-radius:16px;border:1px solid ${BORDER};box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center;overflow:hidden;">
+        <table width="640" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:640px;border-radius:18px;border:1px solid ${BORDER};box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center;overflow:hidden;">
           <!-- Header -->
           <tr>
             <td style="padding:26px;background:${HEADER};">
@@ -163,45 +159,48 @@ export async function POST(req: Request) {
 
           <!-- Message principal -->
           <tr>
-            <td style="padding:22px 24px 6px 24px;">
-              <p style="margin:0 0 8px 0;color:${TEXT};font:400 15px/1.6 'Helvetica Neue',Arial,sans-serif;">Bonjour ${escapeHtml(safe.name)},</p>
-              <p style="margin:0;color:${MUTED};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;">
+            <td style="padding:22px 32px 4px 32px;">
+              <p style="margin:0 0 8px 0;color:${TEXT};font:400 16px/1.6 'Helvetica Neue',Arial,sans-serif;text-decoration:none;">Bonjour ${escapeHtml(safe.name)},</p>
+              <p style="margin:0;color:${MUTED};font:400 14px/1.8 'Helvetica Neue',Arial,sans-serif;text-decoration:none;">
                 Merci d’avoir choisi Kosmonde pour votre projet. Votre demande est confirmée.
                 Nous préparons un retour précis avec délais et budget indicatifs et vous contactons très vite.
               </p>
             </td>
           </tr>
 
-          <!-- Récapitulatif aligné -->
+          <!-- Récapitulatif : labels/valeurs parfaitement alignés -->
           <tr>
-            <td style="padding:14px 24px 0 24px;">
+            <td style="padding:16px 32px 4px 32px;">
               <div style="color:${LINK};font:400 14px/1.6 'Helvetica Neue',Arial,sans-serif;margin:0 0 10px 0;">Récapitulatif</div>
-              <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto;border-collapse:separate;border-spacing:0 6px;max-width:520px;">
+              <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto;border-collapse:separate;border-spacing:0 8px;width:520px;max-width:100%;">
                 <tr>
-                  <td style="padding:8px 12px;color:${MUTED};font:400 13px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:right;white-space:nowrap;width:160px;">Sujet</td>
-                  <td style="padding:8px 12px;color:${TEXT};font:400 14px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:left;">${escapeHtml(safe.subject)}</td>
+                  <td style="width:160px;padding:10px 12px;color:${MUTED};font:400 13px/1.5 'Helvetica Neue',Arial,sans-serif;text-align:right;white-space:nowrap;">Sujet</td>
+                  <td style="padding:10px 12px;color:${TEXT};font:400 14px/1.5 'Helvetica Neue',Arial,sans-serif;text-align:left;word-break:break-word;">${escapeHtml(safe.subject)}</td>
                 </tr>
                 <tr>
-                  <td style="padding:8px 12px;color:${MUTED};font:400 13px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:right;white-space:nowrap;">Formule</td>
-                  <td style="padding:8px 12px;color:${TEXT};font:400 14px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:left;">${escapeHtml(offerLabel)}</td>
+                  <td style="width:160px;padding:10px 12px;color:${MUTED};font:400 13px/1.5 'Helvetica Neue',Arial,sans-serif;text-align:right;white-space:nowrap;">Formule</td>
+                  <td style="padding:10px 12px;color:${TEXT};font:400 14px/1.5 'Helvetica Neue',Arial,sans-serif;text-align:left;word-break:break-word;">${escapeHtml(offerLabel)}</td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- Extrait message -->
-          ${msgPreview
-            ? `<tr>
-                 <td style="padding:12px 24px 0 24px;">
-                   <div style="color:${MUTED};font:400 12px/1.7 'Helvetica Neue',Arial,sans-serif;">Votre message</div>
-                   <div style="margin-top:4px;color:${TEXT};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;">${msgPreview}${safe.message.length > 240 ? "…" : ""}</div>
-                 </td>
-               </tr>` : ""}
+          <!-- Message client : bloc centré, largeur fixe, retour à la ligne -->
+          ${
+            msgPreview
+              ? `<tr>
+                   <td style="padding:14px 32px 0 32px;">
+                     <div style="color:${MUTED};font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;">Votre message</div>
+                     <div style="margin:6px auto 0 auto;max-width:520px;color:${TEXT};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;text-align:center;white-space:pre-wrap;word-break:break-word;">${msgPreview}${safe.message.length > 500 ? "…" : ""}</div>
+                   </td>
+                 </tr>`
+              : ""
+          }
 
           <!-- CTA -->
           <tr>
-            <td style="padding:22px 24px 26px 24px;">
-              <a href="https://www.kosmonde.ch" style="display:inline-block;padding:10px 16px;border-radius:10px;background:#0ea5e9;color:#fff;text-decoration:none;font:400 14px/1 'Helvetica Neue',Arial,sans-serif;">Visiter kosmonde.ch</a>
+            <td style="padding:22px 24px 28px 24px;">
+              <a href="https://www.kosmonde.ch" style="display:inline-block;padding:12px 18px;border-radius:12px;background:#0ea5e9;color:#fff;text-decoration:none;font:400 14px/1 'Helvetica Neue',Arial,sans-serif;">Visiter kosmonde.ch</a>
             </td>
           </tr>
 
