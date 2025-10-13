@@ -11,7 +11,7 @@ const hits = new Map<string, { n: number; t: number }>();
 /* ===== Brand ===== */
 const BRAND = "Kosmonde";
 const SITE = "https://www.kosmonde.ch";
-const LOGO = "/.8de897e7-d5ab-43d6-968c-1e6dff5cc7de.png"; // remplace si besoin
+const LOGO = "/8de897e7-d5ab-43d6-968c-1e6dff5cc7de.png"; // remplace si besoin
 
 /* ===== Utils ===== */
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
