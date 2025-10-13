@@ -12,7 +12,7 @@ const hits = new Map<string, { n: number; t: number }>();
 const isEmail = (s: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
 const clip = (s: unknown, max = 2000) => String(s ?? "").slice(0, max);
 
-/* ------------ Libellés offres ------------ */
+/* ------------ Offres ------------ */
 const OFFER_LABELS = {
   vitrine: "Site Vitrine – 199,99 CHF",
   ecommerce: "E-commerce WordPress – 299,99 CHF",
@@ -64,11 +64,11 @@ export async function POST(req: Request) {
     }
 
     // ENV
-    const KEY = process.env.RESEND_API_KEY;
+    const KEY  = process.env.RESEND_API_KEY;
     const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM;
-    const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO;
+    const TO   = process.env.EMAIL_TO   ?? process.env.MAIL_TO;
     if (!KEY || !FROM || !TO) {
-      console.error("Config email manquante");
+      console.error("Config email manquante", { hasKey: !!KEY, hasFrom: !!FROM, hasTo: !!TO });
       return NextResponse.json({ success: false, error: "Config manquante." }, { status: 500 });
     }
 
@@ -88,13 +88,13 @@ export async function POST(req: Request) {
     const BG = "#f7f8fa";
     const CARD = "#ffffff";
     const BORDER = "#e5e7eb";
-    const TEXT = "#1f2937";
+    const TEXT = "#111827";
     const MUTED = "#6b7280";
     const LINK = "#0ea5e9";
     const HEADER = "linear-gradient(90deg,#6b46c1,#111827)";
     const BADGE = "#16a34a";
 
-    /* ------------ HTML admin ------------ */
+    /* ------------ HTML admin (inchangé, centré) ------------ */
     const htmlAdmin = `
 <!doctype html>
 <html>
@@ -123,9 +123,7 @@ export async function POST(req: Request) {
               <div style="color:${MUTED};font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;">
                 IP : ${escapeHtml(ip)} • <a href="https://www.kosmonde.ch" style="color:${LINK};text-decoration:none;">www.kosmonde.ch</a>
               </div>
-              <div style="color:#9ca3af;font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;margin-top:6px;">
-                © ${new Date().getFullYear()} Kosmonde — Tous droits réservés.
-              </div>
+              <div style="color:#9ca3af;font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;margin-top:6px;">© ${new Date().getFullYear()} Kosmonde — Tous droits réservés.</div>
             </td>
           </tr>
         </table>
@@ -144,64 +142,73 @@ export async function POST(req: Request) {
     });
     if (send1.error) throw send1.error;
 
-    /* ------------ Accusé client (texte #3 centré) ------------ */
+    /* ------------ Accusé client (texte + récap aligné) ------------ */
     const msgPreview = escapeHtml(safe.message).slice(0, 240);
     const ackHtml = `
 <!doctype html>
 <html>
-  <head><meta name="color-scheme" content="light"><meta charset="utf-8"><title>KOSMONDE — Accusé de réception</title></head>
+  <head><meta name="color-scheme" content="light"><meta charset="utf-8"><title>Kosmonde — Accusé de réception</title></head>
   <body style="margin:0;padding:0;background:${BG};">
     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" style="padding:24px 12px;">
       <tr><td align="center">
         <table width="600" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:600px;border-radius:16px;border:1px solid ${BORDER};box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center;overflow:hidden;">
+          <!-- Header -->
           <tr>
             <td style="padding:26px;background:${HEADER};">
-              <img src="${LOGO}" alt="KOSMONDE" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px;">
-              <div style="color:#fff;font:400 15px/1.3 'Helvetica Neue',Arial,sans-serif;margin-bottom:8px;">KOSMONDE</div>
+              <img src="${LOGO}" alt="Kosmonde" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px;">
+              <div style="color:#fff;font:400 15px/1.3 'Helvetica Neue',Arial,sans-serif;margin-bottom:8px;">Kosmonde</div>
               <span style="display:inline-block;padding:7px 14px;border-radius:999px;background:${BADGE};color:#fff;font:400 12px/1 'Helvetica Neue',Arial,sans-serif;">Accusé de réception</span>
             </td>
           </tr>
 
+          <!-- Message principal -->
           <tr>
-            <td style="padding:22px 24px 8px 24px;">
+            <td style="padding:22px 24px 6px 24px;">
               <p style="margin:0 0 8px 0;color:${TEXT};font:400 15px/1.6 'Helvetica Neue',Arial,sans-serif;">Bonjour ${escapeHtml(safe.name)},</p>
               <p style="margin:0;color:${MUTED};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;">
-                Merci d’avoir choisi <b style="font-weight:400;">KOSMONDE</b> pour votre projet. Votre demande est confirmée. 
-                Nous préparons un retour structuré avec prochaines étapes, délais et budget indicatif.
+                Merci d’avoir choisi Kosmonde pour votre projet. Votre demande est confirmée.
+                Nous préparons un retour précis avec délais et budget indicatifs et vous contactons très vite.
               </p>
             </td>
           </tr>
 
+          <!-- Récapitulatif aligné -->
           <tr>
             <td style="padding:14px 24px 0 24px;">
               <div style="color:${LINK};font:400 14px/1.6 'Helvetica Neue',Arial,sans-serif;margin:0 0 10px 0;">Récapitulatif</div>
-              <ul style="margin:0 auto;padding:0;list-style-position:inside;text-align:center;color:${TEXT};font:400 14px/1.8 'Helvetica Neue',Arial,sans-serif;">
-                <li>Sujet : ${escapeHtml(safe.subject)}</li>
-                <li>Formule : ${escapeHtml(offerLabel)}</li>
-              </ul>
+              <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin:0 auto;border-collapse:separate;border-spacing:0 6px;max-width:520px;">
+                <tr>
+                  <td style="padding:8px 12px;color:${MUTED};font:400 13px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:right;white-space:nowrap;width:160px;">Sujet</td>
+                  <td style="padding:8px 12px;color:${TEXT};font:400 14px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:left;">${escapeHtml(safe.subject)}</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 12px;color:${MUTED};font:400 13px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:right;white-space:nowrap;">Formule</td>
+                  <td style="padding:8px 12px;color:${TEXT};font:400 14px/1.6 'Helvetica Neue',Arial,sans-serif;text-align:left;">${escapeHtml(offerLabel)}</td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          ${
-            msgPreview
-              ? `<tr>
-                   <td style="padding:12px 24px 0 24px;">
-                     <div style="color:${MUTED};font:400 12px/1.7 'Helvetica Neue',Arial,sans-serif;">Votre message</div>
-                     <div style="margin-top:4px;color:${TEXT};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;">${msgPreview}${safe.message.length > 240 ? "…" : ""}</div>
-                   </td>
-                 </tr>`
-              : ""
-          }
+          <!-- Extrait message -->
+          ${msgPreview
+            ? `<tr>
+                 <td style="padding:12px 24px 0 24px;">
+                   <div style="color:${MUTED};font:400 12px/1.7 'Helvetica Neue',Arial,sans-serif;">Votre message</div>
+                   <div style="margin-top:4px;color:${TEXT};font:400 14px/1.7 'Helvetica Neue',Arial,sans-serif;">${msgPreview}${safe.message.length > 240 ? "…" : ""}</div>
+                 </td>
+               </tr>` : ""}
 
+          <!-- CTA -->
           <tr>
             <td style="padding:22px 24px 26px 24px;">
               <a href="https://www.kosmonde.ch" style="display:inline-block;padding:10px 16px;border-radius:10px;background:#0ea5e9;color:#fff;text-decoration:none;font:400 14px/1 'Helvetica Neue',Arial,sans-serif;">Visiter kosmonde.ch</a>
             </td>
           </tr>
 
+          <!-- Footer -->
           <tr>
             <td style="padding:14px 16px;border-top:1px solid ${BORDER};">
-              <div style="color:#9ca3af;font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;">© ${new Date().getFullYear()} KOSMONDE • www.kosmonde.ch</div>
+              <div style="color:#9ca3af;font:400 12px/1.6 'Helvetica Neue',Arial,sans-serif;">© ${new Date().getFullYear()} Kosmonde • www.kosmonde.ch</div>
             </td>
           </tr>
         </table>
@@ -213,7 +220,7 @@ export async function POST(req: Request) {
     const send2 = await resend.emails.send({
       from: FROM,
       to: String(safe.email),
-      subject: "KOSMONDE — Accusé de réception",
+      subject: "Kosmonde — Accusé de réception",
       html: ackHtml,
     });
     if (send2.error) throw send2.error;
@@ -231,7 +238,7 @@ function block(label: string, value: string) {
     <tr>
       <td style="padding:16px;background:#ffffff;border-bottom:1px solid #e5e7eb;text-align:center;">
         <div style="color:#9ca3af;font:400 11px/1 'Helvetica Neue',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">${escapeHtml(label)}</div>
-        <div style="color:#1f2937;font:400 15px/1.55 'Helvetica Neue',Arial,sans-serif;">${value}</div>
+        <div style="color:#111827;font:400 15px/1.55 'Helvetica Neue',Arial,sans-serif;">${value}</div>
       </td>
     </tr>`;
 }
