@@ -2,9 +2,22 @@ export const runtime = "nodejs";
 
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import fs from "node:fs";
+import path from "node:path";
 
-/* ---------- constants ---------- */
-const LOGO ="/8de897e7-d5ab-43d6-968c-1e6dff5cc7de.png"; // image publique (URL absolue)
+/* ---------- logo (inline base64 ou URL) ---------- */
+const LOGO_DATA_URI = (() => {
+  try {
+    const p = path.join(process.cwd(), "public", "email-logo.png");
+    const buf = fs.readFileSync(p);
+    return `data:image/png;base64,${buf.toString("base64")}`;
+  } catch {
+    return "";
+  }
+})();
+const LOGO_URL = "https://www.kosmonde.ch/email-logo.png?v=1";
+const LOGO = LOGO_DATA_URI || LOGO_URL;
+
 const SITE = "https://www.kosmonde.ch";
 
 /* ---------- simple rate-limit mémoire (1 min) ---------- */
@@ -24,7 +37,7 @@ export async function POST(req: Request) {
     /* ip via proxy */
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      // @ts-ignore (Edge n'expose pas req.ip)
+      // @ts-ignore
       (req as any).ip ??
       "unknown";
 
@@ -59,8 +72,9 @@ export async function POST(req: Request) {
 
     /* env (EMAIL_* ou MAIL_* acceptés) */
     const KEY = process.env.RESEND_API_KEY;
-    const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM; // ex: 'Kosmonde <contact@kosmonde.ch>'
-    const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO;       // ex: 'contact@kosmonde.ch'
+    const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM;
+    const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO;
+
     if (!KEY || !FROM || !TO) {
       console.error("Config email manquante", { hasKey: !!KEY, hasFrom: !!FROM, hasTo: !!TO });
       return NextResponse.json({ success: false, error: "Config manquante." }, { status: 500 });
@@ -106,9 +120,7 @@ export async function POST(req: Request) {
           </tr>
           <tr>
             <td style="color:#93c5fd">Email</td>
-            <td><a href="mailto:${esc(safe.email)}" style="color:#60a5fa;text-decoration:none">${esc(
-      safe.email
-    )}</a></td>
+            <td><a href="mailto:${esc(safe.email)}" style="color:#60a5fa;text-decoration:none">${esc(safe.email)}</a></td>
           </tr>
           <tr>
             <td style="color:#93c5fd">Téléphone</td>
