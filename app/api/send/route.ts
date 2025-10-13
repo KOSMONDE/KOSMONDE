@@ -91,6 +91,8 @@ export async function POST(req: Request) {
     const TEXT = "#1f2937";
     const MUTED = "#6b7280";
     const LINK = "#0ea5e9";
+    const HEADER = "linear-gradient(90deg,#6b46c1,#8b5cf6)"; // violet dégradé
+    const BADGE = "#16a34a";
 
     /* ------------ HTML admin ------------ */
     const htmlAdmin = `
@@ -105,10 +107,13 @@ export async function POST(req: Request) {
       <tr>
         <td align="center">
           <table width="600" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:600px;border-radius:16px;border:1px solid ${BORDER};box-shadow:0 2px 12px rgba(0,0,0,0.04);text-align:center;">
+            
+            <!-- HEADER -->
             <tr>
-              <td style="padding:22px;background:#f3f4f6;">
-                <img src="${LOGO}" alt="Kosmonde" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px;">
-                <div style="color:${TEXT};font:400 15px/1.4 'Helvetica Neue',Arial,sans-serif;">Kosmonde • Nouveau message</div>
+              <td style="padding:28px;background:${HEADER};border-radius:16px 16px 0 0;">
+                <img src="${LOGO}" alt="Kosmonde" width="48" height="48" style="border-radius:10px;display:block;margin:0 auto 10px;">
+                <div style="color:#fff;font:400 15px/1.4 'Helvetica Neue',Arial,sans-serif;margin-bottom:8px;">Kosmonde</div>
+                <span style="display:inline-block;padding:7px 14px;border-radius:999px;background:${BADGE};color:#fff;font:400 12px/1 'Helvetica Neue',Arial,sans-serif;">Nouveau message</span>
               </td>
             </tr>
 
@@ -130,6 +135,7 @@ export async function POST(req: Request) {
                 </div>
               </td>
             </tr>
+
           </table>
         </td>
       </tr>
