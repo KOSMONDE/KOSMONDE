@@ -91,7 +91,7 @@ export async function POST(req: Request) {
     const TEXT = "#1f2937";
     const MUTED = "#6b7280";
     const LINK = "#0ea5e9";
-    const HEADER = "linear-gradient(90deg,#6b46c1,#8b5cf6)"; // violet dégradé
+    const HEADER = "linear-gradient(90deg,#6b46c1,#111827)"; // violet profond
     const BADGE = "#16a34a";
 
     /* ------------ HTML admin ------------ */
@@ -106,7 +106,7 @@ export async function POST(req: Request) {
     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" style="padding:24px 12px;">
       <tr>
         <td align="center">
-          <table width="600" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:600px;border-radius:16px;border:1px solid ${BORDER};box-shadow:0 2px 12px rgba(0,0,0,0.04);text-align:center;">
+          <table width="600" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="max-width:600px;border-radius:16px;border:1px solid ${BORDER};box-shadow:0 2px 12px rgba(0,0,0,0.04);text-align:center;overflow:hidden;">
             
             <!-- HEADER -->
             <tr>
