@@ -6,7 +6,7 @@ import { Menu, X, Rocket, MessageCircle } from "lucide-react"
 import Link from "next/link"
 import CosmicMarquee from "@/components/cosmic-marquee"
 
-const WHATSAPP_NUMBER = "33775867250" // ex: +41 22 000 00 00 -> 41220000000
+const WHATSAPP_NUMBER = "33775867250" // format international sans +
 const WHATSAPP_TEXT = encodeURIComponent("Bonjour KOSMONDE, j’ai un projet.")
 
 export function Header() {
@@ -15,13 +15,22 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  // lock scroll when mobile menu is open
+  useEffect(() => {
+    const html = document.documentElement
+    if (isMenuOpen) {
+      const prev = html.style.overflow
+      html.style.overflow = "hidden"
+      return () => { html.style.overflow = prev }
+    }
+  }, [isMenuOpen])
+
   return (
     <>
-      {/* ✅ Header sticky seul */}
       <div className="sticky top-0 z-50">
         <header
           className={`transition-all duration-300 ${
@@ -42,23 +51,15 @@ export function Header() {
                 </span>
               </Link>
 
-              {/* Navigation Desktop */}
+              {/* Desktop nav */}
               <nav className="hidden md:flex space-x-8">
-                <Link href="/#services" className="text-gray-200 hover:text-cyan-400 transition-colors">
-                  Services
-                </Link>
-                <Link href="/#portfolio" className="text-gray-200 hover:text-cyan-400 transition-colors">
-                  Portfolio
-                </Link>
-                <Link href="/#apropos" className="text-gray-200 hover:text-cyan-400 transition-colors">
-                  À propos
-                </Link>
-                <Link href="/#contact" className="text-gray-200 hover:text-cyan-400 transition-colors">
-                  Contact
-                </Link>
+                <Link href="/#services" className="text-gray-200 hover:text-cyan-400 transition-colors">Services</Link>
+                <Link href="/#portfolio" className="text-gray-200 hover:text-cyan-400 transition-colors">Portfolio</Link>
+                <Link href="/#apropos" className="text-gray-200 hover:text-cyan-400 transition-colors">À propos</Link>
+                <Link href="/#contact" className="text-gray-200 hover:text-cyan-400 transition-colors">Contact</Link>
               </nav>
 
-              {/* CTA Desktop */}
+              {/* Desktop CTA */}
               <div className="hidden md:flex items-center gap-3">
                 <a
                   href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
@@ -71,60 +72,60 @@ export function Header() {
                 </a>
               </div>
 
-              {/* Mobile menu button */}
+              {/* Mobile toggle */}
               <div className="md:hidden">
                 <Button
                   variant="ghost"
                   size="sm"
                   aria-label="Ouvrir le menu"
                   aria-expanded={isMenuOpen}
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  onClick={() => setIsMenuOpen(v => !v)}
                 >
                   {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </Button>
               </div>
             </div>
-
-            {/* Mobile Navigation */}
-            {isMenuOpen && (
-              <div className="md:hidden">
-                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-slate-900 border-t border-slate-800">
-                  <Link href="/" className="block px-3 py-2 text-gray-200 hover:text-cyan-400" onClick={() => setIsMenuOpen(false)}>
-                    Accueil
-                  </Link>
-                  <Link href="/#services" className="block px-3 py-2 text-gray-200 hover:text-cyan-400" onClick={() => setIsMenuOpen(false)}>
-                    Services
-                  </Link>
-                  <Link href="/#portfolio" className="block px-3 py-2 text-gray-200 hover:text-cyan-400" onClick={() => setIsMenuOpen(false)}>
-                    Portfolio
-                  </Link>
-                  <Link href="/#apropos" className="block px-3 py-2 text-gray-200 hover:text-cyan-400" onClick={() => setIsMenuOpen(false)}>
-                    À propos
-                  </Link>
-                  <Link href="/#contact" className="block px-3 py-2 text-gray-200 hover:text-cyan-400" onClick={() => setIsMenuOpen(false)}>
-                    Contact
-                  </Link>
-
-                  <div className="px-3 py-2">
-                    <a
-                      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
-                      className="w-full inline-flex justify-center rounded-xl px-3 py-2 bg-emerald-500 text-slate-950 text-center hover:bg-emerald-400"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      WhatsApp
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </header>
       </div>
 
-      {/* ✅ Bandeau promo fixé en bas de l’écran */}
-      <div className="fixed bottom-0 left-0 w-full z-50">
+      {/* Mobile full-screen menu */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="absolute inset-x-0 top-16 bottom-0 bg-slate-900/95 backdrop-blur-xl border-t border-white/10">
+            <nav
+              className="px-4 py-4 space-y-1 overflow-y-auto h-full"
+              style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 88px)" }}
+            >
+              <Link href="/" onClick={() => setIsMenuOpen(false)} className="block rounded-lg px-3 py-3 text-lg text-white/90 hover:bg-white/10">Accueil</Link>
+              <Link href="/#services" onClick={() => setIsMenuOpen(false)} className="block rounded-lg px-3 py-3 text-lg text-white/90 hover:bg-white/10">Services</Link>
+              <Link href="/#portfolio" onClick={() => setIsMenuOpen(false)} className="block rounded-lg px-3 py-3 text-lg text-white/90 hover:bg-white/10">Portfolio</Link>
+              <Link href="/#apropos" onClick={() => setIsMenuOpen(false)} className="block rounded-lg px-3 py-3 text-lg text-white/90 hover:bg-white/10">À propos</Link>
+              <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block rounded-lg px-3 py-3 text-lg text-white/90 hover:bg-white/10">Contact</Link>
+            </nav>
+
+            {/* Bottom action bar */}
+            <div
+              className="fixed inset-x-0 bottom-0 p-3 pt-2 border-t border-white/10 bg-slate-900/90"
+              style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)" }}
+            >
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsMenuOpen(false)}
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-base bg-emerald-500 text-slate-950 hover:bg-emerald-400"
+              >
+                <MessageCircle className="h-5 w-5" />
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom marquee (hidden on mobile menu open) */}
+      <div className={`fixed bottom-0 left-0 w-full z-40 ${isMenuOpen ? "hidden md:block" : ""}`}>
         <CosmicMarquee />
       </div>
     </>
