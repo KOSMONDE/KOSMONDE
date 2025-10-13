@@ -27,15 +27,13 @@ const OFFER_LABELS = {
 } as const;
 type OfferKey = keyof typeof OFFER_LABELS;
 
-/* ------------ Logo public (déployé) ------------ */
-const LOGO = "https://www.kosmonde.ch/email-logo.png?v=2"; // public/email-logo.png
+/* ------------ Logo public ------------ */
+const LOGO = "https://www.kosmonde.ch/email-logo.png?v=2";
 
 /* ------------ POST /api/send ------------ */
 export async function POST(req: Request) {
   try {
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-      "unknown";
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 
     // rate-limit
     const now = Date.now();
@@ -65,10 +63,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Email invalide." }, { status: 400 });
     }
 
-    // ENV (EMAIL_* ou MAIL_* acceptés)
-    const KEY = process.env.RESEND_API_KEY;
+    // ENV
+    const KEY  = process.env.RESEND_API_KEY;
     const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM; // 'Kosmonde <contact@kosmonde.ch>'
-    const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO;       // 'contact@kosmonde.ch'
+    const TO   = process.env.EMAIL_TO   ?? process.env.MAIL_TO;   // 'contact@kosmonde.ch'
     if (!KEY || !FROM || !TO) {
       console.error("Config email manquante", { hasKey: !!KEY, hasFrom: !!FROM, hasTo: !!TO });
       return NextResponse.json({ success: false, error: "Config manquante." }, { status: 500 });
@@ -85,59 +83,60 @@ export async function POST(req: Request) {
       offer: (String(offer ?? "custom").toLowerCase() as OfferKey),
       page: clip(page ?? "", 2000),
     };
-    const offerLabel =
-      OFFER_LABELS[safe.offer as OfferKey] ?? OFFER_LABELS.custom;
+    const offerLabel = OFFER_LABELS[safe.offer] ?? OFFER_LABELS.custom;
 
-    /* ------------ Email HTML (clair + centré + minimal) ------------ */
+    /* ------------ HTML clair + centré (monocolonne) ------------ */
+    const BG = "#f5f7fb";
+    const CARD = "#ffffff";
+    const BORDER = "#eef2f7";
+    const TEXT = "#111827";
+    const MUTED = "#64748b";
+    const LINK = "#0ea5e9";
+
     const htmlAdmin = `
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:24px 12px;">
-    <tr>
-      <td align="center">
-        <table role="presentation" width="640" cellpadding="0" cellspacing="0" style="width:640px;max-width:100%;background:#ffffff;border-radius:16px;box-shadow:0 4px 20px rgba(18, 24, 40, 0.06);overflow:hidden;">
-          <tr>
-            <td style="padding:20px 24px;background:linear-gradient(90deg,#6b46c1,#111827);color:#fff;">
-              <table role="presentation" width="100%">
-                <tr>
-                  <td width="48" valign="middle">
-                    <img src="${LOGO}" width="40" height="40" style="display:block;border-radius:8px;" alt="Kosmonde" />
-                  </td>
-                  <td valign="middle" style="padding-left:12px;">
-                    <div style="font:600 18px/1.2 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:#E6E6E6;">Kosmonde</div>
-                    <div style="display:inline-block;margin-top:8px;padding:6px 10px;border-radius:999px;background:#16a34a;color:#fff;font:600 12px/1 ui-sans-serif;">Nouveau message</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+<!doctype html>
+<html>
+  <head>
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="utf-8">
+  </head>
+  <body bgcolor="${BG}" style="margin:0;padding:0;background:${BG};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="${BG}" style="background:${BG};padding:24px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="640" cellpadding="0" cellspacing="0" bgcolor="${CARD}" style="width:640px;max-width:100%;background:${CARD};border-radius:16px;border:1px solid ${BORDER};box-shadow:0 4px 20px rgba(18,24,40,.06);overflow:hidden;text-align:center;">
+            <tr>
+              <td style="padding:24px;background:linear-gradient(90deg,#6b46c1,#111827);">
+                <img src="${LOGO}" alt="Kosmonde" width="44" height="44" style="border-radius:10px;display:block;margin:0 auto 8px auto;">
+                <div style="color:#E6E6E6;font:600 18px/1 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;margin-bottom:10px;">Kosmonde</div>
+                <span style="display:inline-block;padding:8px 14px;border-radius:999px;background:#16a34a;color:#fff;font:600 12px/1 ui-sans-serif;">Nouveau message</span>
+              </td>
+            </tr>
 
-          <tr>
-            <td style="padding:28px 24px;background:#f9fafb;">
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;border:1px solid #eef2f7;">
-                <tbody>
-                  ${row("Formule", offerLabel)}
-                  ${row("Nom", escapeHtml(safe.name))}
-                  ${row("Email", linkMail(safe.email))}
-                  ${row("Téléphone", safe.phone ? escapeHtml(safe.phone) : "—")}
-                  ${row("Sujet", escapeHtml(safe.subject))}
-                  ${row("Message", nl2br(escapeHtml(safe.message)))}
-                  ${safe.page ? row("Page", linkUrl(String(safe.page))) : ""}
-                </tbody>
-              </table>
-            </td>
-          </tr>
+            ${block("Formule", escapeHtml(offerLabel))}
+            ${block("Nom", escapeHtml(safe.name))}
+            ${block("Email", linkMail(safe.email, LINK))}
+            ${block("Téléphone", safe.phone ? escapeHtml(safe.phone) : "—")}
+            ${block("Sujet", escapeHtml(safe.subject))}
+            ${block("Message", nl2br(escapeHtml(safe.message)))}
+            ${safe.page ? block("Page", linkUrl(String(safe.page), LINK)) : ""}
 
-          <tr>
-            <td style="padding:16px 24px;background:#ffffff;border-top:1px solid #eef2f7;color:#6b7280;font:400 12px/1.6 ui-sans-serif;">
-              <div style="text-align:center;">
-                IP : ${escapeHtml(ip)} • <a href="https://www.kosmonde.ch" style="color:#0ea5e9;text-decoration:none;">www.kosmonde.ch</a>
-              </div>
-              <div style="text-align:center;color:#9ca3af;margin-top:6px;">© ${new Date().getFullYear()} Kosmonde — Tous droits réservés.</div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>`.trim();
+            <tr>
+              <td style="padding:18px 16px;background:${CARD};border-top:1px solid ${BORDER};">
+                <div style="color:${MUTED};font:400 12px/1.6 ui-sans-serif;">
+                  IP : ${escapeHtml(ip)} • <a href="https://www.kosmonde.ch" style="color:${LINK};text-decoration:none;">www.kosmonde.ch</a>
+                </div>
+                <div style="color:#9ca3af;font:400 12px/1.6 ui-sans-serif;margin-top:6px;">© ${new Date().getFullYear()} Kosmonde — Tous droits réservés.</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`.trim();
 
     // admin
     const send1 = await resend.emails.send({
@@ -151,10 +150,12 @@ export async function POST(req: Request) {
 
     // accusé client
     const ackHtml = `
-      <div style="font:400 14px/1.7 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;color:#111827;">
-        <p>Bonjour ${escapeHtml(safe.name)},</p>
-        <p>Nous avons bien reçu votre message. Nous revenons vers vous rapidement.</p>
-        <p style="color:#6b7280">— Kosmonde</p>
+      <div style="background:${BG};padding:24px 12px;">
+        <div style="max-width:640px;margin:0 auto;background:${CARD};border:1px solid ${BORDER};border-radius:12px;padding:24px;text-align:center;">
+          <p style="margin:0 0 8px 0;color:${TEXT};font:600 16px/1.4 ui-sans-serif;">Bonjour ${escapeHtml(safe.name)},</p>
+          <p style="margin:0;color:${MUTED};font:400 14px/1.7 ui-sans-serif;">Nous avons bien reçu votre message. Nous revenons vers vous rapidement.</p>
+          <p style="margin:16px 0 0 0;color:${MUTED};font:400 14px/1.7 ui-sans-serif;">— Kosmonde</p>
+        </div>
       </div>
     `.trim();
 
@@ -173,21 +174,23 @@ export async function POST(req: Request) {
   }
 }
 
-/* ------------ Helpers HTML ------------ */
-function row(label: string, value: string) {
+/* ------------ Helpers HTML (centrés) ------------ */
+function block(label: string, value: string) {
   return `
-  <tr>
-    <td style="width:180px;padding:14px 16px;border-bottom:1px solid #eef2f7;color:#64748b;font:600 14px/1 ui-sans-serif;">${escapeHtml(label)}</td>
-    <td style="padding:14px 16px;border-bottom:1px solid #eef2f7;color:#111827;font:500 14px/1.4 ui-sans-serif;">${value}</td>
-  </tr>`;
+    <tr>
+      <td style="padding:18px 16px;background:#ffffff;border-bottom:1px solid #eef2f7;text-align:center;">
+        <div style="color:#64748b;font:600 12px/1 ui-sans-serif;letter-spacing:.02em;text-transform:uppercase;margin-bottom:6px;">${escapeHtml(label)}</div>
+        <div style="color:#111827;font:600 16px/1.5 ui-sans-serif;">${value}</div>
+      </td>
+    </tr>`;
 }
-function linkMail(addr: string) {
+function linkMail(addr: string, color: string) {
   const a = escapeHtml(addr);
-  return `<a href="mailto:${a}" style="color:#0ea5e9;text-decoration:none;">${a}</a>`;
+  return `<a href="mailto:${a}" style="color:${color};text-decoration:none;">${a}</a>`;
 }
-function linkUrl(url: string) {
+function linkUrl(url: string, color: string) {
   const u = escapeHtml(url);
-  return `<a href="${u}" style="color:#0ea5e9;text-decoration:none;">${u}</a>`;
+  return `<a href="${u}" style="color:${color};text-decoration:none;">${u}</a>`;
 }
 function nl2br(s: string) {
   return s.replace(/\n/g, "<br/>");
