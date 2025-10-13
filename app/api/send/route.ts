@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     const KEY = process.env.RESEND_API_KEY;
     const FROM = process.env.EMAIL_FROM ?? process.env.MAIL_FROM; // ex: 'Kosmonde <contact@kosmonde.ch>'
     const TO = process.env.EMAIL_TO ?? process.env.MAIL_TO;       // ex: 'contact@kosmonde.ch'
-    const LOGO = "https://www.kosmonde.ch/8de897e7-d5ab-43d6-968c-1e6dff5cc7de.png";
+    const LOGO = "/8de897e7-d5ab-43d6-968c-1e6dff5cc7de.png";
 
     if (!KEY || !FROM || !TO) {
       console.error("Config email manquante", { hasKey: !!KEY, hasFrom: !!FROM, hasTo: !!TO });
