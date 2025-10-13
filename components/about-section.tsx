@@ -37,7 +37,7 @@ export default function AboutSection() {
   return (
     <section ref={sectionRef} id="apropos" className="py-20 px-4 sm:px-6 lg:px-8 cosmic-light-bg">
       <div className="max-w-7xl mx-auto">
-        {/* Colonne texte + stats en style d'origine (clair) */}
+        {/* Bloc texte + stats (style d’origine) */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold cosmic-title mb-6">À propos de KOSMONDE</h2>
@@ -66,7 +66,7 @@ export default function AboutSection() {
                 className="text-center p-6 cosmic-card bg-white/80 about-card opacity-0 hover:bg-white/90 transition-all duration-300"
               >
                 <CardContent className="p-0">
-                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-400/30 to-purple-500/30 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 bg-gradient-to-br from-cyan-400/30 to-purple-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
                     <stat.icon className="h-8 w-8 cosmic-icon" />
                   </div>
                   <div className="text-3xl font-bold text-slate-800 mb-2">{stat.value}</div>
@@ -77,9 +77,8 @@ export default function AboutSection() {
           </div>
         </div>
 
-        {/* Notre Processus — SEUL bloc en violet */}
-        <div className="mt-16 rounded-lg p-8 border border-white/20 text-white relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-          {/* décor léger */}
+        {/* Notre Processus — violet, descriptions sur UNE SEULE ligne */}
+        <div className="mt-16 rounded-2xl p-10 border border-white/20 text-white relative overflow-hidden bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
           <div className="pointer-events-none absolute inset-0 opacity-20">
             <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
             <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-purple-400 rounded-full animate-pulse delay-1000" />
@@ -88,42 +87,54 @@ export default function AboutSection() {
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-2xl font-semibold text-center mb-8 bg-gradient-to-r from-cyan-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+            <h3 className="text-2xl font-semibold text-center mb-10 bg-gradient-to-r from-cyan-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
               Notre Processus
             </h3>
 
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-cyan-400 to-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
-                  1
+            <div className="grid gap-8 md:grid-cols-4">
+              {[
+                {
+                  n: "1",
+                  title: "Analyse",
+                  // raccourci pour tenir sur une ligne
+                  desc: "Besoins et objectifs",
+                  badge: "from-cyan-400 to-blue-500",
+                },
+                {
+                  n: "2",
+                  title: "Conception",
+                  desc: "Design et architecture",
+                  badge: "from-purple-400 to-pink-500",
+                },
+                {
+                  n: "3",
+                  title: "Développement",
+                  desc: "Technologies de pointe",
+                  badge: "from-emerald-400 to-cyan-500",
+                },
+                {
+                  n: "4",
+                  title: "Lancement",
+                  desc: "Mise en ligne & suivi",
+                  badge: "from-orange-400 to-red-500",
+                },
+              ].map((step) => (
+                <div key={step.n} className="flex flex-col items-center text-center">
+                  <div
+                    className={`w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg bg-gradient-to-r ${step.badge}`}
+                  >
+                    {step.n}
+                  </div>
+                  <h4 className="font-semibold mb-2 text-white">{step.title}</h4>
+                  {/* une seule ligne, avec ellipse si trop long sur petits écrans */}
+                  <p
+                    className="text-sm text-slate-200 leading-none whitespace-nowrap truncate w-[18rem] max-w-full"
+                    title={step.desc}
+                  >
+                    {step.desc}
+                  </p>
                 </div>
-                <h4 className="font-medium mb-2">Analyse</h4>
-                <p className="text-sm text-slate-200">Étude des besoins et définition des objectifs</p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
-                  2
-                </div>
-                <h4 className="font-medium mb-2">Conception</h4>
-                <p className="text-sm text-slate-200">Design et architecture de la solution</p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-cyan-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
-                  3
-                </div>
-                <h4 className="font-medium mb-2">Développement</h4>
-                <p className="text-sm text-slate-200">Réalisation avec les meilleures technologies</p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-semibold shadow-lg">
-                  4
-                </div>
-                <h4 className="font-medium mb-2">Lancement</h4>
-                <p className="text-sm text-slate-200">Mise en ligne et accompagnement continu</p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
