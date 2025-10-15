@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Mail, Phone, Send, Sparkles } from "lucide-react"
 import { toast } from "sonner"
 
-/* Offres (Création, Maintenance, Consulting) */
+/* Offres */
 const OFFER_LABELS = {
   vitrine: "Site Vitrine – 199,99 CHF",
   ecommerce: "E-commerce WordPress – 299,99 CHF",
@@ -35,20 +35,18 @@ export default function ContactSection() {
     phone: "",
     subject: "",
     message: "",
-    website: "", // honeypot
+    website: "",
     offer: "custom" as OfferKey,
-    page: "", // URL d'origine
+    page: "",
   })
 
-  // Préremplir l’URL et l’offre via /?offer=...
   useEffect(() => {
     try {
-      setFormData((f) => ({ ...f, page: window.location.href }))
+      setFormData(f => ({ ...f, page: window.location.href }))
     } catch {}
-
     const q = (searchParams.get("offer") || "").toLowerCase() as OfferKey
     if (q in OFFER_LABELS) {
-      setFormData((f) => ({ ...f, offer: q }))
+      setFormData(f => ({ ...f, offer: q }))
       document.getElementById("name")?.focus()
     }
   }, [searchParams])
@@ -71,7 +69,7 @@ export default function ContactSection() {
       })
       if (res.ok) {
         toast.success("Message envoyé avec succès.")
-        setFormData((f) => ({
+        setFormData(f => ({
           name: "",
           email: "",
           phone: "",
@@ -79,7 +77,7 @@ export default function ContactSection() {
           message: "",
           website: "",
           offer: "custom",
-          page: f.page, // conserve l’URL
+          page: f.page,
         }))
       } else {
         const { error } = await res.json().catch(() => ({ error: "Erreur inconnue." }))
@@ -90,16 +88,14 @@ export default function ContactSection() {
     }
   }
 
-  // Synchronise le honeypot caché
   useEffect(() => {
     const el = document.querySelector<HTMLInputElement>("#website")
     if (!el) return
-    const sync = () => setFormData((f) => ({ ...f, website: el.value }))
+    const sync = () => setFormData(f => ({ ...f, website: el.value }))
     el.addEventListener("input", sync)
     return () => el.removeEventListener("input", sync)
   }, [])
 
-  // Décor
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const dots = useMemo(
@@ -147,7 +143,7 @@ export default function ContactSection() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Infos contact */}
+          {/* Infos */}
           <div className="space-y-6">
             <Card className="bg-white/10 backdrop-blur-sm border-white/20">
               <CardContent className="p-6 flex items-center space-x-4">
@@ -192,39 +188,54 @@ export default function ContactSection() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Formule avec sections */}
+                  {/* Formule — clair sur mobile, foncé dès md */}
                   <div className="space-y-2">
                     <Label htmlFor="offer" className="text-gray-300">Formule</Label>
-                    <select
-                      id="offer"
-                      name="offer"
-                      value={formData.offer}
-                      onChange={handleChange}
-                      className="w-full rounded-md bg-white/10 border border-white/20 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                      required
-                    >
-                      <optgroup label="Création de site">
-                        <option className="bg-slate-900" value="vitrine">{OFFER_LABELS.vitrine}</option>
-                        <option className="bg-slate-900" value="ecommerce">{OFFER_LABELS.ecommerce}</option>
-                        <option className="bg-slate-900" value="premium">{OFFER_LABELS.premium}</option>
-                      </optgroup>
 
-                      <optgroup label="Maintenance & Support">
-                        <option className="bg-slate-900" value="std">{OFFER_LABELS.std}</option>
-                        <option className="bg-slate-900" value="pro">{OFFER_LABELS.pro}</option>
-                        <option className="bg-slate-900" value="prem">{OFFER_LABELS.prem}</option>
-                      </optgroup>
+                    <div className="relative">
+                      <select
+                        id="offer"
+                        name="offer"
+                        value={formData.offer}
+                        onChange={handleChange}
+                        required
+                        className={[
+                          "appearance-none w-full rounded-xl border-2 px-4 pr-12 py-4 text-[16px] leading-[1.35] outline-none transition",
+                          // mobile clair
+                          "bg-white text-slate-900 border-violet-400/80 focus:border-violet-500 focus:ring-4 focus:ring-violet-300/40",
+                          // desktop sombre
+                          "md:bg-white/10 md:text-white md:border-white/20 md:focus:border-purple-400 md:focus:ring-2 md:focus:ring-purple-400/60",
+                        ].join(" ")}
+                      >
+                        <optgroup label="Création de site">
+                          <option value="vitrine">{OFFER_LABELS.vitrine}</option>
+                          <option value="ecommerce">{OFFER_LABELS.ecommerce}</option>
+                          <option value="premium">{OFFER_LABELS.premium}</option>
+                        </optgroup>
+                        <optgroup label="Maintenance & Support">
+                          <option value="std">{OFFER_LABELS.std}</option>
+                          <option value="pro">{OFFER_LABELS.pro}</option>
+                          <option value="prem">{OFFER_LABELS.prem}</option>
+                        </optgroup>
+                        <optgroup label="Consulting Digital">
+                          <option value="social">{OFFER_LABELS.social}</option>
+                          <option value="branding">{OFFER_LABELS.branding}</option>
+                          <option value="print">{OFFER_LABELS.print}</option>
+                        </optgroup>
+                        <optgroup label="Autre">
+                          <option value="custom">{OFFER_LABELS.custom}</option>
+                        </optgroup>
+                      </select>
 
-                      <optgroup label="Consulting Digital">
-                        <option className="bg-slate-900" value="social">{OFFER_LABELS.social}</option>
-                        <option className="bg-slate-900" value="branding">{OFFER_LABELS.branding}</option>
-                        <option className="bg-slate-900" value="print">{OFFER_LABELS.print}</option>
-                      </optgroup>
-
-                      <optgroup label="Autre">
-                        <option className="bg-slate-900" value="custom">{OFFER_LABELS.custom}</option>
-                      </optgroup>
-                    </select>
+                      {/* Chevron */}
+                      <svg
+                        aria-hidden="true"
+                        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 opacity-80 md:text-white md:opacity-90"
+                        viewBox="0 0 20 20" fill="currentColor"
+                      >
+                        <path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.25a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" />
+                      </svg>
+                    </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
@@ -237,7 +248,7 @@ export default function ContactSection() {
                         onChange={handleChange}
                         required
                         placeholder="Votre nom"
-                        className="bg-white/10 border-white/20 text-white"
+                        className="bg-white/10 border-white/20 text-white text-[16px]"
                       />
                     </div>
                     <div className="space-y-2">
@@ -250,7 +261,7 @@ export default function ContactSection() {
                         onChange={handleChange}
                         required
                         placeholder="votre@email.fr"
-                        className="bg-white/10 border-white/20 text-white"
+                        className="bg-white/10 border-white/20 text-white text-[16px]"
                       />
                     </div>
                   </div>
@@ -264,7 +275,7 @@ export default function ContactSection() {
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="+33 1 23 45 67 89"
-                        className="bg-white/10 border-white/20 text-white"
+                        className="bg-white/10 border-white/20 text-white text-[16px]"
                       />
                     </div>
                     <div className="space-y-2">
@@ -276,7 +287,7 @@ export default function ContactSection() {
                         onChange={handleChange}
                         required
                         placeholder="Objet de votre demande"
-                        className="bg-white/10 border-white/20 text-white"
+                        className="bg-white/10 border-white/20 text-white text-[16px]"
                       />
                     </div>
                   </div>
@@ -291,7 +302,7 @@ export default function ContactSection() {
                       required
                       rows={6}
                       placeholder="Décrivez votre projet..."
-                      className="bg-white/10 border-white/20 text-white resize-none"
+                      className="bg-white/10 border-white/20 text-white resize-none text-[16px]"
                     />
                   </div>
 
