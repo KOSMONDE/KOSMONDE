@@ -11,6 +11,16 @@ import { Label } from "@/components/ui/label"
 import { Mail, Phone, Send, Sparkles } from "lucide-react"
 import { toast } from "sonner"
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
 /* Offres */
 const OFFER_LABELS = {
   vitrine: "Site Vitrine – 199,99 CHF",
@@ -35,11 +45,12 @@ export default function ContactSection() {
     phone: "",
     subject: "",
     message: "",
-    website: "",
+    website: "", // honeypot
     offer: "custom" as OfferKey,
-    page: "",
+    page: "",    // URL d'origine
   })
 
+  // Préremplissage URL + query ?offer=
   useEffect(() => {
     try {
       setFormData(f => ({ ...f, page: window.location.href }))
@@ -52,7 +63,7 @@ export default function ContactSection() {
   }, [searchParams])
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => setFormData({ ...formData, [e.target.name]: e.target.value })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,6 +99,7 @@ export default function ContactSection() {
     }
   }
 
+  // Honeypot sync
   useEffect(() => {
     const el = document.querySelector<HTMLInputElement>("#website")
     if (!el) return
@@ -96,6 +108,7 @@ export default function ContactSection() {
     return () => el.removeEventListener("input", sync)
   }, [])
 
+  // Décor
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const dots = useMemo(
@@ -188,54 +201,67 @@ export default function ContactSection() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Formule — clair sur mobile, foncé dès md */}
+                  {/* Formule — Select shadcn (aucun <select> natif) */}
                   <div className="space-y-2">
                     <Label htmlFor="offer" className="text-gray-300">Formule</Label>
 
-                    <div className="relative">
-                      <select
+                    <Select
+                      value={formData.offer}
+                      onValueChange={(v: OfferKey) => setFormData(f => ({ ...f, offer: v }))}
+                    >
+                      <SelectTrigger
                         id="offer"
-                        name="offer"
-                        value={formData.offer}
-                        onChange={handleChange}
-                        required
                         className={[
-                          "appearance-none w-full rounded-xl border-2 px-4 pr-12 py-4 text-[16px] leading-[1.35] outline-none transition",
-                          // mobile clair
+                          "w-full rounded-xl border-2 px-4 py-4 text-[16px] leading-[1.35]",
+                          // clair sur mobile
                           "bg-white text-slate-900 border-violet-400/80 focus:border-violet-500 focus:ring-4 focus:ring-violet-300/40",
-                          // desktop sombre
+                          // sombre dès md
                           "md:bg-white/10 md:text-white md:border-white/20 md:focus:border-purple-400 md:focus:ring-2 md:focus:ring-purple-400/60",
                         ].join(" ")}
                       >
-                        <optgroup label="Création de site">
-                          <option value="vitrine">{OFFER_LABELS.vitrine}</option>
-                          <option value="ecommerce">{OFFER_LABELS.ecommerce}</option>
-                          <option value="premium">{OFFER_LABELS.premium}</option>
-                        </optgroup>
-                        <optgroup label="Maintenance & Support">
-                          <option value="std">{OFFER_LABELS.std}</option>
-                          <option value="pro">{OFFER_LABELS.pro}</option>
-                          <option value="prem">{OFFER_LABELS.prem}</option>
-                        </optgroup>
-                        <optgroup label="Consulting Digital">
-                          <option value="social">{OFFER_LABELS.social}</option>
-                          <option value="branding">{OFFER_LABELS.branding}</option>
-                          <option value="print">{OFFER_LABELS.print}</option>
-                        </optgroup>
-                        <optgroup label="Autre">
-                          <option value="custom">{OFFER_LABELS.custom}</option>
-                        </optgroup>
-                      </select>
+                        <SelectValue placeholder="Choisir une formule" />
+                      </SelectTrigger>
 
-                      {/* Chevron */}
-                      <svg
-                        aria-hidden="true"
-                        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-700 opacity-80 md:text-white md:opacity-90"
-                        viewBox="0 0 20 20" fill="currentColor"
+                      <SelectContent
+                        className="z-[60] rounded-xl border border-black/10 bg-white text-slate-900 md:bg-slate-900 md:text-white md:border-white/10"
+                        position="popper"
+                        sideOffset={8}
                       >
-                        <path d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 10.94l3.71-3.71a.75.75 0 1 1 1.06 1.06l-4.24 4.25a.75.75 0 0 1-1.06 0L5.21 8.29a.75.75 0 0 1 .02-1.08z" />
-                      </svg>
-                    </div>
+                        <SelectGroup>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
+                            Création de site
+                          </SelectLabel>
+                          <SelectItem value="vitrine">{OFFER_LABELS.vitrine}</SelectItem>
+                          <SelectItem value="ecommerce">{OFFER_LABELS.ecommerce}</SelectItem>
+                          <SelectItem value="premium">{OFFER_LABELS.premium}</SelectItem>
+                        </SelectGroup>
+
+                        <SelectGroup>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
+                            Maintenance & Support
+                          </SelectLabel>
+                          <SelectItem value="std">{OFFER_LABELS.std}</SelectItem>
+                          <SelectItem value="pro">{OFFER_LABELS.pro}</SelectItem>
+                          <SelectItem value="prem">{OFFER_LABELS.prem}</SelectItem>
+                        </SelectGroup>
+
+                        <SelectGroup>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
+                            Consulting Digital
+                          </SelectLabel>
+                          <SelectItem value="social">{OFFER_LABELS.social}</SelectItem>
+                          <SelectItem value="branding">{OFFER_LABELS.branding}</SelectItem>
+                          <SelectItem value="print">{OFFER_LABELS.print}</SelectItem>
+                        </SelectGroup>
+
+                        <SelectGroup>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
+                            Autre
+                          </SelectLabel>
+                          <SelectItem value="custom">{OFFER_LABELS.custom}</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
