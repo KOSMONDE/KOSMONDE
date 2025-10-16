@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useLayoutEffect, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
@@ -36,105 +36,126 @@ const OFFER_LABELS = {
 } as const
 type OfferKey = keyof typeof OFFER_LABELS
 
+const normalize = (v: string) =>
+  v.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").replace(/[\s_\-]/g, "")
+
+const RAW_ALIASES: Record<string, OfferKey> = {
+  "vitrine":"vitrine","site vitrine":"vitrine","site-vitrine":"vitrine","site_vitrine":"vitrine",
+  "ecommerce":"ecommerce","e-commerce":"ecommerce","woocommerce":"ecommerce",
+  "premium":"premium","site premium":"premium",
+  "std":"std","standard":"std","maintenance standard":"std","maintenance-standard":"std",
+  "pro":"pro","maintenance pro":"pro","maintenance-pro":"pro",
+  "prem":"prem","support premium":"prem","support-premium":"prem",
+  "social":"social","social starter":"social","social-starter":"social",
+  "branding":"branding","branding essentials":"branding","branding-essentials":"branding",
+  "print":"print","print pack":"print","print-pack":"print",
+}
+const OFFER_ALIASES: Record<string, OfferKey> =
+  Object.fromEntries(Object.entries(RAW_ALIASES).map(([k,v]) => [normalize(k), v]))
+
 export default function ContactSection() {
   const searchParams = useSearchParams()
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
-    website: "", // honeypot
-    offer: "custom" as OfferKey,
-    page: "",    // URL d'origine
+    name: "", email: "", phone: "", subject: "", message: "",
+    website: "", offer: "custom" as OfferKey, page: "",
   })
 
-  // Préremplissage URL + query ?offer=
-  useEffect(() => {
+  // 1) Préremplir AVANT paint pour éviter le besoin de refresh
+  useLayoutEffect(() => {
     try {
-      setFormData(f => ({ ...f, page: window.location.href }))
-    } catch {}
-    const q = (searchParams.get("offer") || "").toLowerCase() as OfferKey
-    if (q in OFFER_LABELS) {
-      setFormData(f => ({ ...f, offer: q }))
-      document.getElementById("name")?.focus()
-    }
-  }, [searchParams])
+      const href = window.location.href
+      setFormData(f => ({ ...f, page: href }))
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => setFormData({ ...formData, [e.target.name]: e.target.value })
+      // sessionStorage prioritaire
+      const pre = sessionStorage.getItem("preselectedOffer")
+      if (pre && pre in OFFER_LABELS) {
+        setFormData(f => ({ ...f, offer: pre as OfferKey }))
+        sessionStorage.removeItem("preselectedOffer")
+        return
+      }
+
+      // lecture directe de l’URL
+      const sp = new URLSearchParams(window.location.search)
+      const raw = (sp.get("offer") || sp.get("service") || "").trim()
+      if (raw) {
+        const key = OFFER_ALIASES[normalize(raw)]
+        if (key && key in OFFER_LABELS) {
+          setFormData(f => ({ ...f, offer: key }))
+        }
+      }
+    } catch {}
+  }, [])
+
+  // 2) Si Next modifie uniquement la query après navigation
+  const offerRaw = searchParams.get("offer")
+  const serviceRaw = searchParams.get("service")
+  useEffect(() => {
+    const raw = (offerRaw || serviceRaw || "").trim()
+    if (!raw) return
+    const key = OFFER_ALIASES[normalize(raw)]
+    if (key && key in OFFER_LABELS) setFormData(f => ({ ...f, offer: key }))
+  }, [offerRaw, serviceRaw])
+
+  // 3) Écouter l’historique (back/forward) et hashchange
+  useEffect(() => {
+    const syncFromUrl = () => {
+      try {
+        const sp = new URLSearchParams(window.location.search)
+        const raw = (sp.get("offer") || sp.get("service") || "").trim()
+        const key = raw ? OFFER_ALIASES[normalize(raw)] : undefined
+        if (key && key in OFFER_LABELS) setFormData(f => ({ ...f, offer: key }))
+      } catch {}
+    }
+    window.addEventListener("popstate", syncFromUrl)
+    window.addEventListener("hashchange", syncFromUrl)
+    return () => {
+      window.removeEventListener("popstate", syncFromUrl)
+      window.removeEventListener("hashchange", syncFromUrl)
+    }
+  }, [])
+
+  const selectedLabel = OFFER_LABELS[formData.offer] ?? ""
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (formData.website) {
-      toast.error("Requête bloquée (spam détecté).")
-      return
-    }
+    if (formData.website) { toast.error("Requête bloquée (spam détecté)."); return }
     try {
       const res = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
       if (res.ok) {
         toast.success("Message envoyé avec succès.")
-        setFormData(f => ({
-          name: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-          website: "",
-          offer: "custom",
-          page: f.page,
-        }))
+        setFormData(f => ({ name:"", email:"", phone:"", subject:"", message:"", website:"", offer:"custom", page:f.page }))
       } else {
-        const { error } = await res.json().catch(() => ({ error: "Erreur inconnue." }))
+        const { error } = await res.json().catch(() => ({ error:"Erreur inconnue." }))
         toast.error(`Erreur : ${error}`)
       }
-    } catch {
-      toast.error("Erreur réseau : impossible d'envoyer le message.")
-    }
+    } catch { toast.error("Erreur réseau : impossible d'envoyer le message.") }
   }
 
-  // Honeypot sync
-  useEffect(() => {
-    const el = document.querySelector<HTMLInputElement>("#website")
-    if (!el) return
-    const sync = () => setFormData(f => ({ ...f, website: el.value }))
-    el.addEventListener("input", sync)
-    return () => el.removeEventListener("input", sync)
-  }, [])
-
-  // Décor
+  // décor
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   const dots = useMemo(
-    () =>
-      Array.from({ length: 50 }).map(() => ({
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        delay: `${Math.random() * 3}s`,
-        duration: `${2 + Math.random() * 2}s`,
-      })),
-    []
-  )
+    () => Array.from({ length: 50 }).map(() => ({
+      left: `${Math.random()*100}%`,
+      top: `${Math.random()*100}%`,
+      delay: `${Math.random()*3}s`,
+      duration: `${2+Math.random()*2}s`,
+    })), [])
 
   return (
-    <section
-      id="contact"
-      className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden"
-    >
+    <section id="contact" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       {mounted && (
         <div className="absolute inset-0 pointer-events-none">
-          {dots.map((d, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-              style={{ left: d.left, top: d.top, animationDelay: d.delay, animationDuration: d.duration }}
-            />
+          {dots.map((d,i)=>(
+            <div key={i} className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+                 style={{ left:d.left, top:d.top, animationDelay:d.delay, animationDuration:d.duration }} />
           ))}
         </div>
       )}
@@ -148,9 +169,9 @@ export default function ContactSection() {
             Démarrez votre projet dès aujourd’hui. Demandez votre devis gratuit et personnalisé.
           </p>
 
-          {formData.offer !== "custom" && (
+          {selectedLabel && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm text-white">
-              Formule sélectionnée : <span className="font-medium">{OFFER_LABELS[formData.offer]}</span>
+              Formule sélectionnée : <span className="font-medium">{selectedLabel}</span>
             </div>
           )}
         </div>
@@ -187,25 +208,22 @@ export default function ContactSection() {
                 <Sparkles className="h-5 w-5 text-purple-400 mr-2" />
                 <h3 className="font-semibold text-purple-300">Devis gratuit</h3>
               </div>
-              <p className="text-sm text-gray-300">
-                Obtenez une estimation personnalisée pour votre projet en moins de 24h.
-              </p>
+              <p className="text-sm text-gray-300">Obtenez une estimation personnalisée pour votre projet en moins de 24h.</p>
             </div>
           </div>
 
           {/* Formulaire */}
           <div className="lg:col-span-2">
             <Card className="bg-white/10 backdrop-blur-sm border-white/20">
-              <CardHeader>
-                <CardTitle className="text-white">Envoyez-nous un message</CardTitle>
-              </CardHeader>
+              <CardHeader><CardTitle className="text-white">Envoyez-nous un message</CardTitle></CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Formule — Select shadcn (aucun <select> natif) */}
                   <div className="space-y-2">
                     <Label htmlFor="offer" className="text-gray-300">Formule</Label>
 
+                    {/* clé = valeur sélectionnée pour forcer le rendu contrôlé */}
                     <Select
+                      key={formData.offer}
                       value={formData.offer}
                       onValueChange={(v: OfferKey) => setFormData(f => ({ ...f, offer: v }))}
                     >
@@ -213,51 +231,37 @@ export default function ContactSection() {
                         id="offer"
                         className={[
                           "w-full rounded-xl border-2 px-4 py-4 text-[16px] leading-[1.35]",
-                          // clair sur mobile
                           "bg-white text-slate-900 border-violet-400/80 focus:border-violet-500 focus:ring-4 focus:ring-violet-300/40",
-                          // sombre dès md
                           "md:bg-white/10 md:text-white md:border-white/20 md:focus:border-purple-400 md:focus:ring-2 md:focus:ring-purple-400/60",
                         ].join(" ")}
                       >
                         <SelectValue placeholder="Choisir une formule" />
                       </SelectTrigger>
 
-                      <SelectContent
-                        className="z-[60] rounded-xl border border-black/10 bg-white text-slate-900 md:bg-slate-900 md:text-white md:border-white/10"
-                        position="popper"
-                        sideOffset={8}
-                      >
+                      <SelectContent className="z-[60] rounded-xl border border-black/10 bg-white text-slate-900 md:bg-slate-900 md:text-white md:border-white/10" position="popper" sideOffset={8}>
                         <SelectGroup>
-                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
-                            Création de site
-                          </SelectLabel>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">Création de site</SelectLabel>
                           <SelectItem value="vitrine">{OFFER_LABELS.vitrine}</SelectItem>
                           <SelectItem value="ecommerce">{OFFER_LABELS.ecommerce}</SelectItem>
                           <SelectItem value="premium">{OFFER_LABELS.premium}</SelectItem>
                         </SelectGroup>
 
                         <SelectGroup>
-                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
-                            Maintenance & Support
-                          </SelectLabel>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">Maintenance & Support</SelectLabel>
                           <SelectItem value="std">{OFFER_LABELS.std}</SelectItem>
                           <SelectItem value="pro">{OFFER_LABELS.pro}</SelectItem>
                           <SelectItem value="prem">{OFFER_LABELS.prem}</SelectItem>
                         </SelectGroup>
 
                         <SelectGroup>
-                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
-                            Consulting Digital
-                          </SelectLabel>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">Consulting Digital</SelectLabel>
                           <SelectItem value="social">{OFFER_LABELS.social}</SelectItem>
                           <SelectItem value="branding">{OFFER_LABELS.branding}</SelectItem>
                           <SelectItem value="print">{OFFER_LABELS.print}</SelectItem>
                         </SelectGroup>
 
                         <SelectGroup>
-                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">
-                            Autre
-                          </SelectLabel>
+                          <SelectLabel className="px-3 py-2 text-xs uppercase tracking-wide opacity-70">Autre</SelectLabel>
                           <SelectItem value="custom">{OFFER_LABELS.custom}</SelectItem>
                         </SelectGroup>
                       </SelectContent>
@@ -267,88 +271,34 @@ export default function ContactSection() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-gray-300">Nom complet *</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        placeholder="Votre nom"
-                        className="bg-white/10 border-white/20 text-white text-[16px]"
-                      />
+                      <Input id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Votre nom" className="bg-white/10 border-white/20 text-white text-[16px]" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-gray-300">Email *</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="votre@email.fr"
-                        className="bg-white/10 border-white/20 text-white text-[16px]"
-                      />
+                      <Input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="votre@email.fr" className="bg-white/10 border-white/20 text-white text-[16px]" />
                     </div>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="phone" className="text-gray-300">Téléphone</Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+33 1 23 45 67 89"
-                        className="bg-white/10 border-white/20 text-white text-[16px]"
-                      />
+                      <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="+33 1 23 45 67 89" className="bg-white/10 border-white/20 text-white text-[16px]" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="subject" className="text-gray-300">Sujet *</Label>
-                      <Input
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        required
-                        placeholder="Objet de votre demande"
-                        className="bg-white/10 border-white/20 text-white text-[16px]"
-                      />
+                      <Input id="subject" name="subject" value={formData.subject} onChange={handleChange} required placeholder="Objet de votre demande" className="bg-white/10 border-white/20 text-white text-[16px]" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="message" className="text-gray-300">Message *</Label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      rows={6}
-                      placeholder="Décrivez votre projet..."
-                      className="bg-white/10 border-white/20 text-white resize-none text-[16px]"
-                    />
+                    <Textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6} placeholder="Décrivez votre projet..." className="bg-white/10 border-white/20 text-white resize-none text-[16px]" />
                   </div>
 
                   {/* Honeypot */}
-                  <input
-                    id="website"
-                    name="website"
-                    value={formData.website}
-                    onChange={handleChange}
-                    autoComplete="off"
-                    tabIndex={-1}
-                    aria-hidden="true"
-                    style={{ position: "absolute", left: "-9999px", opacity: 0 }}
-                  />
+                  <input id="website" name="website" value={formData.website} onChange={handleChange} autoComplete="off" tabIndex={-1} aria-hidden="true" style={{ position: "absolute", left: "-9999px", opacity: 0 }} />
 
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg"
-                  >
+                  <Button type="submit" size="lg" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white border-0 shadow-lg">
                     <Send className="mr-2 h-5 w-5" />
                     Envoyer le message
                   </Button>

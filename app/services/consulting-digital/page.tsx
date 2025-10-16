@@ -76,6 +76,34 @@ export default function ConsultingDigitalPage() {
     "print-pack": "print",
   }
 
+  const testimonials = [
+    {
+      // SEKOBA — gauche
+      quote:
+        "Le kit social nous a permis d’harmoniser nos publications et de poster régulièrement. Les visuels et scripts fournis sont simples à adapter. Dès le premier mois, l’engagement a progressé et les messages privés sont mieux qualifiés. Le cadre éditorial nous fait gagner un temps réel.",
+      author: "SEKOBA COIFFURE",
+      role: "Salon de coiffure",
+      company: "SEKOBA COIFFURE",
+    },
+    {
+      // RR — centre, highlight
+      quote:
+        "Identité visuelle claire et supports prêts. Nous avons lancé des Reels avec un calendrier précis et des templates efficaces. Les demandes de formation et les ventes en boutique ont gagné en visibilité. Le livrable est actionnable et la mise en œuvre rapide.",
+      author: "RR COIFFURE",
+      role: "Salon de coiffure",
+      company: "RR COIFFURE",
+      highlight: true,
+    },
+    {
+      // GBM — droite
+      quote:
+        "Le travail de branding a structuré notre image et nos prises de parole. Charte, typographies et gabarits facilitent la production de contenus. Les supports print sont cohérents pour nos événements et le ton de nos posts LinkedIn est désormais aligné avec notre positionnement.",
+      author: "GBM AVOCATS",
+      role: "Cabinet d’avocats",
+      company: "GBM AVOCATS",
+    },
+  ]
+
   return (
     <main className="flex flex-col">
       <Header />
@@ -224,31 +252,11 @@ export default function ConsultingDigitalPage() {
             Ils nous font confiance
           </h2>
           <p className="text-center text-slate-600 mt-2">
-            Une sélection d'avis vérifiés de clients heureux.
+            Témoignages clients pour nos packs de consulting digital.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 mt-10">
-            {[
-              {
-                quote:
-                  "Notre image a été clarifiée et nos posts sont cohérents. Le kit social nous fait gagner du temps chaque semaine.",
-                author: "Sophie Martin",
-                role: "Fondatrice · Atelier Nomade",
-              },
-              {
-                quote:
-                  "Pack branding très propre et rapide. On a lancé la prospection avec des supports pro en moins de deux semaines.",
-                author: "Yann Dupuis",
-                role: "COO · KappaTech",
-                highlight: true,
-              },
-              {
-                quote:
-                  "Migration vers une charte plus moderne + cartes & flyers prêts à imprimer. Process fluide et réactif.",
-                author: "Carine Lopez",
-                role: "Directrice · Maison Lunea",
-              },
-            ].map((t, i) => (
+            {testimonials.map((t, i) => (
               <article
                 key={i}
                 className={`rounded-2xl p-6 shadow-xl ${
@@ -258,11 +266,15 @@ export default function ConsultingDigitalPage() {
                 }`}
               >
                 <div className="flex gap-1 text-amber-500 text-xl mb-3">★★★★★</div>
-                <p className="leading-relaxed">{t.quote}</p>
-                <hr className={`my-6 ${t.highlight ? "border-white/20" : "border-slate-200"}`} />
+                <p className={`${t.highlight ? "text-white/95" : "text-slate-800"} leading-relaxed`}>
+                  {t.quote}
+                </p>
+                {t.highlight ? <hr className="my-6 border-white/20" /> : <hr className="my-6 border-slate-200" />}
                 <div>
                   <p className="font-semibold">{t.author}</p>
-                  <p className={`text-sm ${t.highlight ? "text-white/80" : "text-slate-500"}`}>{t.role}</p>
+                  <p className={`text-sm ${t.highlight ? "text-white/80" : "text-slate-500"}`}>
+                    {t.role} · {t.company}
+                  </p>
                 </div>
               </article>
             ))}

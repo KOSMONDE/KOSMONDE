@@ -66,83 +66,29 @@ export default function CreationSitesWebPage() {
     ],
   }
 
-  const Testimonials = () => (
-    <section className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900">
-            Ils nous font confiance
-          </h2>
-          <p className="mt-3 text-slate-600">
-            Une sélection d&apos;avis vérifiés de clients heureux.
-          </p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3 items-stretch">
-          {/* Left card */}
-          <Card className="bg-white border-slate-200 shadow-md rounded-2xl">
-            <CardContent className="p-7 flex flex-col h-full">
-              <div className="flex gap-1 text-amber-500 mb-4">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-amber-500" />
-                ))}
-              </div>
-              <Quote className="h-6 w-6 text-slate-400" />
-              <p className="mt-3 text-slate-800 leading-relaxed">
-                Notre nouveau site a doublé les demandes de devis en deux mois.
-                Design propre, chargement rapide, rien à redire.
-              </p>
-              <div className="mt-auto pt-6">
-                <p className="font-semibold text-slate-900">Sophie Martin</p>
-                <p className="text-slate-500 text-sm">Fondatrice · Atelier Nomade</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Middle highlighted card */}
-          <Card className="border-0 shadow-xl rounded-2xl bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white">
-            <CardContent className="p-7 flex flex-col h-full">
-              <div className="flex gap-1 text-amber-300 mb-4">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-amber-300" />
-                ))}
-              </div>
-              <Quote className="h-6 w-6 text-white/70" />
-              <p className="mt-3 text-white/95 leading-relaxed">
-                Exécution maîtrisée de bout en bout. L&apos;équipe a challengé nos idées
-                et livré un résultat meilleur qu&apos;attendu.
-              </p>
-              <div className="mt-auto pt-6 border-t border-white/20" />
-              <div className="pt-4">
-                <p className="font-semibold">Yann Dupuis</p>
-                <p className="text-white/80 text-sm">COO · KappaTech</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Right card */}
-          <Card className="bg-white border-slate-200 shadow-md rounded-2xl">
-            <CardContent className="p-7 flex flex-col h-full">
-              <div className="flex gap-1 text-amber-500 mb-4">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-amber-500" />
-                ))}
-              </div>
-              <Quote className="h-6 w-6 text-slate-400" />
-              <p className="mt-3 text-slate-800 leading-relaxed">
-                Migration e-commerce fluide. Paiements, catalogue et SEO bien posés.
-                Support réactif après lancement.
-              </p>
-              <div className="mt-auto pt-6">
-                <p className="font-semibold text-slate-900">Carine Lopez</p>
-                <p className="text-slate-500 text-sm">Directrice · Maison Lunea</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </section>
-  )
+  const avis = [
+    {
+      entreprise: "SEKOBA COIFFURE",
+      role: "Gérant",
+      secteur: "Coiffure",
+      texte:
+        "Vous avez conçu un site vitrine clair avec nos services, une galerie photo et la prise de rendez-vous intégrée. L’expérience de nos clientes est fluide et moderne.",
+    },
+    {
+      entreprise: "RR COIFFURE",
+      role: "Fondatrice",
+      secteur: "Coiffure",
+      texte:
+        "Le site regroupe nos services, nos formations certifiées et la vente de produits. Je gère tout simplement et nos clientes réservent directement en ligne.",
+    },
+    {
+      entreprise: "GBM AVOCATS",
+      role: "Associé",
+      secteur: "Cabinet d’avocats",
+      texte:
+        "Le site vitrine présente nos prestations, notre blog et une messagerie professionnelle intégrée. La structure renforce la clarté et la crédibilité du cabinet.",
+    },
+  ]
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -150,7 +96,7 @@ export default function CreationSitesWebPage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[#1a1740] via-[#3c1670] to-[#0f1226]">
-        <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center text-white">
           <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-500 grid place-items-center shadow-xl">
             <Rocket className="h-7 w-7 text-white" />
           </div>
@@ -164,18 +110,15 @@ export default function CreationSitesWebPage() {
             Sites modernes et performants. Identité renforcée. Conversion optimisée.
             Chaque projet est conçu sur mesure pour une expérience fluide et impactante.
           </p>
-          <div className="mt-8 flex justify-center">
-            <Button asChild variant="outline" className="border-white/25 text-white bg-white/5 hover:bg-white/10">
-              <Link href="/portfolio">Voir nos Réalisations</Link>
-            </Button>
-          </div>
         </div>
       </section>
 
-      {/* PROCESS — gris clair */}
+      {/* PROCESSUS */}
       <section className="py-16 bg-[#f3f5f8]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-10">Notre Processus de Création</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-10">
+            Notre Processus de Création
+          </h2>
           <div className="grid md:grid-cols-4 gap-8">
             {[
               { n: "1", title: "Analyse & Stratégie", desc: "Compréhension des besoins, étude du marché et objectifs." },
@@ -183,7 +126,10 @@ export default function CreationSitesWebPage() {
               { n: "3", title: "Développement", desc: "Intégration moderne, performances et qualité de code." },
               { n: "4", title: "Lancement & Suivi", desc: "Mise en ligne, tests finaux et accompagnement." },
             ].map((s) => (
-              <Card key={s.n} className="border-0 bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white shadow-lg">
+              <Card
+                key={s.n}
+                className="border-0 bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white shadow-lg"
+              >
                 <CardContent className="p-6 text-center">
                   <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-white/20 grid place-items-center text-xl font-bold">
                     {s.n}
@@ -197,60 +143,49 @@ export default function CreationSitesWebPage() {
         </div>
       </section>
 
-      {/* PLANS — violet */}
+      {/* PLANS */}
       <section className="py-16 bg-gradient-to-br from-[#2b1d6b] via-[#5a1b9b] to-[#1b123f] text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold">Nos Formules</h2>
-          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Nos Formules</h2>
 
-          <div className="grid gap-8 md:grid-cols-3 items-stretch">
+          <div className="grid gap-8 md:grid-cols-3">
             {plans.map((p) => (
               <Card
                 key={p.id}
-                className={`border-0 shadow-xl h-full flex flex-col rounded-2xl ${p.popular ? "ring-2 ring-cyan-200" : ""}`}
+                className={`border-0 shadow-xl rounded-2xl flex flex-col ${
+                  p.popular ? "ring-2 ring-cyan-200" : ""
+                }`}
               >
-                <CardContent className="p-6 flex flex-col h-full bg-white text-slate-900 rounded-2xl">
-                  {/* badges au-dessus du titre */}
-                  <div className="mb-2 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-1 text-xs font-medium rounded-full bg-slate-100 text-slate-700 ring-1 ring-slate-200">
-                        Paiement unique
-                      </span>
-                      {p.popular && (
-                        <Badge className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
-                          Populaire
-                        </Badge>
-                      )}
-                    </div>
+                <CardContent className="p-6 flex flex-col bg-white text-slate-900 rounded-2xl h-full">
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="px-2 py-1 text-xs font-medium bg-slate-100 text-slate-700 rounded-full">
+                      Paiement unique
+                    </span>
+                    {p.popular && (
+                      <Badge className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white">
+                        Populaire
+                      </Badge>
+                    )}
                   </div>
 
-                  {/* titre + dot */}
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-semibold">{p.title}</h3>
-                    <span className={`h-2.5 w-2.5 rounded-full ${p.accentDot}`} />
-                  </div>
+                  <h3 className="text-xl font-semibold flex items-center gap-2">
+                    {p.title} <span className={`h-2.5 w-2.5 rounded-full ${p.accentDot}`} />
+                  </h3>
+                  <p className="text-3xl font-extrabold mt-2">
+                    {p.price} <span className="text-slate-600">{p.currency}</span>
+                  </p>
+                  <p className="text-slate-500 text-sm">{p.note}</p>
 
-                  {/* prix */}
-                  <div className="mt-3">
-                    <p className="text-3xl font-extrabold">
-                      {p.price} <span className="text-slate-600">{p.currency}</span>
-                    </p>
-                    <p className="mt-1 text-slate-500 text-sm">{p.note}</p>
-                  </div>
-
-                  {/* inclus */}
                   <ul className="mt-4 grow space-y-2">
                     {included[p.id].map((f) => (
-                      <li key={f} className="flex items-start gap-2">
-                        <CheckCircle2 className={`mt-0.5 h-4 w-4 ${p.checkColor}`} />
-                        <span className="leading-snug">{f}</span>
+                      <li key={f} className="flex gap-2 items-start">
+                        <CheckCircle2 className={`h-4 w-4 ${p.checkColor} mt-0.5`} />
+                        <span>{f}</span>
                       </li>
                     ))}
                   </ul>
 
-                  {/* CTA */}
-                  <div className="pt-6 mt-auto">
+                  <div className="mt-6">
                     <Button
                       asChild
                       className={`w-full ${
@@ -259,22 +194,61 @@ export default function CreationSitesWebPage() {
                           : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                       }`}
                     >
-                      <Link href={`/?offer=${p.id}#contact`}>Choisir cette formule</Link>
+                      <Link
+                        href={`/?offer=${p.id}#contact`}
+                        prefetch={false}
+                        onClick={() => {
+                          try { sessionStorage.setItem("preselectedOffer", p.id) } catch {}
+                        }}
+                      >
+                        Choisir cette formule
+                      </Link>
                     </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-
-          <p className="text-sm text-white/80 text-center mt-8">
-            Tarifs affichés en francs suisses. Paiement unique sans abonnement.
-          </p>
         </div>
       </section>
 
-      {/* TESTIMONIALS — blanc */}
-      <Testimonials />
+      {/* AVIS */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-8">
+            Ils nous font confiance
+          </h2>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-6 md:grid-cols-3">
+          {avis.map((a, i) => (
+            <Card
+              key={i}
+              className={`rounded-2xl shadow-md border ${
+                i === 1
+                  ? "border-0 bg-gradient-to-br from-[#4b2fbf] via-[#6932a1] to-[#341d61] text-white shadow-xl"
+                  : "bg-white border-slate-200 text-slate-800"
+              }`}
+            >
+              <CardContent className="p-7">
+                <div className={`flex gap-1 ${i === 1 ? "text-amber-300" : "text-amber-500"} mb-3`}>
+                  {Array.from({ length: 5 }).map((_, j) => (
+                    <Star key={j} className="h-5 w-5 fill-current" />
+                  ))}
+                </div>
+                <Quote className={`h-6 w-6 ${i === 1 ? "text-white/70" : "text-slate-400"}`} />
+                <p className="mt-3 leading-relaxed">{a.texte}</p>
+                <div className="pt-4 mt-4 border-t border-white/10">
+                  <p className="font-semibold">{a.entreprise}</p>
+                  <p className="text-sm opacity-80">
+                    {a.role} · {a.secteur}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
 
       <Footer />
     </div>

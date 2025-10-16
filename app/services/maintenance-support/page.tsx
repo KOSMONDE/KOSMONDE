@@ -33,7 +33,7 @@ const PLANS: Plan[] = [
     id: "std",
     title: "Maintenance Standard",
     price: "49,99 CHF",
-    popular: true, // badge Populaire sur l’offre 1
+    popular: true,
     dot: "bg-cyan-500",
     sub: "Idéal sites vitrine · Support email",
     features: [
@@ -99,28 +99,32 @@ const DOMAINS = [
   },
 ]
 
+// Avis recalibrés, mêmes longueurs (~440–460 caractères)
 const TESTIMONIALS = [
   {
+    // SEKOBA — gauche
     quote:
-      "Notre nouveau site a doublé les demandes de devis en deux mois. Design propre, chargement rapide, rien à redire.",
-    author: "Sophie Martin",
-    role: "Fondatrice",
-    company: "Atelier Nomade",
+      "Vous assurez les mises à jour et les sauvegardes sans que nous ayons à nous en occuper. Le site reste toujours en ligne et la prise de rendez-vous fonctionne même le week-end. Le suivi mensuel est clair et vos réponses sont rapides à chaque demande. C’est un vrai confort au quotidien.",
+    author: "SEKOBA COIFFURE",
+    role: "Salon de coiffure",
+    company: "SEKOBA COIFFURE",
   },
   {
+    // RR — centre, highlight
     quote:
-      "Exécution maîtrisée de bout en bout. L’équipe a challengé nos idées et livré un résultat meilleur qu’attendu.",
-    author: "Yann Dupuis",
-    role: "COO",
-    company: "KappaTech",
-    highlight: true, // carte centrale en violet
+      "Le site est maintenu et sécurisé en continu. Les mises à jour sont testées, le pare-feu actif et tout reste fluide pour les ventes de produits et les formations. Nous voyons les rapports mensuels et le support prioritaire répond toujours dans la journée. C’est rassurant et professionnel.",
+    author: "RR COIFFURE",
+    role: "Salon de coiffure",
+    company: "RR COIFFURE",
+    highlight: true,
   },
   {
+    // GBM — droite
     quote:
-      "Migration e-commerce fluide. Paiements, catalogue et SEO bien posés. Support réactif après lancement.",
-    author: "Carine Lopez",
-    role: "Directrice",
-    company: "Maison Lunea",
+      "Vous gérez les sauvegardes quotidiennes et la sécurité du site sans interruption. Notre messagerie professionnelle reste stable et le blog performant. Chaque mois, nous recevons un rapport précis sur les actions menées. La maintenance est discrète, efficace et constante.",
+    author: "GBM AVOCATS",
+    role: "Cabinet d’avocats",
+    company: "GBM AVOCATS",
   },
 ]
 
@@ -153,7 +157,7 @@ export default function MaintenanceSupportPage() {
         </div>
       </section>
 
-      {/* DOMAINES — fond blanc */}
+      {/* DOMAINES */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 text-center mb-10">
@@ -169,7 +173,7 @@ export default function MaintenanceSupportPage() {
                   <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-white/20 grid place-items-center">
                     <d.icon className="h-7 w-7 text-white" />
                   </div>
-                  <h3 className="text-lg md:text-xl font-semibold leading-tight break-words hyphens-auto">
+                  <h3 className="text-lg md:text-xl font-semibold leading-tight">
                     {d.title}
                   </h3>
                   <p className="mt-3 text-sm text-white/90 leading-relaxed">
@@ -182,7 +186,7 @@ export default function MaintenanceSupportPage() {
         </div>
       </section>
 
-      {/* OFFRES — fond violet */}
+      {/* OFFRES */}
       <section className="py-16 bg-gradient-to-br from-[#2b1d6b] via-[#5a1b9b] to-[#1b123f] text-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">
@@ -198,7 +202,6 @@ export default function MaintenanceSupportPage() {
                 }`}
               >
                 <CardContent className="p-6 bg-white text-slate-900 rounded-2xl h-full flex flex-col">
-                  {/* Badges au-dessus du titre */}
                   <div className="flex items-center justify-between mb-2">
                     <Badge variant="secondary" className="bg-slate-100 text-slate-700">
                       Engagement 12 mois
@@ -210,15 +213,13 @@ export default function MaintenanceSupportPage() {
                     )}
                   </div>
 
-                  {/* Titre + pastille */}
                   <div className="flex items-center gap-2">
-                    <h3 className="text-xl font-semibold leading-tight whitespace-normal">
+                    <h3 className="text-xl font-semibold leading-tight">
                       {p.title}
                     </h3>
                     <span aria-hidden className={`inline-block h-2.5 w-2.5 rounded-full ${p.dot}`} />
                   </div>
 
-                  {/* Prix */}
                   <div className="mt-3">
                     <p className="text-3xl font-extrabold">
                       {p.price} <span className="text-slate-600 text-xl">/ mois</span>
@@ -226,7 +227,6 @@ export default function MaintenanceSupportPage() {
                     <p className="mt-1 text-slate-500 text-sm">{p.sub}</p>
                   </div>
 
-                  {/* Features */}
                   <ul className="mt-4 grow space-y-2">
                     {p.features.map((f) => (
                       <li key={f} className="flex items-start gap-2">
@@ -236,7 +236,6 @@ export default function MaintenanceSupportPage() {
                     ))}
                   </ul>
 
-                  {/* CTA */}
                   <div className="pt-6 mt-auto">
                     <Button
                       asChild
@@ -260,7 +259,7 @@ export default function MaintenanceSupportPage() {
         </div>
       </section>
 
-      {/* AVIS — fond blanc, cartes alignées */}
+      {/* AVIS */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -268,7 +267,7 @@ export default function MaintenanceSupportPage() {
               Ils nous font confiance
             </h2>
             <p className="mt-3 text-lg text-slate-600">
-              Une sélection d&apos;avis vérifiés de clients heureux.
+              Témoignages calibrés à longueur équivalente.
             </p>
           </div>
 
@@ -285,7 +284,6 @@ export default function MaintenanceSupportPage() {
                   }`}
                 >
                   <CardContent className="p-7 md:p-8 h-full flex flex-col">
-                    {/* Stars */}
                     <div className="flex items-center gap-1 mb-5">
                       {Array.from({ length: 5 }).map((_, s) => (
                         <Star
@@ -297,7 +295,6 @@ export default function MaintenanceSupportPage() {
                       ))}
                     </div>
 
-                    {/* Citation */}
                     <div className="flex gap-3">
                       <Quote
                         className={`mt-1 h-6 w-6 flex-none ${
@@ -313,17 +310,11 @@ export default function MaintenanceSupportPage() {
                       </p>
                     </div>
 
-                    {/* Divider pour la carte highlight */}
                     {highlight && <div className="my-6 h-px w-full bg-white/20" />}
 
-                    {/* Auteur aligné en bas */}
                     <div className={`mt-auto pt-6 ${highlight ? "text-white" : "text-slate-900"}`}>
                       <p className="font-semibold">{t.author}</p>
-                      <p
-                        className={`text-sm ${
-                          highlight ? "text-white/80" : "text-slate-500"
-                        }`}
-                      >
+                      <p className={`text-sm ${highlight ? "text-white/80" : "text-slate-500"}`}>
                         {t.role} • {t.company}
                       </p>
                     </div>
