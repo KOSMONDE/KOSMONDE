@@ -61,7 +61,7 @@ export const projects: Project[] = [
     ],
     tags: ["Design", "Réservations", "SEO"],
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
-    url: "https://sekoba-coiffure.kosmonde.fr/",
+    url: "https://sekoba-coiffure.kosmonde.ch/",
     duration: "5 semaines",
     client: "SEKOBA COIFFURE",
     features: [

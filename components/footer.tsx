@@ -37,7 +37,7 @@ export function Footer() {
               idées en expériences digitales exceptionnelles.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-pink-400 transition-colors group">
+              <a href="https://www.instagram.com/kosmonde/" className="text-gray-400 hover:text-pink-400 transition-colors group">
                 <Instagram className="h-5 w-5 group-hover:scale-110 transition-transform" />
               </a>
             </div>
