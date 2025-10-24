@@ -47,7 +47,7 @@ export const projects: Project[] = [
   {
     id: "sekoba-coiffure",
     title: "SEKOBA COIFFURE",
-    status: "en_cours",
+    status: "termine",
     category: "Site Vitrine",
     description:
       "Site vitrine moderne pour un salon de coiffure basé à Genève avec prise de rendez-vous en ligne.",
@@ -61,7 +61,7 @@ export const projects: Project[] = [
     ],
     tags: ["Design", "Réservations", "SEO"],
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
-    url: "https://sekoba-coiffure.kosmonde.ch/",
+    url: "https://sekoba-coiffure.ch/",
     duration: "5 semaines",
     client: "SEKOBA COIFFURE",
     features: [
