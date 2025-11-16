@@ -12,6 +12,19 @@ export type Project = {
   techStack: string;
   link?: string;
   img: string;
+
+  // === NOUVELLES PROPRIÉTÉS (toutes optionnelles) ===
+  client?: string;
+  sector?: string;
+  year?: string | number;
+  role?: string;
+  heroSummary?: string;
+  results?: string[];
+  testimonial?: string;
+  testimonialName?: string;
+  testimonialRole?: string;
+  kosmondeRoles?: string[];
+  techBadges?: string[];
 };
 
 export const projects: Project[] = [
@@ -35,9 +48,31 @@ export const projects: Project[] = [
     ],
     techStack:
       "Site vitrine moderne avec intégration d’outils de réservation et d’avis externes.",
-    // Remplace par l’URL réelle
     link: "https://www.sekoba-coiffure.ch/",
     img: "/projets/SEKOBA.png",
+
+    // Infos supplémentaires
+    client: "Salon de coiffure SEKOBA",
+    sector: "Beauté / Coiffure",
+    year: 2025,
+    role: "Conception UX/UI & développement complet",
+    heroSummary:
+      "Site vitrine moderne pour un salon de coiffure, avec réservation en ligne et mise en valeur des cheveux texturés.",
+    results: [
+      "Prise de rendez-vous en ligne simplifiée pour les clientes.",
+      "Image de marque plus professionnelle et cohérente.",
+    ],
+    testimonial:
+      "Le site est clair, moderne et nos clientes prennent facilement rendez-vous en ligne.",
+    testimonialName: "Gérant·e du salon SEKOBA",
+    testimonialRole: "Salon de coiffure SEKOBA",
+    kosmondeRoles: [
+      "Analyse des besoins et de la cible",
+      "Conception UX/UI",
+      "Intégration de l’outil de réservation",
+      "Optimisation mobile",
+    ],
+    techBadges: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
   },
   {
     slug: "gbm-avocats",
@@ -60,8 +95,25 @@ export const projects: Project[] = [
     ],
     techStack:
       "Refonte vers une stack JavaScript moderne, avec un focus sur la clarté et la confiance.",
-    link: "https://gbm-avocats.com//",
+    link: "https://gbm-avocats.com/",
     img: "/projets/GBM-AVOCATS.png",
+
+    client: "Cabinet GBM Avocats",
+    sector: "Droit / Services juridiques",
+    year: 2025,
+    role: "Refonte design & intégration front-end",
+    heroSummary:
+      "Refonte d’un site vitrine pour un cabinet d’avocats, axée sur la clarté, la confiance et la lisibilité des informations.",
+    results: [
+      "Structure plus claire des domaines de compétence.",
+      "Expérience plus rassurante pour les visiteurs.",
+    ],
+    kosmondeRoles: [
+      "Refonte de l’architecture de contenu",
+      "Design des pages clés (accueil, équipe, domaines)",
+      "Intégration front-end moderne",
+    ],
+    techBadges: ["JavaScript", "Next.js", "Tailwind CSS"],
   },
   {
     slug: "association-locale",
@@ -86,5 +138,22 @@ export const projects: Project[] = [
       "Site sur mesure basé sur une structure claire, pensé pour évoluer avec l’association.",
     link: "http://rr-coiffure.ch/",
     img: "/projets/RR-COIFFURE.png",
+
+    client: "Association locale",
+    sector: "Association / Social",
+    year: 2024,
+    role: "Design, intégration et accompagnement contenu",
+    heroSummary:
+      "Site sur mesure pour une association locale, centré sur la mission, les actions concrètes et les moyens de soutien.",
+    results: [
+      "Meilleure compréhension de la mission de l’association.",
+      "Facilitation des prises de contact et des dons.",
+    ],
+    kosmondeRoles: [
+      "Structuration du contenu (mission, actions, équipe)",
+      "Création d’un design simple et accessible",
+      "Mise en place des pages événements et dons",
+    ],
+    techBadges: ["Site sur mesure", "Stack moderne"],
   },
 ];

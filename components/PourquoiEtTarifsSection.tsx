@@ -64,7 +64,7 @@ export function PourquoiEtTarifsSection() {
                     </p>
                   </div>
                   <span className="text-xs font-medium text-sky-300">
-                    À partir de XXX CHF
+                    À partir de 250 CHF
                   </span>
                 </div>
               </div>
@@ -80,7 +80,7 @@ export function PourquoiEtTarifsSection() {
                     </p>
                   </div>
                   <span className="text-xs font-medium text-sky-300">
-                    À partir de XXX CHF
+                    À partir de 350 CHF
                   </span>
                 </div>
               </div>
