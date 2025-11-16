@@ -13,7 +13,7 @@ export type Project = {
   link?: string;
   img: string;
 
-  // === NOUVELLES PROPRIÉTÉS (toutes optionnelles) ===
+  // Propriétés optionnelles
   client?: string;
   sector?: string;
   year?: string | number;
@@ -28,9 +28,12 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  // ---------------------------------------------------------------------------
+  // PROJET 1 — SEKOBA
+  // ---------------------------------------------------------------------------
   {
     slug: "salon-sekoba",
-    title: "Salon de coiffure SEKOBA",
+    title: "SEKOBA COIFFURE",
     type: "Site vitrine",
     status: "online",
     shortDesc:
@@ -51,32 +54,39 @@ export const projects: Project[] = [
     link: "https://www.sekoba-coiffure.ch/",
     img: "/projets/SEKOBA.png",
 
-    // Infos supplémentaires
     client: "Salon de coiffure SEKOBA",
     sector: "Beauté / Coiffure",
     year: 2025,
     role: "Conception UX/UI & développement complet",
     heroSummary:
       "Site vitrine moderne pour un salon de coiffure, avec réservation en ligne et mise en valeur des cheveux texturés.",
+
     results: [
       "Prise de rendez-vous en ligne simplifiée pour les clientes.",
       "Image de marque plus professionnelle et cohérente.",
     ],
+
     testimonial:
       "Le site est clair, moderne et nos clientes prennent facilement rendez-vous en ligne.",
     testimonialName: "Gérant·e du salon SEKOBA",
     testimonialRole: "Salon de coiffure SEKOBA",
+
     kosmondeRoles: [
       "Analyse des besoins et de la cible",
       "Conception UX/UI",
       "Intégration de l’outil de réservation",
       "Optimisation mobile",
     ],
+
     techBadges: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
   },
+
+  // ---------------------------------------------------------------------------
+  // PROJET 2 — GBM AVOCATS
+  // ---------------------------------------------------------------------------
   {
     slug: "gbm-avocats",
-    title: "Cabinet GBM Avocats",
+    title: "GBM Avocats",
     type: "Site vitrine",
     status: "refonte",
     shortDesc:
@@ -104,56 +114,76 @@ export const projects: Project[] = [
     role: "Refonte design & intégration front-end",
     heroSummary:
       "Refonte d’un site vitrine pour un cabinet d’avocats, axée sur la clarté, la confiance et la lisibilité des informations.",
+
     results: [
       "Structure plus claire des domaines de compétence.",
       "Expérience plus rassurante pour les visiteurs.",
     ],
+
+    testimonial:
+      "Le nouveau site renforce la confiance de nos clients et présente mieux nos services.",
+    testimonialName: "Associé du cabinet GBM",
+    testimonialRole: "Cabinet d’avocats",
+
     kosmondeRoles: [
       "Refonte de l’architecture de contenu",
       "Design des pages clés (accueil, équipe, domaines)",
       "Intégration front-end moderne",
     ],
+
     techBadges: ["JavaScript", "Next.js", "Tailwind CSS"],
   },
+
+  // ---------------------------------------------------------------------------
+  // PROJET 3 — RR-COIFFURE (Salon à Genève)
+  // ---------------------------------------------------------------------------
   {
-    slug: "association-locale",
-    title: "Association locale",
-    type: "Site sur mesure",
+    slug: "rr-coiffure",
+    title: "RR COIFFURE",
+    type: "Site vitrine",
     status: "online",
     shortDesc:
-      "Site sur mesure pour une association : mission, activités, équipe et appels aux dons.",
+      "Site vitrine sur mesure pour un salon de coiffure à Genève : services, tarifs, galerie et prise de rendez-vous.",
     desc:
-      "Site sur mesure pour une association : mise en avant de la mission, des actions concrètes et des moyens de soutien.",
+      "Site vitrine sur mesure pour un salon de coiffure à Genève, avec mise en avant des services, des tarifs, de l’ambiance du salon et des informations pratiques pour venir facilement sur place.",
     context:
-      "L’association avait besoin d’un espace simple pour expliquer ce qu’elle fait, qui la compose et comment la soutenir.",
+      "RR-COIFFURE avait besoin d’un site simple et clair pour présenter le salon, rassurer les nouveaux clients et centraliser toutes les informations utiles : horaires, adresse, contact et prise de rendez-vous.",
     features: [
-      "Page mission et valeurs",
-      "Présentation des activités et projets",
-      "Page équipe",
-      "Liste d’événements",
-      "Informations sur les dons",
-      "Formulaire de contact",
+      "Présentation des services et des tarifs",
+      "Galerie photo du salon et des réalisations",
+      "Mise en avant de l’adresse et de la localisation à Genève",
+      "Coordonnées claires (téléphone, e-mail, formulaire)",
+      "Lien direct vers la prise de rendez-vous",
     ],
     techStack:
-      "Site sur mesure basé sur une structure claire, pensé pour évoluer avec l’association.",
+      "Site vitrine moderne, responsive et optimisé pour les recherches locales (salon de coiffure à Genève).",
     link: "http://rr-coiffure.ch/",
     img: "/projets/RR-COIFFURE.png",
 
-    client: "Association locale",
-    sector: "Association / Social",
+    client: "RR-COIFFURE",
+    sector: "Beauté / Coiffure",
     year: 2024,
-    role: "Design, intégration et accompagnement contenu",
+    role: "Conception UX/UI & développement front-end",
     heroSummary:
-      "Site sur mesure pour une association locale, centré sur la mission, les actions concrètes et les moyens de soutien.",
+      "Site vitrine sur mesure pour un salon de coiffure à Genève, pensé pour rassurer, informer et faciliter la prise de rendez-vous.",
+
     results: [
-      "Meilleure compréhension de la mission de l’association.",
-      "Facilitation des prises de contact et des dons.",
+      "Une présence en ligne claire pour les clients à Genève.",
+      "Des informations pratiques accessibles rapidement (horaires, adresse, téléphone).",
     ],
+
+    testimonial:
+      "Le site donne une image professionnelle du salon et permet aux clients de trouver facilement les informations dont ils ont besoin.",
+    testimonialName: "Responsable RR-COIFFURE",
+    testimonialRole: "Salon de coiffure à Genève",
+
     kosmondeRoles: [
-      "Structuration du contenu (mission, actions, équipe)",
-      "Création d’un design simple et accessible",
-      "Mise en place des pages événements et dons",
+      "Structuration du contenu autour des besoins des clients",
+      "Création d’une mise en page simple et rassurante",
+      "Intégration des informations pratiques (adresse, horaires, contact)",
+      "Optimisation mobile pour les visiteurs sur smartphone",
     ],
-    techBadges: ["Site sur mesure", "Stack moderne"],
+
+    techBadges: ["Site vitrine", "Responsive", "Orienté SEO local"],
   },
 ];
