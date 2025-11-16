@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+/* Thème de base KOSMONDE */
+@theme {
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", sans-serif;
+
+  --color-kosmonde-primary: rgb(56 189 248); /* sky-400 */
+  --color-kosmonde-primary-soft: rgb(8 47 73); /* sky-900 */
+  --color-kosmonde-accent: rgb(244 244 245); /* zinc-100 */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Conteneur max-width réutilisable (un peu plus large) */
+.container-kosmonde {
+  @apply mx-auto max-w-6xl px-4;
+}
+
+/* Petits helpers */
+.badge {
+  @apply inline-flex items-center rounded-full border border-slate-700/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-300/80;
+}
+
+.section-title {
+  @apply text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl;
+}
+
+.section-subtitle {
+  @apply mt-2 max-w-xl text-sm text-slate-400;
+}
+
+/* Cartes réutilisables */
+.card {
+  @apply rounded-2xl border border-slate-800 bg-slate-900/40 p-4;
+}
+
+.card-soft {
+  @apply rounded-2xl border border-slate-800/80 bg-slate-900/30 p-5 shadow-sm;
+}
+
+/* Accordéon FAQ simple */
+.faq-item {
+  @apply rounded-xl border border-slate-800 bg-slate-900/40 p-4;
+}
+
+.faq-question {
+  @apply text-sm font-medium text-slate-100;
+}
+
+.faq-answer {
+  @apply mt-2 text-sm text-slate-400;
+}
