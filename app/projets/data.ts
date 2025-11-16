@@ -36,7 +36,7 @@ export const projects: Project[] = [
     techStack:
       "Site vitrine moderne avec intégration d’outils de réservation et d’avis externes.",
     // Remplace par l’URL réelle
-    link: "https://exemple-sekoba.ch",
+    link: "https://www.sekoba-coiffure.ch/",
     img: "/projets/SEKOBA.png",
   },
   {
@@ -60,7 +60,7 @@ export const projects: Project[] = [
     ],
     techStack:
       "Refonte vers une stack JavaScript moderne, avec un focus sur la clarté et la confiance.",
-    link: undefined,
+    link: "https://gbm-avocats.com//",
     img: "/projets/GBM-AVOCATS.png",
   },
   {
@@ -84,7 +84,7 @@ export const projects: Project[] = [
     ],
     techStack:
       "Site sur mesure basé sur une structure claire, pensé pour évoluer avec l’association.",
-    link: undefined,
+    link: "http://rr-coiffure.ch/",
     img: "/projets/RR-COIFFURE.png",
   },
 ];
