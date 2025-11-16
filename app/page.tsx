@@ -8,6 +8,7 @@ import { PourquoiEtTarifsSection } from "../components/PourquoiEtTarifsSection";
 import { AProposSection } from "../components/AProposSection";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
+import { TrustCarousel } from "../components/TrustCarousel";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <ProjectsSection />
       <PourquoiEtTarifsSection />
       <AProposSection />
+      <TrustCarousel />
       <ContactSection />
       <Footer />
     </main>

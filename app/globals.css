@@ -57,3 +57,13 @@ body {
 .faq-answer {
   @apply mt-2 text-sm text-slate-400;
 }
+
+@keyframes trust-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+

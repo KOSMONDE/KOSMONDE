@@ -61,7 +61,11 @@ export default async function ProjectPage({ params }: Props) {
     currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
 
   return (
-    <main className="bg-slate-950 text-slate-50 min-h-screen flex flex-col">
+    <main className="relative bg-slate-950 text-slate-50 min-h-screen flex flex-col overflow-hidden">
+      {/* Ambiance KOSMONDE (glows + léger cosmos) */}
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_55%),radial-gradient(circle_at_bottom,rgba(79,70,229,0.12),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-25 mix-blend-screen bg-[radial-gradient(circle_at_top_left,rgba(148,163,184,0.4),transparent_55%)]" />
+
       <Header />
 
       {/* ======================== HERO ======================== */}
@@ -69,7 +73,7 @@ export default async function ProjectPage({ params }: Props) {
         <div className="container-kosmonde max-w-4xl mx-auto text-center space-y-8">
           {/* FIL D’ARIANE */}
           <nav
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-800/60 bg-slate-900/60 px-4 py-1.5 text-[11px] text-slate-400 mx-auto"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-800/60 bg-slate-900/60 px-4 py-1.5 text-[11px] text-slate-400 mx-auto shadow-[0_12px_40px_rgba(15,23,42,0.6)]"
             aria-label="Fil d’Ariane"
           >
             <Link href="/" className="hover:text-slate-200">
@@ -166,162 +170,250 @@ export default async function ProjectPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Infos rapides */}
+          {/* Infos rapides — style fiche technique */}
           {hasQuickInfo && (
-            <div className="flex flex-wrap justify-center gap-3 pt-8">
-              {quickInfoItems.map((i) => (
-                <div
-                  key={i.label}
-                  className="rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1.5 text-[11px]"
-                >
-                  <span className="text-slate-400">{i.label}: </span>
-                  <span className="text-slate-100">{i.value}</span>
-                </div>
-              ))}
+            <div className="mt-10 max-w-3xl mx-auto rounded-2xl border border-slate-800/70 bg-slate-950/80 px-5 py-4 sm:px-6 sm:py-5">
+              <h2 className="text-[11px] font-medium tracking-[0.25em] uppercase text-slate-400 mb-3">
+                Infos projet
+              </h2>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-[13px]">
+                {quickInfoItems.map((i, index) => (
+                  <div
+                    key={i.label}
+                    className={`flex items-baseline justify-between gap-4 border-slate-800/60 pb-2 ${
+                      index >= quickInfoItems.length - 2 ? "border-none pb-0" : "border-b"
+                    }`}
+                  >
+                    <dt className="text-slate-400">{i.label}</dt>
+                    <dd className="text-slate-100 font-medium text-right">
+                      {i.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           )}
         </div>
       </section>
 
-      {/* ======================== CONTENU ======================== */}
-      <section className="container-kosmonde pt-12 space-y-12">
-        {/* DESCRIPTION */}
-        <div className="max-w-4xl mx-auto rounded-2xl border border-slate-800 bg-slate-950/80 p-6 space-y-4">
-          <h2 className="text-lg font-semibold">Description du projet</h2>
-          <p className="text-sm text-slate-300">{project.desc}</p>
+      {/* ======================== CONTENU + SIDEBAR ======================== */}
+      <section className="container-kosmonde pt-12 pb-16">
+        <div className="grid lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)] gap-10">
+          {/* SIDEBAR STICKY (desktop) */}
+          <aside className="hidden lg:flex flex-col gap-4 sticky top-28 h-fit text-[12px]">
+            <div className="rounded-2xl border border-slate-800/80 bg-slate-950/90 px-4 py-4 shadow-[0_16px_40px_rgba(15,23,42,0.7)]">
+              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-2">
+                Aperçu
+              </p>
+              <p className="text-slate-200 text-xs mb-3">
+                Parcours le projet, les résultats, puis découvre comment KOSMONDE
+                peut t’accompagner.
+              </p>
 
-          <h3 className="text-sm font-semibold mt-4">Contexte du projet</h3>
-          <p className="text-sm text-slate-300">{project.context}</p>
+              {/* Barre de progression statique (design) */}
+              <div className="h-1 w-full rounded-full bg-slate-800 overflow-hidden mb-4">
+                <div className="h-full w-1/3 bg-gradient-to-r from-sky-400/70 via-sky-300/80 to-sky-400/70" />
+              </div>
 
-          <h3 className="text-sm font-semibold mt-4">Approche & stack technique</h3>
-          <p className="text-sm text-slate-300">{project.techStack}</p>
-        </div>
+              <nav className="space-y-1">
+                <a
+                  href="#description"
+                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
+                >
+                  <span>Description</span>
+                  <span className="text-slate-600 text-[10px]">01</span>
+                </a>
+                {(hasResults || hasTestimonial || hasRoles) && (
+                  <a
+                    href="#resultats"
+                    className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
+                  >
+                    <span>Résultats & avis</span>
+                    <span className="text-slate-600 text-[10px]">02</span>
+                  </a>
+                )}
+                <a
+                  href="#fonctionnalites"
+                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
+                >
+                  <span>Fonctionnalités</span>
+                  <span className="text-slate-600 text-[10px]">03</span>
+                </a>
+                <a
+                  href="#cta-kosmonde"
+                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
+                >
+                  <span>Parler de ton projet</span>
+                  <span className="text-slate-600 text-[10px]">04</span>
+                </a>
+              </nav>
+            </div>
 
-        {/* ======================== BANDE PREMIUM ======================== */}
-        {(hasResults || hasTestimonial || hasRoles) && (
-          <div className="w-full py-12 bg-gradient-to-b from-slate-950 via-slate-900/70 to-slate-950 border-y border-slate-800/70">
-            <h2 className="text-center text-[12px] font-medium mb-8 uppercase tracking-[0.25em] text-slate-300">
-              Résultats · Avis client · Rôle de KOSMONDE
-            </h2>
+            <div className="rounded-2xl border border-slate-800/80 bg-slate-950/90 px-4 py-3 text-xs text-slate-300">
+              <p className="font-medium mb-1">KOSMONDE</p>
+              <p className="text-slate-400">
+                Création de sites web sur-mesure, pensés pour ton univers et tes
+                objectifs.
+              </p>
+            </div>
+          </aside>
 
-            <div className="max-w-5xl mx-auto grid gap-6 lg:grid-cols-3">
-              {hasResults && (
-                <div className="rounded-2xl border border-slate-800/80 bg-slate-950/95 p-5 shadow-[0_18px_40px_rgba(15,23,42,0.7)]">
-                  <h3 className="text-sm font-semibold text-slate-50">
-                    Résultats
-                  </h3>
-                  <ul className="mt-3 space-y-2 text-xs text-slate-300">
-                    {(project as any).results.map((r: string) => (
-                      <li key={r} className="flex gap-2">
-                        <span className="mt-1.5 inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400/90" />
-                        <span>{r}</span>
-                      </li>
-                    ))}
-                  </ul>
+          {/* CONTENU PRINCIPAL */}
+          <div className="space-y-12">
+            {/* DESCRIPTION */}
+            <div
+              id="description"
+              className="max-w-4xl mx-auto rounded-2xl border border-slate-800 bg-slate-950/80 p-6 space-y-4 shadow-[0_16px_40px_rgba(15,23,42,0.7)]"
+            >
+              <h2 className="text-lg font-semibold">Description du projet</h2>
+              <p className="text-sm text-slate-300">{project.desc}</p>
+
+              <h3 className="text-sm font-semibold mt-4">Contexte du projet</h3>
+              <p className="text-sm text-slate-300">{project.context}</p>
+
+              <h3 className="text-sm font-semibold mt-4">
+                Approche & stack technique
+              </h3>
+              <p className="text-sm text-slate-300">{project.techStack}</p>
+            </div>
+
+            {/* BANDE PREMIUM / RÉSULTATS */}
+            {(hasResults || hasTestimonial || hasRoles) && (
+              <div
+                id="resultats"
+                className="max-w-5xl mx-auto rounded-3xl border border-slate-800/80 bg-gradient-to-br from-slate-950 via-slate-900/80 to-slate-950 px-5 py-7 sm:px-7 sm:py-8 shadow-[0_22px_60px_rgba(15,23,42,0.9)] backdrop-blur-sm"
+              >
+                <h2 className="text-center text-[12px] font-medium mb-8 uppercase tracking-[0.25em] text-slate-300">
+                  Résultats · Avis client · Rôle de KOSMONDE
+                </h2>
+
+                <div className="grid gap-6 lg:grid-cols-3">
+                  {hasResults && (
+                    <div className="rounded-2xl border border-slate-800/80 bg-slate-950/95 p-5 shadow-[0_18px_40px_rgba(15,23,42,0.7)] hover:-translate-y-1 transition-transform duration-300">
+                      <h3 className="text-sm font-semibold text-slate-50">
+                        Résultats
+                      </h3>
+                      <ul className="mt-3 space-y-2 text-xs text-slate-300">
+                        {(project as any).results.map((r: string) => (
+                          <li key={r} className="flex gap-2">
+                            <span className="mt-1.5 inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400/90" />
+                            <span>{r}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {hasTestimonial && (
+                    <div className="rounded-2xl border border-slate-800/80 bg-slate-950/95 p-5 hover:-translate-y-1 transition-transform duration-300">
+                      <h3 className="text-sm font-semibold text-slate-50">
+                        Témoignage
+                      </h3>
+                      <p className="mt-3 text-xs text-slate-200 italic leading-relaxed">
+                        “{(project as any).testimonial}”
+                      </p>
+
+                      <p className="mt-3 text-[11px] text-slate-400">
+                        {(project as any).testimonialName}
+                        {project.testimonialRole && (
+                          <> · {(project as any).testimonialRole}</>
+                        )}
+                      </p>
+                    </div>
+                  )}
+
+                  {hasRoles && (
+                    <div className="rounded-2xl border border-slate-800/80 bg-slate-950/95 p-5 hover:-translate-y-1 transition-transform duration-300">
+                      <h3 className="text-sm font-semibold text-slate-50">
+                        Rôle de KOSMONDE
+                      </h3>
+                      <ul className="mt-3 space-y-2 text-xs text-slate-300">
+                        {(project as any).kosmondeRoles.map((r: string) => (
+                          <li key={r} className="flex gap-2">
+                            <span className="mt-1.5 inline-flex h-1.5 w-1.5 rounded-full bg-sky-400/90" />
+                            <span>{r}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
+            )}
 
-              {hasTestimonial && (
-                <div className="rounded-2xl border border-slate-800/80 bg-slate-950/95 p-5">
-                  <h3 className="text-sm font-semibold text-slate-50">
-                    Témoignage
-                  </h3>
-                  <p className="mt-3 text-xs text-slate-200 italic leading-relaxed">
-                    “{(project as any).testimonial}”
-                  </p>
+            {/* FONCTIONNALITÉS */}
+            <div
+              id="fonctionnalites"
+              className="max-w-4xl mx-auto rounded-2xl border border-slate-800 bg-slate-950/80 p-6 hover:-translate-y-1 transition-transform duration-300"
+            >
+              <h3 className="text-sm font-semibold">Fonctionnalités clés</h3>
+              <ul className="mt-4 grid gap-2 text-xs sm:grid-cols-2 text-slate-300">
+                {project.features.map((f) => (
+                  <li key={f} className="flex gap-2">
+                    <span className="h-1.5 w-1.5 bg-sky-400 rounded-full mt-1.5" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-                  <p className="mt-3 text-[11px] text-slate-400">
-                    {(project as any).testimonialName}
-                    {project.testimonialRole && (
-                      <> · {(project as any).testimonialRole}</>
-                    )}
-                  </p>
+            {/* CTA FINAL + NAVIGATION */}
+            <div
+              id="cta-kosmonde"
+              className="pt-6 border-t border-slate-900/60"
+            >
+              <div className="max-w-3xl mx-auto text-center rounded-2xl border border-slate-800/70 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-6 py-8 space-y-4 shadow-[0_20px_60px_rgba(15,23,42,0.8)]">
+                <h3 className="text-sm font-semibold text-slate-50">
+                  Tu veux un site dans l’esprit de ce projet ?
+                </h3>
+                <p className="text-xs text-slate-400 max-w-xl mx-auto">
+                  On discute de ton projet, de tes objectifs, et on voit comment
+                  KOSMONDE peut t’aider à passer un cap en ligne. Tu poses ton
+                  univers, on s’occupe du reste.
+                </p>
+
+                <div className="flex flex-wrap justify-center gap-3 pt-2">
+                  <Link
+                    href="/#contact"
+                    className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-400 via-sky-300 to-sky-400 px-6 py-2 text-xs font-semibold text-slate-950 hover:brightness-110 transition-transform hover:-translate-y-0.5"
+                  >
+                    Parler de mon projet ↗
+                  </Link>
+
+                  <Link
+                    href="/#projets"
+                    className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-2 text-xs text-slate-200 hover:border-slate-500"
+                  >
+                    Voir d’autres projets
+                  </Link>
                 </div>
-              )}
+              </div>
 
-              {hasRoles && (
-                <div className="rounded-2xl border border-slate-800/80 bg-slate-950/95 p-5">
-                  <h3 className="text-sm font-semibold text-slate-50">
-                    Rôle de KOSMONDE
-                  </h3>
-                  <ul className="mt-3 space-y-2 text-xs text-slate-300">
-                    {(project as any).kosmondeRoles.map((r: string) => (
-                      <li key={r} className="flex gap-2">
-                        <span className="mt-1.5 inline-flex h-1.5 w-1.5 rounded-full bg-sky-400/90" />
-                        <span>{r}</span>
-                      </li>
-                    ))}
-                  </ul>
+              {(prevProject || nextProject) && (
+                <div className="flex justify-between text-[11px] text-slate-400 mt-6">
+                  {prevProject ? (
+                    <Link
+                      href={`/projets/${prevProject.slug}`}
+                      className="hover:text-sky-300 flex gap-1"
+                    >
+                      ← {prevProject.title}
+                    </Link>
+                  ) : (
+                    <span />
+                  )}
+
+                  {nextProject && (
+                    <Link
+                      href={`/projets/${nextProject.slug}`}
+                      className="hover:text-sky-300 flex gap-1"
+                    >
+                      {nextProject.title} →
+                    </Link>
+                  )}
                 </div>
               )}
             </div>
           </div>
-        )}
-
-        {/* FONCTIONNALITÉS */}
-        <div className="max-w-4xl mx-auto rounded-2xl border border-slate-800 bg-slate-950/80 p-6">
-          <h3 className="text-sm font-semibold">Fonctionnalités clés</h3>
-          <ul className="mt-4 grid gap-2 text-xs sm:grid-cols-2 text-slate-300">
-            {project.features.map((f) => (
-              <li key={f} className="flex gap-2">
-                <span className="h-1.5 w-1.5 bg-sky-400 rounded-full mt-1.5" />
-                {f}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* CTA FINAL + NAVIGATION */}
-        <div className="pt-10 border-t border-slate-900/60">
-          <div className="max-w-3xl mx-auto text-center rounded-2xl border border-slate-800/70 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-6 py-8 space-y-4 shadow-[0_20px_60px_rgba(15,23,42,0.8)]">
-            <h3 className="text-sm font-semibold text-slate-50">
-              Tu veux un site dans l’esprit de ce projet ?
-            </h3>
-            <p className="text-xs text-slate-400 max-w-xl mx-auto">
-              On discute de ton projet, de tes objectifs, et on voit comment
-              KOSMONDE peut t’aider à passer un cap en ligne.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-3 pt-2">
-              <Link
-                href="/#contact"
-                className="inline-flex items-center justify-center rounded-full bg-sky-400 px-6 py-2 text-xs font-semibold text-slate-950 hover:bg-sky-300 transition-transform hover:-translate-y-0.5"
-              >
-                Parler de mon projet ↗
-              </Link>
-
-              <Link
-                href="/#projets"
-                className="inline-flex items-center justify-center rounded-full border border-slate-700 px-6 py-2 text-xs text-slate-200 hover:border-slate-500"
-              >
-                Voir d’autres projets
-              </Link>
-            </div>
-          </div>
-
-          {(prevProject || nextProject) && (
-            <div className="flex justify-between text-[11px] text-slate-400 mt-6">
-              {prevProject ? (
-                <Link
-                  href={`/projets/${prevProject.slug}`}
-                  className="hover:text-sky-300 flex gap-1"
-                >
-                  ← {prevProject.title}
-                </Link>
-              ) : (
-                <span />
-              )}
-
-              {nextProject && (
-                <Link
-                  href={`/projets/${nextProject.slug}`}
-                  className="hover:text-sky-300 flex gap-1"
-                >
-                  {nextProject.title} →
-                </Link>
-              )}
-            </div>
-          )}
         </div>
       </section>
 
