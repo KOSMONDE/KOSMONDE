@@ -1,3 +1,5 @@
+import { sendMessage } from "@/app/actions/sendMessage";
+
 export function ContactSection() {
   return (
     <section id="contact" className="bg-slate-950">
@@ -11,7 +13,9 @@ export function ContactSection() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-[1.1fr,1fr]">
-          <form className="card-soft space-y-4">
+          {/* on avertit TypeScript que c'est une Server Action */}
+          {/* @ts-expect-error Server Action */}
+          <form action={sendMessage} className="card-soft space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <label
@@ -22,7 +26,9 @@ export function ContactSection() {
                 </label>
                 <input
                   id="name"
+                  name="name"
                   type="text"
+                  required
                   className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400"
                   placeholder="Ton nom ou celui de ta structure"
                 />
@@ -36,7 +42,9 @@ export function ContactSection() {
                 </label>
                 <input
                   id="email"
+                  name="email"
                   type="email"
+                  required
                   className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400"
                   placeholder="adresse@email.ch"
                 />
@@ -52,6 +60,7 @@ export function ContactSection() {
               </label>
               <select
                 id="project-type"
+                name="project-type"
                 className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400"
               >
                 <option value="">Choisir une option</option>
@@ -71,7 +80,9 @@ export function ContactSection() {
               </label>
               <textarea
                 id="message"
+                name="message"
                 rows={4}
+                required
                 className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400"
                 placeholder="Parle-moi de ton activité, de ce que tu veux que ton site fasse, de ton délai idéal..."
               />
@@ -90,6 +101,7 @@ export function ContactSection() {
             </p>
           </form>
 
+          {/* colonne texte inchangée */}
           <div className="space-y-4 text-sm text-slate-300">
             <p>
               Tu peux aussi simplement m’écrire un message direct avec
