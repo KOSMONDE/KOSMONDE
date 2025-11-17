@@ -1,3 +1,5 @@
+import { HeroSitePreview } from "@/components/HeroSitePreview";
+
 export function HeroSection() {
   return (
     <section
@@ -49,7 +51,7 @@ export function HeroSection() {
           </p>
         </div>
 
-        {/* COLONNE DROITE : PREVIEW KOSMONDE */}
+        {/* COLONNE DROITE : PREVIEW KOSMONDE ANIMÉE */}
         <div className="flex-1 flex justify-center lg:justify-end">
           <div className="relative w-full max-w-md group">
             {/* Ornements derrière la carte */}
@@ -57,51 +59,7 @@ export function HeroSection() {
             <div className="pointer-events-none absolute -right-10 -top-8 h-20 w-20 rounded-full border border-sky-500/40 opacity-50" />
             <div className="pointer-events-none absolute -left-6 bottom-0 h-16 w-16 rounded-full border border-slate-700/60 opacity-40" />
 
-            <div className="relative rounded-3xl border border-slate-800/80 bg-gradient-to-b from-slate-900/95 to-slate-950 shadow-[0_22px_60px_rgba(15,23,42,0.95)] px-4 py-4 sm:px-5 sm:py-5 transition-transform duration-500 group-hover:-translate-y-1">
-              {/* Barre du haut */}
-              <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-                <span className="h-2.5 w-2.5 rounded-full bg-rose-500" />
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-                <span className="ml-3 text-[11px] text-slate-400">
-                  kosmonde.ch
-                </span>
-              </div>
-
-              <div className="space-y-4 pt-4 text-xs text-slate-300">
-                {/* Hero du site */}
-                <div className="h-32 rounded-2xl border border-slate-800/80 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.35),transparent_60%),linear-gradient(to_br,#020617,#0f172a)] shadow-[0_16px_40px_rgba(15,23,42,0.9)]" />
-
-                {/* Deux blocs de contenu */}
-                <div className="flex gap-3">
-                  <div className="flex-1 rounded-xl border border-slate-800/80 bg-slate-900/80 px-3 py-3 space-y-2">
-                    <div className="h-2.5 w-20 rounded-full bg-slate-700/80" />
-                    <div className="h-2 w-28 rounded-full bg-slate-800/80" />
-                    <div className="h-2 w-16 rounded-full bg-slate-800/70" />
-                  </div>
-                  <div className="flex-1 rounded-xl border border-slate-800/80 bg-slate-900/80 px-3 py-3 space-y-2">
-                    <div className="h-2.5 w-16 rounded-full bg-sky-500/70" />
-                    <div className="h-2 w-24 rounded-full bg-slate-800/80" />
-                    <div className="h-2 w-20 rounded-full bg-slate-800/70" />
-                  </div>
-                </div>
-
-                {/* Bande CTA */}
-                <div className="rounded-xl border border-slate-800/80 bg-slate-900/80 px-3 py-3 flex items-center justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="h-2.5 w-24 rounded-full bg-slate-700/80" />
-                    <div className="h-2 w-32 rounded-full bg-slate-800/80" />
-                  </div>
-                  <div className="h-7 w-20 rounded-full bg-sky-400/90 shadow-[0_12px_30px_rgba(8,47,73,0.9)]" />
-                </div>
-
-                <p className="text-[11px] text-slate-500 leading-relaxed">
-                  Un design sobre, lisible et facile à parcourir. L’objectif :
-                  que ton visiteur comprenne en quelques secondes ce que tu
-                  proposes, et trouve rapidement ce qu’il cherche.
-                </p>
-              </div>
-            </div>
+            <HeroSitePreview />
           </div>
         </div>
       </div>

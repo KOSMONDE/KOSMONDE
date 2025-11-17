@@ -54,10 +54,10 @@ export function Header() {
 
           {/* CTA DESKTOP */}
           <Link
-            href="/#contact"
+            href="/offres"
             className="hidden md:inline-flex rounded-full bg-sky-400 px-5 py-2 text-xs font-medium text-slate-950 shadow-sm hover:bg-sky-300"
           >
-            Parler de mon projet
+            Voir les offres
           </Link>
 
           {/* BOUTON MOBILE */}
