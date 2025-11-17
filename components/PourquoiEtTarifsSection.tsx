@@ -58,7 +58,6 @@ export function PourquoiEtTarifsSection() {
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-20 mix-blend-screen bg-[radial-gradient(circle_at_top_right,rgba(148,163,184,0.3),transparent_55%)]" />
 
       <div className="container-kosmonde space-y-16 py-16 relative">
-
         {/* HEADER CENTRÉ */}
         <div className="text-center max-w-lg mx-auto space-y-3">
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50">
@@ -135,9 +134,24 @@ export function PourquoiEtTarifsSection() {
                 <p className="text-[11px] text-slate-400">{offre.subtitle}</p>
               </div>
 
-              <span className="mt-3 inline-block text-xs font-medium text-sky-300">
-                {offre.price}
-              </span>
+              {/* PRIX */}
+              {offre.name === "Standard" ? (
+                <div className="mt-3 flex items-baseline gap-2 text-xs font-medium">
+                  <span className="text-slate-500 line-through">
+                    À partir de 350 CHF
+                  </span>
+                  <span className="text-sky-100">
+                    À partir de 280 CHF
+                  </span>
+                  <span className="ml-auto inline-flex items-center rounded-full border border-emerald-400/60 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-300">
+                    -20%
+                  </span>
+                </div>
+              ) : (
+                <span className="mt-3 inline-block text-xs font-medium text-sky-300">
+                  {offre.price}
+                </span>
+              )}
 
               <p className="mt-3 text-[11px] text-slate-400 border-t border-slate-800/70 pt-3">
                 {offre.highlight}

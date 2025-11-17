@@ -5,36 +5,52 @@ import { useEffect, useRef } from "react";
 export function TrustCarousel() {
   const brands = ["SEKOBA COIFFURE", "RR COIFFURE", "GBM AVOCATS"];
 
-  // On répète 5x pour bien remplir la piste
-  const loopBrands = [
-    ...brands,
-    ...brands,
-    ...brands,
-    ...brands,
-    ...brands,
-  ];
+  // Nombre de répétitions de la séquence
+  const REPEAT = 5;
+  const loopBrands = Array.from({ length: REPEAT }, () => brands).flat();
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const isPaused = useRef(false);
+  const prefersReducedMotion = useRef(false);
 
   useEffect(() => {
     const container = containerRef.current;
     const track = trackRef.current;
     if (!container || !track) return;
 
+    // Accessibilité : prefers-reduced-motion
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    prefersReducedMotion.current = mediaQuery.matches;
+
+    const handleMotionChange = (event: MediaQueryListEvent) => {
+      prefersReducedMotion.current = event.matches;
+      if (event.matches) {
+        track.style.transform = "translateX(0)";
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleMotionChange);
+
+    if (prefersReducedMotion.current) {
+      track.style.transform = "translateX(0)";
+      return () => {
+        mediaQuery.removeEventListener("change", handleMotionChange);
+      };
+    }
+
     let frameId: number;
     let lastTime = performance.now();
     let shift = 0;
 
-    // IMPORTANT : même nombre que de répétitions dans loopBrands
-    const repeatCount = 5;
+    // largeur d’une séquence (1 répétition de [SEKOBA, RR, GBM])
+    let singleWidth = track.scrollWidth / REPEAT;
 
-    // largeur d'une séquence (1 répétition)
-    const singleWidth = track.scrollWidth / repeatCount;
+    const handleResize = () => {
+      singleWidth = track.scrollWidth / REPEAT;
+    };
 
-    // on démarre complètement à droite (hors écran)
-    const startOffset = container.offsetWidth;
+    window.addEventListener("resize", handleResize);
 
     // vitesse en px/s
     const speed = 40;
@@ -43,19 +59,28 @@ export function TrustCarousel() {
       const delta = (time - lastTime) / 1000;
       lastTime = time;
 
-      if (!isPaused.current) {
-        // on avance et on boucle sur la largeur d'une séquence
-        shift = (shift + speed * delta) % singleWidth;
-      }
+      if (!isPaused.current && !prefersReducedMotion.current) {
+        // on se déplace vers la gauche
+        shift -= speed * delta;
 
-      const translateX = startOffset - shift;
-      track.style.transform = `translateX(${translateX}px)`;
+        // quand on a défilé une séquence complète, on recale
+        if (Math.abs(shift) >= singleWidth) {
+          shift += singleWidth;
+        }
+
+        track.style.transform = `translateX(${shift}px)`;
+      }
 
       frameId = requestAnimationFrame(animate);
     };
 
     frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("resize", handleResize);
+      mediaQuery.removeEventListener("change", handleMotionChange);
+    };
   }, []);
 
   return (
@@ -77,7 +102,10 @@ export function TrustCarousel() {
 
       <div className="mt-6 relative">
         {/* Glow subtil */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(56,189,248,0.06),transparent_70%)] pointer-events-none" />
+        <div
+          className="absolute inset-0 bg-[radial-gradient(circle,rgba(56,189,248,0.06),transparent_70%)] pointer-events-none"
+          aria-hidden="true"
+        />
 
         {/* Masque pour fondre les bords */}
         <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
@@ -91,7 +119,11 @@ export function TrustCarousel() {
               isPaused.current = false;
             }}
           >
-            <div ref={trackRef} className="trust-track">
+            <div
+              ref={trackRef}
+              className="trust-track"
+              aria-hidden="true"
+            >
               {loopBrands.map((name, idx) => (
                 <div
                   key={`${name}-${idx}`}
@@ -104,6 +136,11 @@ export function TrustCarousel() {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Liste lisible pour les lecteurs d’écran */}
+          <div className="sr-only" aria-hidden={false}>
+            {brands.join(", ")}
           </div>
         </div>
       </div>

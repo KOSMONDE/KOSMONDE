@@ -17,6 +17,42 @@ export function ContactSection() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
+    const name = formData.get("name")?.toString().trim();
+    const email = formData.get("email")?.toString().trim();
+    const message = formData.get("message")?.toString().trim();
+
+    // VALIDATION MANUELLE
+    if (!name) {
+      setIsSending(false);
+      setStatus("error");
+      setErrorMessage("Le nom est obligatoire.");
+      return;
+    }
+
+    if (!email) {
+      setIsSending(false);
+      setStatus("error");
+      setErrorMessage("L’email est obligatoire.");
+      return;
+    }
+
+    // email simple vérification
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setIsSending(false);
+      setStatus("error");
+      setErrorMessage("L’email n’est pas valide.");
+      return;
+    }
+
+    if (!message) {
+      setIsSending(false);
+      setStatus("error");
+      setErrorMessage("Le message est obligatoire.");
+      return;
+    }
+
+    // ENVOI DU FORMULAIRE
     const result = await sendMessage(formData);
 
     if (result.success) {
@@ -40,6 +76,7 @@ export function ContactSection() {
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-20 mix-blend-screen bg-[radial-gradient(circle_at_top_right,rgba(148,163,184,0.32),transparent_55%)]" />
 
       <div className="container-kosmonde py-16 space-y-10 relative">
+
         {/* HEADER CENTRÉ */}
         <div className="max-w-xl mx-auto text-center space-y-3">
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50">
@@ -55,13 +92,12 @@ export function ContactSection() {
         </div>
 
         <div className="grid gap-10 md:grid-cols-[1.1fr,1fr] items-start">
+
           {/* FORMULAIRE */}
           <form
             onSubmit={handleSubmit}
             className="relative rounded-2xl border border-slate-800/70 bg-slate-950/90 p-6 sm:p-7 shadow-[0_20px_60px_rgba(15,23,42,0.9)] space-y-4"
-            noValidate
           >
-            {/* Glow interne */}
             <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.2),transparent_70%)]" />
 
             {status === "success" && (
@@ -73,47 +109,46 @@ export function ContactSection() {
 
             {status === "error" && (
               <p className="rounded-xl border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-xs text-rose-300">
-                Oups, l’envoi a échoué.{" "}
-                {errorMessage} Essaie à nouveau un peu plus tard ou écris-moi
-                directement par email.
+                {errorMessage}
               </p>
             )}
 
+            {/* NOM + EMAIL */}
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <label
                   htmlFor="name"
                   className="text-xs font-medium text-slate-200"
                 >
-                  Nom
+                  Nom *
                 </label>
                 <input
                   id="name"
                   name="name"
                   type="text"
-                  required
                   className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400/60"
                   placeholder="Ton nom ou celui de ta structure"
                 />
               </div>
+
               <div className="space-y-1.5">
                 <label
                   htmlFor="email"
                   className="text-xs font-medium text-slate-200"
                 >
-                  Email
+                  Email *
                 </label>
                 <input
                   id="email"
                   name="email"
                   type="email"
-                  required
                   className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400/60"
                   placeholder="adresse@email.ch"
                 />
               </div>
             </div>
 
+            {/* TYPE DE PROJET */}
             <div className="space-y-1.5">
               <label
                 htmlFor="project-type"
@@ -137,7 +172,7 @@ export function ContactSection() {
               </select>
             </div>
 
-            {/* Budget */}
+            {/* BUDGET */}
             <div className="space-y-1.5">
               <label
                 htmlFor="budget"
@@ -152,30 +187,30 @@ export function ContactSection() {
                 defaultValue=""
               >
                 <option value="">Je ne sais pas encore</option>
-                <option value="1000–2000 CHF">1 000 – 2 000 CHF</option>
-                <option value="2000–4000 CHF">2 000 – 4 000 CHF</option>
-                <option value="4000–7000 CHF">4 000 – 7 000 CHF</option>
-                <option value="7000+ CHF">+ de 7 000 CHF</option>
+                <option value="250–350 CHF">250 – 350 CHF</option>
+                <option value="350–450 CHF">350 – 450 CHF</option>
+                <option value="450+ CHF">+ de 450 CHF</option>
               </select>
             </div>
 
+            {/* MESSAGE */}
             <div className="space-y-1.5">
               <label
                 htmlFor="message"
                 className="text-xs font-medium text-slate-200"
               >
-                Message
+                Message *
               </label>
               <textarea
                 id="message"
                 name="message"
                 rows={4}
-                required
                 className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400/60"
                 placeholder="Parle-moi de ton activité, de ce que tu veux que ton site fasse, de ton délai idéal..."
               />
             </div>
 
+            {/* BOUTON */}
             <button
               type="submit"
               disabled={isSending}
@@ -198,7 +233,7 @@ export function ContactSection() {
             </p>
           </form>
 
-          {/* TEXTE D’ACCOMPAGNEMENT */}
+          {/* TEXTE ACCOMPAGNEMENT */}
           <div className="space-y-5 text-sm text-slate-300">
             <div className="rounded-2xl border border-slate-800/70 bg-slate-950/85 p-5 shadow-[0_16px_45px_rgba(15,23,42,0.85)]">
               <p>
@@ -239,6 +274,7 @@ export function ContactSection() {
               </p>
             </div>
           </div>
+
         </div>
       </div>
     </section>
