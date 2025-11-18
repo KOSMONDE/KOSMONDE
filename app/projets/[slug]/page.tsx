@@ -10,6 +10,39 @@ type Props = {
   params: ParamsPromise;
 };
 
+// On normalise les statuts français venant des données
+function getStatusConfig(rawStatus: unknown) {
+  const value = String(rawStatus ?? "").trim();
+
+  switch (value) {
+    case "En ligne":
+      return {
+        label: "En ligne",
+        dotClass: "bg-emerald-400",
+      };
+    case "En cours":
+      return {
+        label: "En cours",
+        dotClass: "bg-amber-400",
+      };
+    case "Liste d’attente":
+      return {
+        label: "Liste d’attente",
+        dotClass: "bg-violet-400",
+      };
+    case "Refont":
+      return {
+        label: "Refonte en cours",
+        dotClass: "bg-sky-400",
+      };
+    default:
+      return {
+        label: value || "Statut à définir",
+        dotClass: "bg-slate-500",
+      };
+  }
+}
+
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const cleanSlug = slug.trim();
@@ -28,19 +61,10 @@ export default async function ProjectPage({ params }: Props) {
     );
   }
 
-  const statusLabel =
-    project.status === "online"
-      ? "En ligne"
-      : project.status === "progress"
-      ? "En cours"
-      : "Refonte en cours";
-
-  const statusDotClass =
-    project.status === "online"
-      ? "bg-emerald-400"
-      : project.status === "progress"
-      ? "bg-amber-400"
-      : "bg-sky-400";
+  // Status FR venant des données (Ex: "En ligne", "En cours", "Liste d’attente", "Refont")
+  const { label: statusLabel, dotClass: statusDotClass } = getStatusConfig(
+    (project as any).status
+  );
 
   const quickInfoItems = [
     { label: "Client", value: (project as any).client },

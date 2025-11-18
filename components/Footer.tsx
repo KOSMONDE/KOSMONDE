@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type IconProps = {
   className?: string;
 };
@@ -5,11 +7,7 @@ type IconProps = {
 /* Icônes sociales simples en SVG */
 function InstagramIcon({ className }: IconProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={className}
-    >
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
       <rect
         x="3"
         y="3"
@@ -36,11 +34,7 @@ function InstagramIcon({ className }: IconProps) {
 
 function LinkedInIcon({ className }: IconProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={className}
-    >
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
       <rect
         x="3"
         y="3"
@@ -64,11 +58,7 @@ function LinkedInIcon({ className }: IconProps) {
 
 function WhatsAppIcon({ className }: IconProps) {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-      className={className}
-    >
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
       <path
         d="M12 3.5A8.5 8.5 0 0 0 4.1 16L3 20.5 7.6 19.4A8.5 8.5 0 1 0 12 3.5z"
         fill="none"
@@ -92,7 +82,7 @@ export function Footer() {
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.05),transparent_70%)]" />
 
       <div className="container-kosmonde py-12">
-        {/* 4 colonnes réparties régulièrement, responsive */}
+        {/* 4 colonnes réparties, responsive */}
         <div className="mx-auto max-w-6xl flex flex-col gap-10 md:flex-row md:justify-between">
           {/* Colonne 1 : texte studio */}
           <div className="md:w-1/4 space-y-4">
@@ -120,24 +110,24 @@ export function Footer() {
             </p>
 
             <nav className="flex flex-col space-y-1.5 text-xs text-slate-400">
-              <a href="#hero" className="hover:text-sky-300 transition">
+              <Link href="/#hero" className="hover:text-sky-300 transition">
                 Accueil
-              </a>
-              <a href="#projets" className="hover:text-sky-300 transition">
+              </Link>
+              <Link href="/#projets" className="hover:text-sky-300 transition">
                 Projets
-              </a>
-              <a href="#services" className="hover:text-sky-300 transition">
+              </Link>
+              <Link href="/#services" className="hover:text-sky-300 transition">
                 Services
-              </a>
-              <a href="#a-propos" className="hover:text-sky-300 transition">
+              </Link>
+              <Link href="/#a-propos" className="hover:text-sky-300 transition">
                 À propos
-              </a>
-              <a href="/faq" className="hover:text-sky-300 transition">
+              </Link>
+              <Link href="/faq" className="hover:text-sky-300 transition">
                 FAQ
-              </a>
-              <a href="#contact" className="hover:text-sky-300 transition">
+              </Link>
+              <Link href="/#contact" className="hover:text-sky-300 transition">
                 Contact
-              </a>
+              </Link>
             </nav>
           </div>
 
@@ -188,12 +178,12 @@ export function Footer() {
               Un site simple, lisible et aligné avec ta réalité.
             </p>
 
-            <a
-              href="#contact"
+            <Link
+              href="/#contact"
               className="text-xs text-sky-300 hover:text-sky-200"
             >
               Discuter de ton projet ↗
-            </a>
+            </Link>
 
             <p className="text-[10px] text-slate-600">
               Simplicité · Clarté · Structure
@@ -209,3 +199,6 @@ export function Footer() {
     </footer>
   );
 }
+
+// Permet : import Footer from "../../components/Footer";
+export default Footer;

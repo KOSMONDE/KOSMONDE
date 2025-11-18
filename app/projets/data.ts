@@ -1,5 +1,27 @@
-export type ProjectStatus = "online" | "progress" | "refonte";
+// ============================================================================
+// TYPES DE BASE POUR LES PROJETS KOSMONDE
+// ============================================================================
 
+// Statut global du projet (affiché en haut à droite : En ligne, En cours, etc.)
+export type ProjectStatus = "En ligne" | "En cours" | "Liste d’attente" | "Refont";
+// En ligne        = projet en ligne (terminé, visible)
+// En cours        = projet en cours de réalisation
+// Liste d’attente = projet accepté, pas encore démarré
+// Refont          = refonte d’un site existant
+
+// Tous les services possibles que tu peux afficher sous forme de badges.
+// Si tu ajoutes un nouveau type de service, tu l’ajoutes d’abord ici.
+export type ProjectService =
+  | "Site one-page"
+  | "Site vitrine complet"
+  | "Projet sur mesure"
+  | "Refonte de site"
+  | "Petites mises à jour"
+  | "Aide au contenu & structure"
+  | "Création de logo"
+  | "Cartes de visite";
+
+// Structure d’un projet
 export type Project = {
   slug: string;
   title: string;
@@ -13,7 +35,7 @@ export type Project = {
   link?: string;
   img: string;
 
-  // Propriétés optionnelles
+  // Propriétés optionnelles (tu peux les laisser vides)
   client?: string;
   sector?: string;
   year?: string | number;
@@ -25,7 +47,17 @@ export type Project = {
   testimonialRole?: string;
   kosmondeRoles?: string[];
   techBadges?: string[];
+
+  // SERVICES / BADGES
+  // - 0 service   → aucun badge, pas de "Pack du projet"
+  // - 1 service   → 1 badge simple
+  // - 2+ services → "Pack du projet" + tous les badges
+  services?: ProjectService[];
 };
+
+// ============================================================================
+// LISTE DES PROJETS (CONTENU "BACKEND")
+// ============================================================================
 
 export const projects: Project[] = [
   // ---------------------------------------------------------------------------
@@ -35,7 +67,7 @@ export const projects: Project[] = [
     slug: "salon-sekoba",
     title: "SEKOBA COIFFURE",
     type: "Site vitrine",
-    status: "online",
+    status: "En ligne",
     shortDesc:
       "Site vitrine complet pour un salon de coiffure avec prise de rendez-vous en ligne.",
     desc:
@@ -79,6 +111,9 @@ export const projects: Project[] = [
     ],
 
     techBadges: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+
+    // Services utilisés pour ce projet (3 services → Pack du projet)
+    services: ["Site vitrine complet", "Création de logo", "Cartes de visite"],
   },
 
   // ---------------------------------------------------------------------------
@@ -88,7 +123,7 @@ export const projects: Project[] = [
     slug: "gbm-avocats",
     title: "GBM Avocats",
     type: "Site vitrine",
-    status: "refonte",
+    status: "Refont",
     shortDesc:
       "Site vitrine structuré pour un cabinet d’avocats, actuellement en refonte moderne.",
     desc:
@@ -132,6 +167,11 @@ export const projects: Project[] = [
     ],
 
     techBadges: ["JavaScript", "Next.js", "Tailwind CSS"],
+
+    // Services utilisés pour ce projet (3 services → Pack du projet)
+    services: [
+      "Refonte de site",
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -141,7 +181,7 @@ export const projects: Project[] = [
     slug: "rr-coiffure",
     title: "RR COIFFURE",
     type: "Site vitrine",
-    status: "online",
+    status: "En cours",
     shortDesc:
       "Site vitrine sur mesure pour un salon de coiffure à Genève : services, tarifs, galerie et prise de rendez-vous.",
     desc:
@@ -185,5 +225,123 @@ export const projects: Project[] = [
     ],
 
     techBadges: ["Site vitrine", "Responsive", "Orienté SEO local"],
+
+    // Services utilisés pour ce projet (4 services → Pack du projet)
+    services: [
+      "Site vitrine complet",
+      "Aide au contenu & structure",
+      
+    ],
+  },
+
+  // ---------------------------------------------------------------------------
+  // PROJET 4 — Chiche ou pas Chiche
+  // ---------------------------------------------------------------------------
+  {
+    slug: "chiche-ou-pas-chiche",
+    title: "Chiche ou pas Chiche",
+    type: "Site vitrine",
+    status: "Liste d’attente",
+    shortDesc:
+      "Améliorations ciblées, optimisation du contenu et petites mises à jour pour un site déjà en ligne.",
+    desc:
+      "Intervention légère sur un site existant pour clarifier le contenu, améliorer la mise en page et rendre l’expérience plus fluide. L’objectif n’est pas de tout refaire, mais d’optimiser ce qui existe déjà pour que le site soit plus clair, plus agréable et plus efficace pour les visiteurs.",
+    context:
+      "Le site avait besoin de petites améliorations : certaines sections manquaient de lisibilité, le contenu n’était pas toujours mis en valeur et quelques éléments visuels pouvaient être modernisés. L’intervention se concentre sur des ajustements ciblés plutôt qu’une refonte complète.",
+    features: [
+      "Mise à jour de sections existantes",
+      "Réorganisation légère du contenu",
+      "Amélioration de la lisibilité et de la hiérarchie",
+      "Petites optimisations visuelles",
+    ],
+    techStack:
+      "Petites interventions front-end et ajustements de contenu pour améliorer l’UX sans refonte complète.",
+    // link: "", // ajoute l’URL du site si tu veux l’afficher dans la page projet
+    img: "/projets/CHICHE.png",
+
+    client: "Chiche ou pas Chiche",
+    sector: "Coaching / Développement personnel",
+    year: 2025,
+    role: "Petites mises à jour & amélioration UX",
+    heroSummary:
+      "Petites mises à jour ciblées pour rendre le site plus clair, plus cohérent et plus agréable à parcourir.",
+
+    results: [
+      "Structure de contenu plus lisible.",
+      "Sections clés mieux mises en valeur.",
+      "Site plus cohérent sans refonte totale.",
+    ],
+
+    kosmondeRoles: [
+      "Analyse des points à optimiser",
+      "Ajustements du contenu et des titres",
+      "Améliorations visuelles légères",
+    ],
+
+    techBadges: ["Petites mises à jour", "UX", "Optimisation légère"],
+
+    // Services utilisés pour ce projet (2 services → Pack du projet)
+    services: ["Petites mises à jour"],
+  },
+
+  // ---------------------------------------------------------------------------
+  // PROJET 5 — LashBrowsClub
+  // ---------------------------------------------------------------------------
+  {
+    slug: "lashbrowsclub",
+    title: "LashBrowsClub",
+    type: "Site vitrine",
+    status: "Liste d’attente",
+    shortDesc:
+      "Futur site vitrine pour un studio spécialisé en extensions de cils et restructuration des sourcils.",
+    desc:
+      "Création prévue d’un site vitrine pour un studio beauté spécialisé dans les extensions de cils, le rehaussement et la mise en forme des sourcils. L’objectif est de présenter clairement les prestations, rassurer les clientes et faciliter la prise de contact pour les rendez-vous.",
+    context:
+      "Le studio dispose déjà d’une présence sur les réseaux sociaux, mais pas encore d’un site structuré. Le projet vise à poser des bases solides : texte clair, univers visuel cohérent et parcours simple pour réserver ou poser des questions.",
+    features: [
+      "Présentation des prestations (cils, sourcils, soins)",
+      "Mise en avant des avant/après",
+      "Section FAQ pour rassurer les clientes",
+      "Page contact simple et efficace",
+    ],
+    techStack:
+      "Site vitrine moderne, pensé mobile-first, avec une structure claire pour évoluer plus tard vers la prise de rendez-vous en ligne.",
+    // link: "", // à renseigner une fois le site en ligne
+    img: "/projets/LASHBROWSCLUB.png",
+
+    client: "LashBrowsClub",
+    sector: "Beauté / Cils & Sourcils",
+    year: 2025,
+    role: "Conception UX/UI & structure de contenu",
+    heroSummary:
+      "Un futur site vitrine pour mettre en valeur les prestations cils & sourcils et préparer le terrain pour la réservation en ligne.",
+
+    results: [
+      "Brief défini et structure de contenu posée.",
+      "Univers visuel en cours de construction.",
+    ],
+
+    kosmondeRoles: [
+      "Clarification des objectifs du site",
+      "Structure de contenu centrée cliente",
+      "Direction UX pour un futur parcours de réservation",
+    ],
+
+    techBadges: ["Site vitrine", "Mobile-first", "Prêt pour réservation en ligne"],
+
+    // Version actuelle : projet simple = 1 service → 1 badge, pas de Pack du projet
+    services: ["Site vitrine complet","Création de logo","Aide au contenu & structure"],
+
+    // Pour activer le "Pack du projet" plus tard, ajoute simplement
+    // d’autres services dans le tableau (2+ services = Pack automatique).
+    // Badges disponibles :
+    //  - "Site one-page"
+    //  - "Site vitrine complet"
+    //  - "Projet sur mesure"
+    //  - "Refonte de site"
+    //  - "Petites mises à jour"
+    //  - "Aide au contenu & structure"
+    //  - "Création de logo"
+    //  - "Cartes de visite"
   },
 ];
