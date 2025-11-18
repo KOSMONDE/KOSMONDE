@@ -2,14 +2,18 @@ import * as React from "react";
 
 type KosmondeContactReplyEmailProps = {
   name: string;
-  projectType: string;
+  projectType?: string; // peut être optionnel
 };
 
 export function KosmondeContactReplyEmail({
   name,
   projectType,
 }: KosmondeContactReplyEmailProps) {
-  const firstName = name.split(" ")[0] || "Bonjour";
+  const firstName = (name || "").trim().split(" ")[0] || "Bonjour";
+  const normalizedProjectType =
+    projectType && projectType.trim().length > 0
+      ? projectType.trim().toLowerCase()
+      : "web";
 
   return (
     <div
@@ -70,7 +74,11 @@ export function KosmondeContactReplyEmail({
               >
                 {firstName},{" "}
                 merci d&apos;avoir pris le temps de m&apos;écrire à propos de
-                ton projet {projectType.toLowerCase() || "web"}.
+                ton projet{" "}
+                {normalizedProjectType === "web"
+                  ? "web"
+                  : `de type ${normalizedProjectType}`}
+                .
               </p>
 
               <p

@@ -35,7 +35,6 @@ export function AProposSection() {
             À propos de KOSMONDE
           </h2>
 
-          {/* Intro compacte */}
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
             Je suis Yanis, créateur de sites web basé en Suisse.
             J’aide les personnes et petites structures à obtenir un site clair,
@@ -53,7 +52,6 @@ export function AProposSection() {
             Ma façon de travailler
           </p>
 
-          {/* GRID CARTES — même hauteur + hover + glow bleu */}
           <div className="grid gap-4 sm:grid-cols-3">
             {valeurs.map((v) => (
               <div
@@ -67,13 +65,14 @@ export function AProposSection() {
                   hover:-translate-y-1 hover:shadow-[0_20px_55px_rgba(8,47,73,0.9)]
                 "
               >
-                {/* Glow bleu au hover */}
-                <div className="
-                  pointer-events-none absolute inset-0 -z-10
-                  opacity-0 group-hover:opacity-100
-                  transition-opacity duration-500
-                  bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_70%)]
-                " />
+                <div
+                  className="
+                    pointer-events-none absolute inset-0 -z-10
+                    opacity-0 group-hover:opacity-100
+                    transition-opacity duration-500
+                    bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_70%)]
+                  "
+                />
 
                 <div>
                   <p className="flex items-center gap-1.5 text-[11px] font-medium text-slate-100">
@@ -90,15 +89,9 @@ export function AProposSection() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="text-center pt-2">
-          <a
-            href="#contact"
-            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-400 via-sky-300 to-sky-400 px-5 py-2.5 text-xs font-semibold text-slate-950 shadow-[0_18px_40px_rgba(8,47,73,0.8)] hover:brightness-110 transition-transform hover:-translate-y-0.5"
-          >
-            Discuter de ton projet ↗
-          </a>
-          <p className="mt-2 text-[11px] text-slate-500">
+        {/* Phrase remontée */}
+        <div className="text-center pt-1">
+          <p className="text-[11px] text-slate-500">
             Quelques lignes suffisent pour commencer. On clarifie ensemble la suite.
           </p>
         </div>

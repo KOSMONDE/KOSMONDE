@@ -3,8 +3,7 @@ import * as React from "react";
 type KosmondeContactEmailProps = {
   name: string;
   email: string;
-  projectType: string;
-  budget?: string;
+  projectType?: string;
   message: string;
   receivedAt?: Date;
 };
@@ -13,7 +12,6 @@ export function KosmondeContactEmail({
   name,
   email,
   projectType,
-  budget = "Non précisé",
   message,
   receivedAt,
 }: KosmondeContactEmailProps) {
@@ -125,29 +123,20 @@ export function KosmondeContactEmail({
                       </a>
                     </td>
                   </tr>
-                  <tr>
-                    <td
-                      style={{
-                        padding: "14px 16px",
-                        borderBottom: "1px solid #1f2937",
-                        fontSize: "13px",
-                        color: "#e5e7eb",
-                      }}
-                    >
-                      <strong>Type de projet :</strong> {projectType}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      style={{
-                        padding: "14px 16px",
-                        fontSize: "13px",
-                        color: "#e5e7eb",
-                      }}
-                    >
-                      <strong>Budget :</strong> {budget}
-                    </td>
-                  </tr>
+
+                  {projectType && (
+                    <tr>
+                      <td
+                        style={{
+                          padding: "14px 16px",
+                          fontSize: "13px",
+                          color: "#e5e7eb",
+                        }}
+                      >
+                        <strong>Type de projet :</strong> {projectType}
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
 

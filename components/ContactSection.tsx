@@ -21,7 +21,6 @@ export function ContactSection() {
     const email = formData.get("email")?.toString().trim();
     const message = formData.get("message")?.toString().trim();
 
-    // Validation
     if (!name) {
       setIsSending(false);
       setStatus("error");
@@ -51,7 +50,6 @@ export function ContactSection() {
       return;
     }
 
-    // Envoi
     const result = await sendMessage(formData);
 
     if (result.success) {
@@ -81,8 +79,8 @@ export function ContactSection() {
             Parlons de ton projet
           </h2>
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-            Quelques phrases suffisent pour commencer. Tu peux décrire ton
-            activité, ton besoin, ton délai idéal ou simplement ton idée.
+            Tu m’expliques ton besoin en quelques phrases, je te réponds avec
+            une première piste concrète.
           </p>
           <p className="text-[11px] text-slate-500 uppercase tracking-[0.22em]">
             Premier échange · Sans engagement
@@ -90,46 +88,107 @@ export function ContactSection() {
         </div>
 
         {/* BLOCS 50/50 AU-DESSUS DU FORMULAIRE */}
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
           {/* Bloc 1 — Message direct */}
-          <div className="rounded-2xl border border-slate-800/70 bg-slate-950/85 p-6 shadow-[0_16px_45px_rgba(15,23,42,0.85)] space-y-4">
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Tu peux aussi simplement m’écrire un message direct avec quelques
-              lignes sur ton projet. On clarifie ensemble ce qui est possible,
-              sans pression.
+          <div className="group relative flex flex-col rounded-2xl border border-slate-800/70 bg-slate-950/85 p-6 shadow-[0_16px_45px_rgba(15,23,42,0.85)] overflow-hidden">
+            <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.22),transparent_70%)]" />
+
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900/90 border border-slate-700/80 text-sm">
+                  💬
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                    Premier contact
+                  </p>
+                  <h3 className="text-sm font-semibold text-slate-50">
+                    M’écrire en quelques lignes
+                  </h3>
+                </div>
+              </div>
+              <span className="text-[10px] text-slate-500 uppercase tracking-[0.18em]">
+                1 / 2
+              </span>
+            </div>
+
+            <p className="mt-4 text-sm text-slate-300 leading-relaxed">
+              Tu me décris ton activité et ton besoin en 3–4 phrases. Je te
+              réponds avec un retour clair, sans pression.
             </p>
 
-            <div className="space-y-2 text-xs text-slate-400 leading-relaxed">
-              <p>• Tu as déjà un site et tu veux le refaire ?</p>
-              <p>• Tu pars de zéro et tu ne sais pas par où commencer ?</p>
-              <p>• Tu veux juste un avis sur ton idée ?</p>
-              <p>
-                Dans tous les cas, on pose les choses calmement et on décide de
-                la suite ensuite.
-              </p>
+            <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-slate-400">
+              <span className="rounded-full border border-slate-700/70 px-2 py-1">
+                Refaire un site
+              </span>
+              <span className="rounded-full border border-slate-700/70 px-2 py-1">
+                Créer un premier site
+              </span>
+              <span className="rounded-full border border-slate-700/70 px-2 py-1">
+                Avis rapide sur une idée
+              </span>
             </div>
+
+            <p className="mt-4 text-[11px] text-slate-500">
+              On pose la situation, puis on voit ensemble la meilleure suite.
+            </p>
           </div>
 
           {/* Bloc 2 — Coordonnées */}
-          <div className="rounded-2xl border border-slate-800/70 bg-slate-950/85 p-6 shadow-[0_16px_45px_rgba(15,23,42,0.85)] space-y-3 text-xs">
-            <p className="font-medium text-slate-200 text-[11px] uppercase tracking-[0.18em]">
-              Coordonnées
+          <div className="group relative flex flex-col rounded-2xl border border-slate-800/70 bg-slate-950/85 p-6 shadow-[0_16px_45px_rgba(15,23,42,0.85)] text-xs overflow-hidden">
+            <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.22),transparent_70%)]" />
+
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900/90 border border-slate-700/80 text-sm">
+                  ✉️
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+                    Coordonnées
+                  </p>
+                  <h3 className="text-sm font-semibold text-slate-50">
+                    Contact direct avec le studio
+                  </h3>
+                </div>
+              </div>
+              <span className="text-[10px] text-slate-500 uppercase tracking-[0.18em]">
+                2 / 2
+              </span>
+            </div>
+
+            <div className="mt-5 text-slate-300 text-sm space-y-2">
+              <span className="text-slate-400 text-[10px] uppercase tracking-[0.18em]">
+                Email direct
+              </span>
+
+              <div className="inline-flex w-full max-w-full flex-wrap items-center gap-2 rounded-full border border-sky-400/60 bg-slate-950/90 px-3 py-1.5 text-[11px]">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <a
+                  href="mailto:contact@kosmonde.ch"
+                  className="text-sky-300 hover:text-sky-200 truncate"
+                >
+                  contact@kosmonde.ch
+                </a>
+                <span className="text-slate-500 whitespace-nowrap">
+                  · Réponse sous 24–48h
+                </span>
+              </div>
+            </div>
+
+            <p className="mt-4 text-slate-400 leading-relaxed text-xs">
+              Un seul interlocuteur pour suivre ton projet, du premier message
+              à la mise en ligne.
             </p>
 
-            <p className="text-slate-300 text-sm">
-              Email :{" "}
-              <a
-                href="mailto:contact@kosmonde.ch"
-                className="text-sky-300 hover:text-sky-200"
-              >
-                contact@kosmonde.ch
-              </a>
-            </p>
-
-            <p className="text-slate-400 leading-relaxed">
-              Tu développes ton projet, KOSMONDE t’aide à lui donner une
-              présence claire sur le web.
-            </p>
+            <div className="mt-5 flex flex-wrap gap-2 text-[10px] text-slate-500">
+              <span className="rounded-full border border-slate-700/70 px-2 py-1">
+                Pas de newsletter
+              </span>
+              <span className="rounded-full border border-slate-700/70 px-2 py-1">
+                Échange confidentiel
+              </span>
+            </div>
           </div>
         </div>
 
@@ -225,7 +284,7 @@ export function ContactSection() {
               name="message"
               rows={4}
               className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-3 py-2 text-xs text-slate-50 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400/60"
-              placeholder="Parle-moi de ton activité, de ce que tu veux que ton site fasse, de ton délai idéal..."
+              placeholder="Dis-moi où tu en es, ce que tu veux obtenir et ton délai idéal."
             />
           </div>
 
@@ -247,8 +306,8 @@ export function ContactSection() {
           </button>
 
           <p className="text-[11px] text-slate-500">
-            En cliquant sur envoyer, tu acceptes que je te contacte par email
-            pour parler de ton projet. Aucune newsletter automatique.
+            Tu envoies un message, je reviens vers toi par email. Rien
+            d’automatique, pas de newsletter.
           </p>
         </form>
       </div>
