@@ -119,7 +119,7 @@ export default function FAQPage() {
               href="/#contact"
               className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-400 via-sky-300 to-sky-400 px-5 py-2.5 text-xs font-semibold text-slate-950 shadow-[0_18px_40px_rgba(8,47,73,0.8)] hover:brightness-110 transition-transform hover:-translate-y-0.5"
             >
-              ller au formulaire de contact ↗
+              Aller au formulaire de contact ↗
             </Link>
           </div>
         </div>
