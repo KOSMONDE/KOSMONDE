@@ -42,14 +42,14 @@ export function ProjectsSection() {
               Projets & exemples
             </h2>
             <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-              Quelques réalisations représentatives du style, des structures et
-              des fonctionnalités que je crée.
+              Une sélection de projets pour te donner une idée du style, des
+              structures et des niveaux de détail que je propose.
             </p>
           </div>
 
           <div className="space-y-2 text-right">
             <p className="text-[11px] text-slate-500 uppercase tracking-[0.22em]">
-              {projects.length} projets — en ligne · en cours · refonte
+              {projects.length} projets · en ligne · en cours · refonte
             </p>
 
             {/* FILTRES */}
@@ -88,7 +88,7 @@ export function ProjectsSection() {
                 ? "En ligne"
                 : normalizedStatus === "progress"
                 ? "En cours"
-                : "Refonte en cours";
+                : "Refonte";
 
             const statusDotClass =
               normalizedStatus === "online"
@@ -108,9 +108,7 @@ export function ProjectsSection() {
               <Link
                 key={proj.slug}
                 href={`/projets/${proj.slug}`}
-                className={
-                  isHero ? "md:col-span-2 lg:col-span-3 group" : "group"
-                }
+                className={isHero ? "md:col-span-2 lg:col-span-3 group" : "group"}
               >
                 <article
                   className={[
@@ -168,8 +166,7 @@ export function ProjectsSection() {
 
                     {isHero && (
                       <p className="text-[11px] text-sky-300 pt-1">
-                        Projet mis en avant — parfait pour découvrir l’approche
-                        KOSMONDE en détail.
+                        Projet mis en avant pour découvrir concrètement l’approche KOSMONDE.
                       </p>
                     )}
 

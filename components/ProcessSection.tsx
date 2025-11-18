@@ -33,19 +33,16 @@ export function ProcessSection() {
         {/* TITRE + SOUS-TITRE */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50">
-            Un processus en 3 étapes
+            Comment se déroule un projet ?
           </h2>
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-            Tu sais toujours où on en est. Pas de jargon inutile, pas de surprise.
+            Trois étapes claires, sans jargon, pour avancer sereinement du premier échange à la mise en ligne.
           </p>
 
           <p className="text-[11px] text-slate-500 uppercase tracking-[0.22em] mt-1">
-            Simple · Transparent · Efficace
+            Simple · Transparent · Structuré
           </p>
         </div>
-
-        {/* LIGNE DE PROGRESSION (desktop) */}
-        <div className="hidden md:block absolute left-1/2 top-[310px] -translate-x-1/2 w-[65%] h-px bg-gradient-to-r from-transparent via-sky-500/30 to-transparent pointer-events-none" />
 
         {/* STEPS */}
         <ol className="grid gap-8 md:gap-6 md:grid-cols-3 max-w-5xl mx-auto">

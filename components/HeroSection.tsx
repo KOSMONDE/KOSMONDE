@@ -27,8 +27,9 @@ export function HeroSection() {
 
           <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
             KOSMONDE t’accompagne dans la création d’un site simple à comprendre,
-            agréable à utiliser et facile à faire évoluer. Idéal pour indépendants,
-            petites entreprises, artistes et projets créatifs.
+            agréable à utiliser et facile à faire évoluer. Pour des projets
+            sérieux — même avec de petits moyens : indépendants, petites
+            entreprises, artistes, associations et projets perso.
           </p>
 
           <div className="flex flex-wrap gap-3 pt-1">
@@ -47,7 +48,8 @@ export function HeroSection() {
           </div>
 
           <p className="text-xs text-slate-400">
-            100% sur mesure · Mobile-friendly · Explications simples
+            Tu dois pouvoir te reconnaître rapidement en ligne. 100% sur mesure ·
+            Mobile-friendly · Explications simples.
           </p>
         </div>
 
