@@ -84,7 +84,7 @@ export const projects: Project[] = [
     techStack:
       "Site vitrine moderne avec intégration d’outils de réservation et d’avis externes.",
     link: "https://www.sekoba-coiffure.ch/",
-    img: "/projets/SEKOBA.png",
+    img: "/projets/sekoba-coiffure.png",
 
     client: "Salon de coiffure SEKOBA",
     sector: "Beauté / Coiffure",
@@ -171,6 +171,7 @@ export const projects: Project[] = [
     // Services utilisés pour ce projet (3 services → Pack du projet)
     services: [
       "Refonte de site",
+      "Aide au contenu & structure"
     ],
   },
 
@@ -257,7 +258,7 @@ export const projects: Project[] = [
     techStack:
       "Petites interventions front-end et ajustements de contenu pour améliorer l’UX sans refonte complète.",
     // link: "", // ajoute l’URL du site si tu veux l’afficher dans la page projet
-    img: "/projets/CHICHE.png",
+    img: "/projets/chicheoupaschiche.png",
 
     client: "Chiche ou pas Chiche",
     sector: "Coaching / Développement personnel",
@@ -281,7 +282,7 @@ export const projects: Project[] = [
     techBadges: ["Petites mises à jour", "UX", "Optimisation légère"],
 
     // Services utilisés pour ce projet (2 services → Pack du projet)
-    services: ["Petites mises à jour"],
+    services: ["Petites mises à jour" , "Aide au contenu & structure"],
   },
 
   // ---------------------------------------------------------------------------
@@ -307,7 +308,7 @@ export const projects: Project[] = [
     techStack:
       "Site vitrine moderne, pensé mobile-first, avec une structure claire pour évoluer plus tard vers la prise de rendez-vous en ligne.",
     // link: "", // à renseigner une fois le site en ligne
-    img: "/projets/LASHBROWSCLUB.png",
+    img: "/projets/lashbrowsclub.ch.png",
 
     client: "LashBrowsClub",
     sector: "Beauté / Cils & Sourcils",

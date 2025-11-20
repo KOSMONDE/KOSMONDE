@@ -36,7 +36,7 @@ export function ProcessSection() {
             Comment se déroule un projet ?
           </h2>
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-            Trois étapes claires, sans jargon, pour avancer sereinement du premier échange à la mise en ligne.
+            Trois étapes claires pour transformer ton idée en site en ligne, en toute sérénité.
           </p>
 
           <p className="text-[11px] text-slate-500 uppercase tracking-[0.22em] mt-1">

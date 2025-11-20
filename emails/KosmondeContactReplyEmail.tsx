@@ -62,7 +62,7 @@ export function KosmondeContactReplyEmail({
                   margin: "0 0 8px 0",
                 }}
               >
-                Merci pour ton message
+                Merci pour votre message
               </h1>
 
               <p
@@ -74,7 +74,7 @@ export function KosmondeContactReplyEmail({
               >
                 {firstName},{" "}
                 merci d&apos;avoir pris le temps de m&apos;écrire à propos de
-                ton projet{" "}
+                votre projet{" "}
                 {normalizedProjectType === "web"
                   ? "web"
                   : `de type ${normalizedProjectType}`}
@@ -88,9 +88,9 @@ export function KosmondeContactReplyEmail({
                   margin: "0 0 16px 0",
                 }}
               >
-                Je lis chaque message avec attention et je reviens vers toi
-                rapidement pour te proposer une façon simple d&apos;avancer,
-                même si tu pars de zéro.
+                Je lis chaque message avec attention et je reviens vers vous
+                rapidement pour vous proposer une façon simple d&apos;avancer,
+                même si vous partez de zéro.
               </p>
 
               <p
@@ -100,7 +100,7 @@ export function KosmondeContactReplyEmail({
                   margin: "0 0 20px 0",
                 }}
               >
-                En attendant, tu peux revoir quelques exemples de sites sur{" "}
+                En attendant, vous pouvez revoir quelques exemples de sites sur{" "}
                 <a
                   href="https://www.kosmonde.ch/#projets"
                   style={{ color: "#38bdf8", textDecoration: "none" }}

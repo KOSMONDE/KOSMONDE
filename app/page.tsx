@@ -12,15 +12,34 @@ import { Footer } from "../components/Footer";
 export default function Home() {
   return (
     <main className="bg-slate-950 text-slate-50">
+      {/* 1. Header */}
       <Header />
+
+      {/* 2. Hero : accroche + promesse */}
       <HeroSection />
-      <ServicesSection />
-      <ProcessSection />
-      <ProjectsSection />
-      <PourquoiSection />
+
+      {/* 3. À propos : humaniser et donner confiance */}
       <AProposSection />
-      <ContactSection />
+
+      {/* 4. Services : solutions proposées */}
+      <ServicesSection />
+
+      {/* 5. Processus : rassurer le client */}
+      <ProcessSection />
+
+      {/* 6. Portfolio : preuves concrètes */}
+      <ProjectsSection />
+
+      {/* 7. Pourquoi : besoins + problèmes */}
+      <PourquoiSection />
+
+      {/* 8. FAQ : répondre aux objections */}
       <MiniFAQ />
+
+      {/* 9. Contact : convertir */}
+      <ContactSection />
+
+      {/* 10. Footer */}
       <Footer />
     </main>
   );

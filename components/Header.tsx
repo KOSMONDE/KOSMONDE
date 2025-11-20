@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 
+// NOUVEL ORDRE DES LIENS
 const navLinks = [
   { label: "Accueil", href: "/" },
+  { label: "À propos", href: "/#a-propos" },
   { label: "Services", href: "/#services" },
   { label: "Projets", href: "/#projets" },
-  { label: "À propos", href: "/#a-propos" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -45,8 +46,6 @@ export function Header() {
                 className="relative group hover:text-white transition"
               >
                 {link.label}
-
-                {/* UNDERLINE ANIMÉ */}
                 <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-sky-400 transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
@@ -54,10 +53,10 @@ export function Header() {
 
           {/* CTA DESKTOP */}
           <Link
-            href="/offres"
+            href="/#contact"
             className="hidden md:inline-flex rounded-full bg-sky-400 px-5 py-2 text-xs font-medium text-slate-950 shadow-sm hover:bg-sky-300"
           >
-            Voir les offres
+            Parler de mon projet
           </Link>
 
           {/* BOUTON MOBILE */}
@@ -78,10 +77,7 @@ export function Header() {
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        {/* FOND FLOU BLEU PREMIUM */}
         <div className="absolute inset-0 backdrop-blur-2xl bg-[#0A1A2BCC]" />
-
-        {/* Glow subtil */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.15),transparent_75%)] pointer-events-none" />
 
         {/* MENU MOBILE */}
@@ -92,7 +88,7 @@ export function Header() {
         >
           <div className="container-kosmonde flex h-full flex-col pt-6 pb-10">
 
-            {/* TOP BAR MOBILE */}
+            {/* TOP */}
             <div className="flex items-center justify-between h-12 mb-12">
               <span className="text-[11px] font-semibold tracking-[0.3em] text-slate-300">
                 KOSMONDE
