@@ -33,7 +33,15 @@ export function HeroSitePreview() {
   const isBuilding = phase === "building";
 
   return (
-    <div className="relative w-full h-[380px] sm:h-[420px] lg:h-[440px] rounded-3xl border border-slate-800/80 bg-gradient-to-b from-slate-900/95 to-slate-950 px-4 py-4 shadow-[0_22px_60px_rgba(15,23,42,0.95)] sm:px-5 sm:py-5">
+    <div
+      className="
+        relative w-full
+        rounded-3xl border border-slate-800/80
+        bg-gradient-to-b from-slate-900/95 to-slate-950
+        px-4 py-4 shadow-[0_22px_60px_rgba(15,23,42,0.95)]
+        sm:px-5 sm:py-5
+      "
+    >
       <div className="flex h-full flex-col">
         {/* Barre du navigateur */}
         <div className="mb-3 flex items-center gap-2 border-b border-slate-800 pb-3">
@@ -129,7 +137,7 @@ export function HeroSitePreview() {
           </div>
 
           {/* FORMATS (One-page / Vitrine) */}
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             {/* One-page */}
             <div
               className={`flex-1 rounded-xl border px-3 py-3 transition-all duration-500 ${

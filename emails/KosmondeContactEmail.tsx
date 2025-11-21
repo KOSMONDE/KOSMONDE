@@ -68,6 +68,7 @@ export function KosmondeContactEmail({
               >
                 Nouveau message depuis le site KOSMONDE
               </h1>
+
               <p
                 style={{
                   fontSize: "13px",
@@ -75,10 +76,10 @@ export function KosmondeContactEmail({
                   margin: "0 0 20px 0",
                 }}
               >
-                Tu as reçu un nouveau message via le formulaire de contact.
+                Vous avez reçu un nouveau message via le formulaire de contact.
               </p>
 
-              {/* Bloc infos principales */}
+              {/* Infos principales */}
               <table
                 width="100%"
                 cellPadding={0}
@@ -105,6 +106,7 @@ export function KosmondeContactEmail({
                       <strong>Nom :</strong> {name}
                     </td>
                   </tr>
+
                   <tr>
                     <td
                       style={{
@@ -159,6 +161,7 @@ export function KosmondeContactEmail({
                 >
                   Message :
                 </div>
+
                 <div
                   style={{
                     fontSize: "13px",
