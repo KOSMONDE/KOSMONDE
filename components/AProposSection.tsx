@@ -15,7 +15,7 @@ export function AProposSection() {
     {
       icon: "🤝",
       label: "Comment on avance",
-      text: "Un rythme posé, des étapes visibles, des décisions prises ensemble, sans pression ni jargon.",
+      text: "Un rythme posé, des étapes visibles et des décisions prises ensemble, avec une communication claire.",
     },
   ];
 

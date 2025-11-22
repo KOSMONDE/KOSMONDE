@@ -27,12 +27,11 @@ export function Header() {
     <>
       {/* HEADER */}
       <header className="sticky top-0 z-30 border-b border-slate-900/50 bg-[#0B1525CC] backdrop-blur-xl">
-        <div className="container-kosmonde flex h-20 items-center justify-between">
-
+        <div className="container-kosmonde flex h-14 items-center justify-between md:h-20">
           {/* LOGO */}
           <Link
             href="/"
-            className="text-xs font-semibold uppercase tracking-[0.3em] hover:text-sky-300 transition-colors"
+            className="text-[11px] font-semibold uppercase tracking-[0.3em] hover:text-sky-300 transition-colors"
           >
             KOSMONDE
           </Link>
@@ -56,16 +55,24 @@ export function Header() {
             href="/#contact"
             className="hidden md:inline-flex rounded-full bg-sky-400 px-5 py-2 text-xs font-medium text-slate-950 shadow-sm hover:bg-sky-300"
           >
-            Parler de mon projet
+            Contact
           </Link>
 
           {/* BOUTON MOBILE */}
           <button
-            className="md:hidden text-slate-300 hover:text-white transition"
+            className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-300 hover:text-white transition"
             onClick={toggleMenu}
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
           >
-            <svg width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M4 7h18M4 13h18M4 19h18" strokeLinecap="round" />
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden="true"
+            >
+              <path d="M4 6h12M4 10h12M4 14h12" strokeLinecap="round" />
             </svg>
           </button>
         </div>
@@ -86,17 +93,27 @@ export function Header() {
             open ? "translate-y-0" : "-translate-y-4"
           }`}
         >
-          <div className="container-kosmonde flex h-full flex-col pt-6 pb-10">
-
+          <div className="container-kosmonde flex h-full flex-col pt-4 pb-8">
             {/* TOP */}
-            <div className="flex items-center justify-between h-12 mb-12">
+            <div className="flex items-center justify-between h-10 mb-8">
               <span className="text-[11px] font-semibold tracking-[0.3em] text-slate-300">
                 KOSMONDE
               </span>
 
-              <button onClick={closeMenu} className="text-slate-300 hover:text-white transition">
-                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M6 6l10 10M16 6L6 16" strokeLinecap="round" />
+              <button
+                onClick={closeMenu}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-300 hover:text-white transition"
+                aria-label="Fermer le menu"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M6 6l6 6M12 6L6 12" strokeLinecap="round" />
                 </svg>
               </button>
             </div>
@@ -119,12 +136,12 @@ export function Header() {
                 onClick={closeMenu}
                 className="mt-4 inline-flex rounded-full bg-sky-400 px-7 py-3 text-sm font-medium text-slate-950 hover:bg-sky-300 shadow-[0_12px_30px_rgba(8,47,73,0.6)]"
               >
-                Parler de mon projet
+                Contact
               </Link>
             </div>
 
             {/* FOOTER MOBILE */}
-            <div className="pt-10 text-[11px] text-center text-slate-400">
+            <div className="pt-8 text-[11px] text-center text-slate-400">
               Studio web basé en Suisse · Disponible à distance
             </div>
           </div>

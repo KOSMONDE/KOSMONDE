@@ -2,7 +2,7 @@
 // TYPES DE BASE POUR LES PROJETS KOSMONDE
 // ============================================================================
 
-// Statut global du projet (affiché en haut à droite : En ligne, En cours, etc.)
+// Statut global du projet (affiché en haut : En ligne, En cours, etc.)
 export type ProjectStatus = "En ligne" | "En cours" | "Liste d’attente" | "Refont";
 // En ligne        = projet en ligne (terminé, visible)
 // En cours        = projet en cours de réalisation
@@ -10,7 +10,6 @@ export type ProjectStatus = "En ligne" | "En cours" | "Liste d’attente" | "Ref
 // Refont          = refonte d’un site existant
 
 // Tous les services possibles que tu peux afficher sous forme de badges.
-// Si tu ajoutes un nouveau type de service, tu l’ajoutes d’abord ici.
 export type ProjectService =
   | "Site one-page"
   | "Site vitrine complet"
@@ -35,23 +34,33 @@ export type Project = {
   link?: string;
   img: string;
 
-  // Propriétés optionnelles (tu peux les laisser vides)
+  // Carte d’identité du projet
   client?: string;
   sector?: string;
   year?: string | number;
   role?: string;
   heroSummary?: string;
-  results?: string[];
+
+  // Histoire & résultats
+  results?: string[];         // Résultats qualitatifs
+  metrics?: string[];         // Résultats chiffrés (ex: "+45% de demandes")
   testimonial?: string;
   testimonialName?: string;
   testimonialRole?: string;
   kosmondeRoles?: string[];
+
+  // Storytelling avancé (sections dédiées)
+  clientObjectives?: string[]; // Objectifs du client
+  beforeState?: string;        // Situation "Avant"
+  afterState?: string;         // Situation "Après"
+  challenges?: string[];       // Défis identifiés
+  solutions?: string[];        // Solutions apportées
+  processSteps?: string[];     // Étapes du processus KOSMONDE
+
+  // Tech / badges
   techBadges?: string[];
 
-  // SERVICES / BADGES
-  // - 0 service   → aucun badge, pas de "Pack du projet"
-  // - 1 service   → 1 badge simple
-  // - 2+ services → "Pack du projet" + tous les badges
+  // Services utilisés pour ce projet (badges + Pack du projet)
   services?: ProjectService[];
 };
 
@@ -93,9 +102,39 @@ export const projects: Project[] = [
     heroSummary:
       "Site vitrine moderne pour un salon de coiffure, avec réservation en ligne et mise en valeur des cheveux texturés.",
 
+    // Objectifs du client
+    clientObjectives: [
+      "Permettre aux clientes de prendre rendez-vous facilement en ligne.",
+      "Présenter clairement les services et les tarifs.",
+      "Renforcer l’image moderne et professionnelle du salon.",
+    ],
+
+    // Avant / Après
+    beforeState:
+      "Le salon n’avait qu’une présence limitée en ligne, principalement via les réseaux sociaux, sans site structuré ni prise de rendez-vous centralisée.",
+    afterState:
+      "Un site clair, moderne, avec une page services structurée, des avis mis en avant et une réservation en ligne accessible en quelques clics.",
+
+    // Défis & solutions
+    challenges: [
+      "Mettre en valeur les cheveux texturés, au cœur de l’identité du salon.",
+      "Clarifier les nombreux services et options proposés.",
+      "Proposer une réservation simple sans perdre les clientes.",
+    ],
+    solutions: [
+      "Hiérarchisation des services avec catégories claires.",
+      "Mise en avant des visuels avant/après et de l’univers du salon.",
+      "Lien vers l’outil de réservation intégré de manière fluide dans le parcours.",
+    ],
+
+    // Résultats
     results: [
       "Prise de rendez-vous en ligne simplifiée pour les clientes.",
       "Image de marque plus professionnelle et cohérente.",
+    ],
+    metrics: [
+      "Plus de prises de rendez-vous directement via le site (à préciser avec le salon).",
+      "Réduction du temps passé à gérer les demandes par messages.",
     ],
 
     testimonial:
@@ -112,8 +151,14 @@ export const projects: Project[] = [
 
     techBadges: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
 
-    // Services utilisés pour ce projet (3 services → Pack du projet)
     services: ["Site vitrine complet", "Création de logo", "Cartes de visite"],
+    processSteps: [
+      "Échange initial pour comprendre l’univers du salon et ses besoins.",
+      "Proposition de structure de site et de maquettes.",
+      "Développement du site et intégration de la réservation en ligne.",
+      "Tests sur mobile et ajustements finaux.",
+      "Mise en ligne et accompagnement sur l’utilisation.",
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -129,7 +174,7 @@ export const projects: Project[] = [
     desc:
       "Site vitrine professionnel pour un cabinet d’avocats : équipe, domaines de compétence, avis Google, informations sur les honoraires, blog et formulaire de contact.",
     context:
-      "Une première version WordPress existait déjà. L’objectif est une version plus moderne, plus lisible et techniquement plus maîtrisée (JS).",
+      "Une première version WordPress existait déjà. L’objectif est une version plus moderne, plus lisible et techniquement plus maîtrisée.",
     features: [
       "Présentation de l’équipe et des profils",
       "Domaines de compétence structurés",
@@ -150,9 +195,34 @@ export const projects: Project[] = [
     heroSummary:
       "Refonte d’un site vitrine pour un cabinet d’avocats, axée sur la clarté, la confiance et la lisibilité des informations.",
 
+    clientObjectives: [
+      "Clarifier les domaines de compétence pour chaque type de client.",
+      "Renforcer la confiance des visiteurs dès la page d’accueil.",
+      "Moderniser une image en ligne devenue datée.",
+    ],
+    beforeState:
+      "Un site WordPress existant mais peu lisible, avec des informations dispersées et une expérience utilisateur datée.",
+    afterState:
+      "Une structure claire par domaines, une présentation rassurante de l’équipe et un site cohérent avec le positionnement du cabinet.",
+
+    challenges: [
+      "Beaucoup d’informations juridiques à organiser.",
+      "Besoin fort de rassurance et de sérieux.",
+      "Respecter l’image du cabinet tout en modernisant.",
+    ],
+    solutions: [
+      "Hiérarchisation par domaines principaux et sous-pages claires.",
+      "Mise en avant des profils et de l’expérience du cabinet.",
+      "Design sobre, lisible et compatible avec tous les écrans.",
+    ],
+
     results: [
       "Structure plus claire des domaines de compétence.",
       "Expérience plus rassurante pour les visiteurs.",
+    ],
+    metrics: [
+      "Augmentation du temps passé sur les pages domaines (à mesurer après mise en ligne).",
+      "Parcours de contact plus fluide pour les nouveaux clients.",
     ],
 
     testimonial:
@@ -168,10 +238,13 @@ export const projects: Project[] = [
 
     techBadges: ["JavaScript", "Next.js", "Tailwind CSS"],
 
-    // Services utilisés pour ce projet (3 services → Pack du projet)
-    services: [
-      "Refonte de site",
-      "Aide au contenu & structure"
+    services: ["Refonte de site", "Aide au contenu & structure"],
+    processSteps: [
+      "Audit de l’ancienne version du site.",
+      "Reprise de l’architecture de contenu avec le cabinet.",
+      "Création de maquettes pour les pages principales.",
+      "Intégration front-end et optimisation de la lisibilité.",
+      "Mise en production de la nouvelle version.",
     ],
   },
 
@@ -208,6 +281,25 @@ export const projects: Project[] = [
     heroSummary:
       "Site vitrine sur mesure pour un salon de coiffure à Genève, pensé pour rassurer, informer et faciliter la prise de rendez-vous.",
 
+    clientObjectives: [
+      "Rassurer les nouveaux clients qui découvrent le salon en ligne.",
+      "Regrouper toutes les informations pratiques au même endroit.",
+      "Préparer le terrain pour une réservation plus simple.",
+    ],
+    beforeState:
+      "Aucune vraie vitrine en ligne structurée, des informations dispersées et peu de lisibilité pour un nouveau client.",
+    afterState:
+      "Un site clair, centré sur les besoins des clients à Genève, avec une mise en avant des services, des tarifs et des informations pratiques.",
+
+    challenges: [
+      "Rester simple tout en donnant assez d’informations.",
+      "Mettre l’accent sur l’ambiance du salon sans surcharger visuellement.",
+    ],
+    solutions: [
+      "Sections courtes et claires pour les services, tarifs et infos pratiques.",
+      "Photos du salon et des réalisations pour projeter le visiteur.",
+    ],
+
     results: [
       "Une présence en ligne claire pour les clients à Genève.",
       "Des informations pratiques accessibles rapidement (horaires, adresse, téléphone).",
@@ -227,11 +319,12 @@ export const projects: Project[] = [
 
     techBadges: ["Site vitrine", "Responsive", "Orienté SEO local"],
 
-    // Services utilisés pour ce projet (4 services → Pack du projet)
-    services: [
-      "Site vitrine complet",
-      "Aide au contenu & structure",
-      
+    services: ["Site vitrine complet", "Aide au contenu & structure"],
+    processSteps: [
+      "Écoute des besoins du salon et de sa clientèle.",
+      "Proposition de structure centrée sur les informations pratiques.",
+      "Création d’un design simple et rassurant.",
+      "Intégration du site et tests sur mobile.",
     ],
   },
 
@@ -257,7 +350,6 @@ export const projects: Project[] = [
     ],
     techStack:
       "Petites interventions front-end et ajustements de contenu pour améliorer l’UX sans refonte complète.",
-    // link: "", // ajoute l’URL du site si tu veux l’afficher dans la page projet
     img: "/projets/chicheoupaschiche.png",
 
     client: "Chiche ou pas Chiche",
@@ -266,6 +358,24 @@ export const projects: Project[] = [
     role: "Petites mises à jour & amélioration UX",
     heroSummary:
       "Petites mises à jour ciblées pour rendre le site plus clair, plus cohérent et plus agréable à parcourir.",
+
+    clientObjectives: [
+      "Rendre le site plus agréable à parcourir sans tout refaire.",
+      "Clarifier le message et la proposition de valeur.",
+    ],
+    beforeState:
+      "Un site déjà en place mais avec des sections peu lisibles et un contenu parfois noyé dans la page.",
+    afterState:
+      "Une version optimisée, plus claire, avec une meilleure hiérarchie de l’information et un confort de lecture amélioré.",
+
+    challenges: [
+      "Intervenir sans casser ce qui fonctionnait déjà.",
+      "Améliorer l’UX avec des ajustements légers plutôt qu’une refonte totale.",
+    ],
+    solutions: [
+      "Reprise des titres et sous-titres pour mieux guider la lecture.",
+      "Ajustements visuels pour mieux faire respirer le contenu.",
+    ],
 
     results: [
       "Structure de contenu plus lisible.",
@@ -281,8 +391,12 @@ export const projects: Project[] = [
 
     techBadges: ["Petites mises à jour", "UX", "Optimisation légère"],
 
-    // Services utilisés pour ce projet (2 services → Pack du projet)
-    services: ["Petites mises à jour" , "Aide au contenu & structure"],
+    services: ["Petites mises à jour", "Aide au contenu & structure"],
+    processSteps: [
+      "Analyse du site existant et repérage des points de friction.",
+      "Liste d’actions ciblées pour améliorer la clarté.",
+      "Petites interventions front-end et contenu.",
+    ],
   },
 
   // ---------------------------------------------------------------------------
@@ -307,7 +421,6 @@ export const projects: Project[] = [
     ],
     techStack:
       "Site vitrine moderne, pensé mobile-first, avec une structure claire pour évoluer plus tard vers la prise de rendez-vous en ligne.",
-    // link: "", // à renseigner une fois le site en ligne
     img: "/projets/lashbrowsclub.ch.png",
 
     client: "LashBrowsClub",
@@ -316,6 +429,25 @@ export const projects: Project[] = [
     role: "Conception UX/UI & structure de contenu",
     heroSummary:
       "Un futur site vitrine pour mettre en valeur les prestations cils & sourcils et préparer le terrain pour la réservation en ligne.",
+
+    clientObjectives: [
+      "Aller au-delà d’Instagram et offrir une vraie vitrine professionnelle.",
+      "Rassurer les clientes avec des explications claires et des avant/après.",
+      "Préparer un futur parcours de réservation en ligne.",
+    ],
+    beforeState:
+      "Présence essentiellement sur les réseaux sociaux, sans site structuré ni parcours dédié pour les clientes.",
+    afterState:
+      "Un site pensé pour expliquer les prestations, montrer des résultats et orienter les clientes vers la prise de contact.",
+
+    challenges: [
+      "Traduire un univers Instagram en expérience de site cohérente.",
+      "Rassurer sur des prestations parfois techniques (cils, sourcils).",
+    ],
+    solutions: [
+      "Création d’une structure claire par type de prestation.",
+      "Mise en avant des avant/après et d’une FAQ rassurante.",
+    ],
 
     results: [
       "Brief défini et structure de contenu posée.",
@@ -330,19 +462,15 @@ export const projects: Project[] = [
 
     techBadges: ["Site vitrine", "Mobile-first", "Prêt pour réservation en ligne"],
 
-    // Version actuelle : projet simple = 1 service → 1 badge, pas de Pack du projet
-    services: ["Site vitrine complet","Création de logo","Aide au contenu & structure"],
-
-    // Pour activer le "Pack du projet" plus tard, ajoute simplement
-    // d’autres services dans le tableau (2+ services = Pack automatique).
-    // Badges disponibles :
-    //  - "Site one-page"
-    //  - "Site vitrine complet"
-    //  - "Projet sur mesure"
-    //  - "Refonte de site"
-    //  - "Petites mises à jour"
-    //  - "Aide au contenu & structure"
-    //  - "Création de logo"
-    //  - "Cartes de visite"
+    services: [
+      "Site vitrine complet",
+      "Création de logo",
+      "Aide au contenu & structure",
+    ],
+    processSteps: [
+      "Atelier pour clarifier l’offre et la cible.",
+      "Définition de la structure et des pages du futur site.",
+      "Création d’un univers visuel cohérent avec le studio.",
+    ],
   },
 ];

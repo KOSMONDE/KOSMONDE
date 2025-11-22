@@ -1,9 +1,11 @@
+"use client";
+
 export function ProcessSection() {
   const steps = [
     {
       step: "01",
       title: "Discussion & besoins",
-      text: "On clarifie ton projet, ton public, tes objectifs et les contenus nécessaires.",
+      text: "On clarifie votre projet, votre public, vos objectifs et les contenus nécessaires.",
       icon: "💬",
     },
     {
@@ -36,7 +38,7 @@ export function ProcessSection() {
             Comment se déroule un projet ?
           </h2>
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-            Trois étapes claires pour transformer ton idée en site en ligne, en toute sérénité.
+            Trois étapes claires pour transformer votre idée en site en ligne, en toute sérénité.
           </p>
 
           <p className="text-[11px] text-slate-500 uppercase tracking-[0.22em] mt-1">
@@ -49,7 +51,16 @@ export function ProcessSection() {
           {steps.map((item) => (
             <li
               key={item.step}
-              className="relative flex flex-col rounded-2xl border border-slate-800/60 bg-slate-950/80 px-6 py-8 shadow-[0_14px_45px_rgba(15,23,42,0.8)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(8,47,73,0.85)]"
+              className="
+                relative flex flex-col rounded-2xl border border-slate-800/60 bg-slate-950/80
+                px-6 py-8
+                shadow-[0_10px_30px_rgba(15,23,42,0.7)]
+                md:shadow-[0_14px_45px_rgba(15,23,42,0.8)]
+                transition-transform duration-300
+                hover:-translate-y-1
+                hover:shadow-[0_16px_45px_rgba(8,47,73,0.8)]
+                md:hover:shadow-[0_22px_55px_rgba(8,47,73,0.85)]
+              "
             >
               {/* Glow hover */}
               <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.22),transparent_70%)]" />

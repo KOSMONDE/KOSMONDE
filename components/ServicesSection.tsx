@@ -11,7 +11,8 @@ export function ServicesSection() {
         "Parfait pour présenter une offre",
         "Rapide à mettre en place",
       ],
-      highlight: "Pour tester une idée ou poser une présence claire en ligne.",
+      highlight:
+        "Pour tester une idée ou poser une présence claire en ligne.",
       featured: false,
     },
     {
@@ -143,16 +144,15 @@ export function ServicesSection() {
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-20 mix-blend-screen bg-[radial-gradient(circle_at_top_right,rgba(148,163,184,0.35),transparent_55%)]" />
 
       <div className="container-kosmonde relative py-16 space-y-14">
-
         {/* TITRE */}
         <div className="mx-auto max-w-3xl text-center space-y-3">
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50">
             Offres & services
           </h2>
 
-          {/* Phrase réduite + forcée sur une seule ligne */}
-          <p className="text-sm sm:text-base leading-relaxed text-slate-400 whitespace-nowrap">
-            Sites web, améliorations et identité visuelle : l’essentiel pour une présence claire et professionnelle.
+          <p className="text-sm sm:text-base leading-relaxed text-slate-400 whitespace-normal sm:whitespace-nowrap">
+            Sites web, améliorations et identité visuelle : l’essentiel pour une
+            présence claire et professionnelle.
           </p>
 
           <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500 whitespace-normal sm:whitespace-nowrap">
@@ -173,7 +173,7 @@ export function ServicesSection() {
               {/* Glow hover */}
               <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_70%)] opacity-0 transition-opacity duration-500 hover:opacity-100" />
 
-              {/* Badge Featured (corrigé) */}
+              {/* Badge Featured */}
               {card.featured && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center justify-center rounded-full border border-sky-400/60 bg-sky-500/10 px-3 py-0.5 text-[9px] font-medium uppercase tracking-[0.16em] text-sky-200 whitespace-nowrap shadow-[0_0_20px_rgba(56,189,248,0.35)] backdrop-blur-md">
@@ -213,7 +213,6 @@ export function ServicesSection() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

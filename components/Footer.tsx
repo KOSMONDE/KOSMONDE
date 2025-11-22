@@ -4,7 +4,6 @@ type IconProps = {
   className?: string;
 };
 
-/* Icônes sociales simples en SVG */
 function InstagramIcon({ className }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className}>
@@ -77,77 +76,79 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative border-t border-slate-900/60 bg-[#0A111C] overflow-hidden">
-      {/* Glow léger */}
+    <footer className="relative overflow-hidden border-t border-slate-900/60 bg-[#0A111C]">
+      {/* Glow de fond */}
       <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.05),transparent_70%)]" />
 
-      <div className="container-kosmonde py-12">
-        {/* 4 colonnes réparties, responsive */}
-        <div className="mx-auto max-w-6xl flex flex-col gap-10 md:flex-row md:justify-between">
-          {/* Colonne 1 : texte studio */}
-          <div className="md:w-1/4 space-y-4">
-            <p className="text-[10px] font-semibold tracking-[0.38em] text-slate-500 uppercase">
+      <div className="container-kosmonde py-10 sm:py-12">
+        <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-start md:justify-between">
+          {/* Colonne 1 – Identité */}
+          <div className="space-y-4 text-center md:w-1/4 md:text-left">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-slate-300">
               KOSMONDE
             </p>
 
-            <p className="text-sm text-slate-400 leading-relaxed">
+            <p className="text-sm leading-relaxed text-slate-200">
               Studio web indépendant basé en Suisse.
-              Sites clairs, sobres et utiles pour petites structures ambitieuses.
+              Sites clairs, sobres et utiles pour les petites structures ambitieuses.
             </p>
 
-            <a
-              href="mailto:contact@kosmonde.ch"
-              className="text-xs text-sky-300 hover:text-sky-200"
-            >
-              contact@kosmonde.ch
-            </a>
+            <div className="flex justify-center md:justify-start">
+              <a
+                href="mailto:contact@kosmonde.ch"
+                className="inline-flex items-center gap-2 rounded-full border border-sky-400/40 bg-slate-900/70 px-3 py-1.5 text-xs text-sky-200 transition hover:border-sky-300 hover:text-sky-100"
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span>contact@kosmonde.ch</span>
+              </a>
+            </div>
           </div>
 
-          {/* Colonne 2 : navigation */}
-          <div className="md:w-1/4 space-y-3">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+          {/* Colonne 2 – Navigation */}
+          <div className="space-y-3 text-center md:w-1/4 md:text-left">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-slate-300">
               Navigation
             </p>
 
-            <nav className="flex flex-col space-y-1.5 text-xs text-slate-400">
-              <Link href="/#hero" className="hover:text-sky-300 transition">
+            <nav className="flex flex-col space-y-1.5 text-xs text-slate-200">
+              <Link href="/#hero" className="transition hover:text-sky-300">
                 Accueil
               </Link>
-              <Link href="/#projets" className="hover:text-sky-300 transition">
+              <Link href="/#projets" className="transition hover:text-sky-300">
                 Projets
               </Link>
-              <Link href="/#services" className="hover:text-sky-300 transition">
+              <Link href="/#services" className="transition hover:text-sky-300">
                 Services
               </Link>
-              <Link href="/#a-propos" className="hover:text-sky-300 transition">
+              <Link href="/#a-propos" className="transition hover:text-sky-300">
                 À propos
               </Link>
-              <Link href="/faq" className="hover:text-sky-300 transition">
+              <Link href="/faq" className="transition hover:text-sky-300">
                 FAQ
               </Link>
-              <Link href="/#contact" className="hover:text-sky-300 transition">
+              <Link href="/#contact" className="transition hover:text-sky-300">
                 Contact
               </Link>
             </nav>
           </div>
 
-          {/* Colonne 3 : réseaux sociaux */}
-          <div className="md:w-1/4 space-y-3">
-            <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500">
+          {/* Colonne 3 – Réseaux */}
+          <div className="space-y-3 text-center md:w-1/4 md:text-left">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-slate-300">
               Réseaux
             </p>
 
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-200">
               Suivre le studio et voir les coulisses des projets.
             </p>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center gap-3 md:justify-start">
               <a
                 href="https://www.instagram.com/kosmonde/"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 hover:text-sky-300 hover:border-sky-500 transition"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 transition hover:border-sky-500 hover:text-sky-300 md:h-8 md:w-8"
               >
                 <InstagramIcon className="h-4 w-4" />
               </a>
@@ -156,7 +157,7 @@ export function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="LinkedIn"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 hover:text-sky-300 hover:border-sky-500 transition"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 transition hover:border-sky-500 hover:text-sky-300 md:h-8 md:w-8"
               >
                 <LinkedInIcon className="h-4 w-4" />
               </a>
@@ -165,40 +166,62 @@ export function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="WhatsApp"
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 hover:text-sky-300 hover:border-sky-500 transition"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 transition hover:border-sky-500 hover:text-sky-300 md:h-8 md:w-8"
               >
                 <WhatsAppIcon className="h-4 w-4" />
               </a>
             </div>
+
+            <p className="text-[11px] text-slate-300">
+              Discuter d’un projet ou poser une question rapide.
+            </p>
           </div>
 
-          {/* Colonne 4 : phrase + CTA */}
-          <div className="md:w-1/4 space-y-4 md:text-right">
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Un site simple, lisible et aligné avec ta réalité.
+          {/* Colonne 4 – Positionnement + CTA */}
+          <div className="space-y-4 text-center md:w-1/4 md:text-right">
+            <p className="text-sm leading-relaxed text-slate-300">
+              Un site simple, lisible et aligné avec votre réalité.
             </p>
 
             <Link
               href="/#contact"
-              className="text-xs text-sky-300 hover:text-sky-200"
+              className="text-xs text-sky-300 transition hover:text-sky-200"
             >
-              Discuter de ton projet ↗
+              Discuter de votre projet ↗
             </Link>
 
-            <p className="text-[10px] text-slate-600">
+            <p className="text-[10px] text-slate-400">
               Simplicité · Clarté · Structure
             </p>
           </div>
         </div>
       </div>
 
-      {/* Bas du footer */}
-      <div className="border-t border-slate-900/70 py-3 text-center text-[10px] text-slate-600">
-        © {year} KOSMONDE — Tous droits réservés.
+      {/* Bas de page : copyright + liens légaux */}
+      <div className="border-t border-slate-900/70 py-3">
+        <div className="container-kosmonde">
+          <div className="flex flex-col items-center justify-center gap-1 text-center text-[10px] text-slate-400 md:flex-row md:gap-3">
+            <span>© {year} KOSMONDE — Tous droits réservés.</span>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/mentions-legales"
+                className="transition hover:text-sky-300"
+              >
+                Mentions légales
+              </Link>
+              <span className="text-slate-700">•</span>
+              <Link
+                href="/politique-confidentialite"
+                className="transition hover:text-sky-300"
+              >
+                Confidentialité
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
   );
 }
 
-// Permet : import Footer from "../../components/Footer";
 export default Footer;

@@ -51,7 +51,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
               <td style="padding:20px 24px 16px;border-bottom:1px solid #1f2937;background:radial-gradient(circle at top,rgba(56,189,248,0.18),rgba(2,6,23,0) 55%);">
                 <div style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#38bdf8;margin-bottom:6px;">KOSMONDE</div>
                 <div style="font-size:18px;font-weight:600;color:#f9fafb;">Nouveau message depuis le site KOSMONDE</div>
-                <div style="margin-top:4px;font-size:12px;color:#9ca3af;">Tu as reçu un nouveau message via le formulaire de contact.</div>
+                <div style="margin-top:4px;font-size:12px;color:#9ca3af;">Vous avez reçu un nouveau message via le formulaire de contact.</div>
 
                 <div style="margin-top:10px;font-size:11px;color:#9ca3af;">
                   <span style="display:inline-block;padding:3px 9px;border-radius:999px;border:1px solid #1f2937;background:rgba(15,23,42,0.9);margin-right:6px;">${safeProjectType}</span>
@@ -136,7 +136,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
             <!-- Préheader -->
             <tr>
               <td style="font-size:0;line-height:0;display:none;mso-hide:all;color:transparent;max-height:0;max-width:0;opacity:0;overflow:hidden;">
-                Merci pour ton message — je te réponds rapidement avec un premier retour.
+                Merci pour votre message — je vous réponds rapidement avec un premier retour.
               </td>
             </tr>
 
@@ -144,8 +144,8 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
             <tr>
               <td style="padding:20px 24px 16px;border-bottom:1px solid #1f2937;background:radial-gradient(circle at top,rgba(56,189,248,0.18),rgba(2,6,23,0) 55%);">
                 <div style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#38bdf8;margin-bottom:6px;">KOSMONDE</div>
-                <div style="font-size:18px;font-weight:600;color:#f9fafb;">Merci pour ton message</div>
-                <div style="margin-top:4px;font-size:12px;color:#9ca3af;">Ton message est bien arrivé, je vais le lire avec attention.</div>
+                <div style="font-size:18px;font-weight:600;color:#f9fafb;">Merci pour votre message</div>
+                <div style="margin-top:4px;font-size:12px;color:#9ca3af;">Votre message est bien arrivé, je vais le lire avec attention.</div>
               </td>
             </tr>
 
@@ -154,11 +154,15 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
               <td style="padding:20px 24px 18px;">
 
                 <p style="font-size:13px;color:#e5e7eb;margin:0 0 12px;">
-                  ${safeName ? `Salut ${safeName.split(" ")[0]},` : "Salut,"}
+                  ${
+                    safeName
+                      ? `Bonjour ${safeName.split(" ")[0]},`
+                      : "Bonjour,"
+                  }
                 </p>
 
                 <p style="font-size:13px;color:#d1d5db;margin:0 0 12px;line-height:1.5;">
-                  Merci d’avoir pris le temps de m’écrire à propos de ton projet ${
+                  Merci d’avoir pris le temps de m’écrire à propos de votre projet ${
                     safeProjectType !== "Non précisé"
                       ? `« ${safeProjectType} »`
                       : "web"
@@ -166,7 +170,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                 </p>
 
                 <p style="font-size:13px;color:#d1d5db;margin:0 0 12px;line-height:1.5;">
-                  Je vais analyser ton message et ton contexte, puis je te répondrai sous 24&nbsp;heures (hors week-end) avec un premier retour concret.
+                  Je vais analyser votre message et votre contexte, puis je vous répondrai sous 24&nbsp;heures (hors week-end) avec un premier retour concret.
                 </p>
 
                 <!-- Résumé très simple -->
@@ -189,11 +193,11 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                 </div>
 
                 <p style="font-size:13px;color:#d1d5db;margin:0 0 16px;line-height:1.5;">
-                  Si tu veux déjà partager des exemples de sites ou des idées en plus, tu peux simplement répondre à cet email.
+                  Si vous souhaitez déjà partager des exemples de sites ou des idées supplémentaires, vous pouvez simplement répondre à cet email.
                 </p>
 
                 <p style="font-size:13px;color:#9ca3af;margin:0;line-height:1.6;">
-                  À très vite,<br />
+                  À très bientôt,<br />
                   Yanis – KOSMONDE<br />
                   <span style="font-size:12px;color:#9ca3af;">Création de sites web clairs, modernes et efficaces.</span>
                 </p>
@@ -204,7 +208,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
             <!-- FOOTER -->
             <tr>
               <td style="padding:14px 24px 18px;border-top:1px solid #1f2937;font-size:11px;color:#6b7280;">
-                Tu développes ton projet, KOSMONDE t’aide à lui donner une présence claire sur le web.
+                Vous développez votre projet, KOSMONDE vous aide à lui donner une présence claire sur le web.
                 <a href="https://kosmonde.ch" style="color:#38bdf8;text-decoration:none;">kosmonde.ch</a><br />
               </td>
             </tr>
@@ -230,7 +234,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
     await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
-      subject: "Merci pour ton message – KOSMONDE",
+      subject: "Merci pour votre message – KOSMONDE",
       replyTo: "mroussadiyanis@icloud.com",
       html: replyHtml,
     });

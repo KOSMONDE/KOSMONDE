@@ -6,7 +6,7 @@ import Link from "next/link";
 import { projects, ProjectStatus } from "@/app/projets/data";
 
 // -----------------------------------------------------------
-//  NORMALISATION DES STATUTS (FR → codes techniques)
+//  NORMALISATION DES STATUTS
 // -----------------------------------------------------------
 type NormalizedStatus = "online" | "progress" | "queue" | "refonte";
 type StatusFilter = "all" | NormalizedStatus;
@@ -28,7 +28,6 @@ function normalizeStatus(status: ProjectStatus | string): NormalizedStatus {
   }
 }
 
-// Filtres disponibles dans le header
 const FILTERS: { label: string; value: StatusFilter }[] = [
   { label: "Tous", value: "all" },
   { label: "En ligne", value: "online" },
@@ -37,7 +36,6 @@ const FILTERS: { label: string; value: StatusFilter }[] = [
   { label: "Refonte", value: "refonte" },
 ];
 
-// Texte affiché dans le header selon le filtre actif
 function getFilterLabel(value: StatusFilter): string {
   switch (value) {
     case "online":
@@ -53,7 +51,6 @@ function getFilterLabel(value: StatusFilter): string {
   }
 }
 
-// Styles visuels des statuts (badge + couleur du point)
 function getStatusStyles(status: NormalizedStatus) {
   switch (status) {
     case "online":
@@ -95,7 +92,7 @@ function getStatusStyles(status: NormalizedStatus) {
 type Project = (typeof projects)[number];
 
 // -----------------------------------------------------------
-//  COMPOSANTS RÉUTILISABLES
+//  COMPOSANTS
 // -----------------------------------------------------------
 
 function ProjectStatusBadge({
@@ -135,7 +132,6 @@ function ProjectServices({
   if (!services || services.length === 0) return null;
 
   const hasPack = services.length > 1;
-  // IMPORTANT : compact dès 3 services pour éviter que ça casse sur le premier projet
   const dense = services.length >= 3;
 
   if (hasPack) {
@@ -181,7 +177,6 @@ function ProjectServices({
     );
   }
 
-  // 1 seul service
   return (
     <div className="inline-flex w-fit items-center gap-1 rounded-full border border-sky-400/80 bg-sky-500/15 px-3.5 py-1.5 text-[11px] text-slate-100">
       <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
@@ -209,7 +204,7 @@ export function ProjectsSection() {
   return (
     <section
       id="projets"
-      className="scroll-mt-[-40px] md:scroll-mt-[0px] relative border-b border-slate-900/40 bg-slate-950 overflow-hidden"
+      className="scroll-mt-24 md:scroll-mt-28 relative border-b border-slate-900/40 bg-slate-950 overflow-hidden"
     >
       {/* Glows d’ambiance */}
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.16),transparent_65%),radial-gradient(circle_at_bottom,rgba(79,70,229,0.16),transparent_65%)]" />
@@ -234,11 +229,33 @@ export function ProjectsSection() {
               {getFilterLabel(statusFilter)}
             </p>
 
-            <div className="relative">
-              <div className="pointer-events-none absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-slate-950 to-transparent sm:hidden" />
-              <div className="pointer-events-none absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-slate-950 to-transparent sm:hidden" />
+            {/* MOBILE : select simple */}
+            <div className="sm:hidden">
+              <label htmlFor="projects-status-filter" className="sr-only">
+                Filtrer par statut
+              </label>
+              <select
+                id="projects-status-filter"
+                value={statusFilter}
+                onChange={(e) =>
+                  setStatusFilter(e.target.value as StatusFilter)
+                }
+                className="w-full rounded-full border border-slate-700/80 bg-slate-900/90 px-4 py-2 text-xs text-slate-100 shadow-[0_10px_25px_rgba(15,23,42,0.7)] focus:outline-none focus:ring-2 focus:ring-sky-400/70 focus:ring-offset-2 focus:ring-offset-slate-950"
+              >
+                {FILTERS.map((f) => (
+                  <option key={f.value} value={f.value}>
+                    {f.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-              <div className="flex gap-2 overflow-x-auto pb-1 text-[11px] scrollbar-none sm:justify-end">
+            {/* TABLETTE / DESKTOP : pills */}
+            <div className="relative hidden sm:block">
+              <div className="pointer-events-none absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-slate-950 to-transparent md:hidden" />
+              <div className="pointer-events-none absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-slate-950 to-transparent md:hidden" />
+
+              <div className="flex gap-2 overflow-x-auto pb-1 text-xs scrollbar-none justify-end">
                 {FILTERS.map((f) => {
                   const isActive = statusFilter === f.value;
                   return (
@@ -248,7 +265,7 @@ export function ProjectsSection() {
                       aria-pressed={isActive}
                       onClick={() => setStatusFilter(f.value)}
                       className={[
-                        "inline-flex items-center gap-1 rounded-full border px-3.5 py-1.5 text-[11px] font-medium tracking-wide transition-all duration-150",
+                        "inline-flex items-center gap-1 rounded-full border px-3.5 py-2 text-xs font-medium tracking-wide transition-all duration-150",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
                         isActive
                           ? "border-sky-400 bg-sky-500/15 text-sky-100 shadow-[0_0_0_1px_rgba(56,189,248,0.25)]"
@@ -270,7 +287,7 @@ export function ProjectsSection() {
           </div>
         </div>
 
-        {/* ETAT VIDE */}
+        {/* ÉTAT VIDE */}
         {!hasProjects && (
           <div className="mx-auto flex max-w-md flex-col items-center gap-3 rounded-2xl border border-sky-400/45 bg-slate-950/80 px-6 py-12 shadow-[0_14px_45px_rgba(15,23,42,0.8)]">
             <p className="text-sm text-slate-100">Aucun projet trouvé.</p>
@@ -279,7 +296,7 @@ export function ProjectsSection() {
 
         {hasProjects && (
           <div className="space-y-8">
-            {/* 1) CARTE HERO */}
+            {/* HERO CARD */}
             {heroProject &&
               (() => {
                 const normalizedStatus = normalizeStatus(heroProject.status);
@@ -329,7 +346,7 @@ export function ProjectsSection() {
                           </h3>
                         </header>
 
-                        {/* Zone badges avec hauteur minimale pour aligner les descriptions */}
+                        {/* Zone badges */}
                         <div className="min-h-[72px] sm:min-h-[88px] flex items-start">
                           <ProjectServices services={services} />
                         </div>
@@ -338,12 +355,19 @@ export function ProjectsSection() {
                           {heroProject.shortDesc}
                         </p>
 
-                        <div className="mt-auto flex justify-between border-t border-slate-800 pt-3 text-[11px]">
-                          <span className="transition-colors text-slate-500 group-hover:text-slate-300">
-                            Voir le projet en détail
-                          </span>
-                          <span className="transition text-sky-300 group-hover:translate-x-1 group-hover:text-sky-200">
-                            Découvrir ↗
+                        {/* Bouton Découvrir : plus large + centré */}
+                        <div className="mt-auto flex justify-center pt-4">
+                          <span
+                            className="
+                              inline-flex items-center justify-center gap-1.5 rounded-full border border-sky-400/50
+                              bg-sky-500/10 px-6 py-2.5 text-[12px] font-medium text-sky-100
+                              min-w-[9rem]
+                              transition-all duration-300
+                              group-hover:bg-sky-500/20 group-hover:text-sky-50 group-hover:border-sky-400/80
+                            "
+                          >
+                            Découvrir
+                            <span className="translate-y-[1px]">↗</span>
                           </span>
                         </div>
                       </div>
@@ -352,7 +376,7 @@ export function ProjectsSection() {
                 );
               })()}
 
-            {/* 2) AUTRES CARTES EN GRILLE */}
+            {/* AUTRES PROJETS */}
             {otherProjects.length > 0 && (
               <div className="grid items-stretch gap-7 md:grid-cols-2">
                 {otherProjects.map((proj) => {
@@ -404,7 +428,7 @@ export function ProjectsSection() {
                             </h3>
                           </header>
 
-                          {/* Zone badges alignée avec la hero-card */}
+                          {/* Badges */}
                           <div className="min-h-[72px] sm:min-h-[88px] flex items-start">
                             <ProjectServices services={services} compact />
                           </div>
@@ -413,12 +437,19 @@ export function ProjectsSection() {
                             {proj.shortDesc}
                           </p>
 
-                          <div className="mt-auto flex justify-between border-t border-slate-800 pt-3 text-[11px]">
-                            <span className="transition-colors text-slate-500 group-hover:text-slate-300">
-                              Voir le projet en détail
-                            </span>
-                            <span className="transition text-sky-300 group-hover:translate-x-1 group-hover:text-sky-200">
-                              Découvrir ↗
+                          {/* Bouton Découvrir : plus large + centré */}
+                          <div className="mt-auto flex justify-center pt-4">
+                            <span
+                              className="
+                                inline-flex items-center justify-center gap-1.5 rounded-full border border-sky-400/50
+                                bg-sky-500/10 px-6 py-2.5 text-[12px] font-medium text-sky-100
+                                min-w-[9rem]
+                                transition-all duration-300
+                                group-hover:bg-sky-500/20 group-hover:text-sky-50 group-hover:border-sky-400/80
+                              "
+                            >
+                              Découvrir
+                              <span className="translate-y-[1px]">↗</span>
                             </span>
                           </div>
                         </div>

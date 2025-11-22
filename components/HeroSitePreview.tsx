@@ -62,7 +62,7 @@ export function HeroSitePreview() {
         <div className="flex-1 space-y-4 text-xs text-slate-300">
           {/* BLOC PRINCIPAL AVEC DOUBLE COUCHE */}
           <div
-            className={`relative h-32 overflow-hidden rounded-2xl border transition-all duration-500 ${
+            className={`relative min-h-[8rem] overflow-hidden rounded-2xl border transition-all duration-500 ${
               isBuilding
                 ? "border-slate-800 bg-slate-950/80"
                 : "border-sky-500/50 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.35),transparent_60%),linear-gradient(to_br,#020617,#0f172a)] shadow-[0_16px_40px_rgba(15,23,42,0.9)]"
@@ -221,7 +221,7 @@ export function HeroSitePreview() {
                 onClick={(e) => {
                   if (isBuilding) e.preventDefault();
                 }}
-                className={`flex h-8 w-36 items-center justify-center rounded-full text-[11px] font-semibold tracking-wide transition-all duration-500 ${
+                className={`flex h-9 w-36 items-center justify-center rounded-full text-xs font-semibold tracking-wide transition-all duration-500 ${
                   isBuilding
                     ? "cursor-default bg-sky-500/60 text-slate-900/70"
                     : "bg-gradient-to-r from-sky-400 via-sky-300 to-sky-400 text-slate-950 shadow-[0_12px_30px_rgba(8,47,73,0.9)] hover:brightness-110"
