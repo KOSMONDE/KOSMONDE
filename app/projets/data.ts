@@ -162,7 +162,233 @@ export const projects: Project[] = [
   },
 
   // ---------------------------------------------------------------------------
-  // PROJET 2 — GBM AVOCATS
+  // PROJET 2 — RR-COIFFURE (Salon à Genève)
+  // ---------------------------------------------------------------------------
+  {
+    slug: "rr-coiffure",
+    title: "RR COIFFURE",
+    type: "Site vitrine",
+    status: "En cours",
+    shortDesc:
+      "Site vitrine sur mesure pour un salon de coiffure à Genève : services, tarifs, galerie et prise de rendez-vous.",
+    desc:
+      "Site vitrine sur mesure pour un salon de coiffure à Genève, avec mise en avant des services, des tarifs, de l’ambiance du salon et des informations pratiques pour venir facilement sur place.",
+    context:
+      "RR-COIFFURE avait besoin d’un site simple et clair pour présenter le salon, rassurer les nouveaux clients et centraliser toutes les informations utiles : horaires, adresse, contact et prise de rendez-vous.",
+    features: [
+      "Présentation des services et des tarifs",
+      "Galerie photo du salon et des réalisations",
+      "Mise en avant de l’adresse et de la localisation à Genève",
+      "Coordonnées claires (téléphone, e-mail, formulaire)",
+      "Lien direct vers la prise de rendez-vous",
+    ],
+    techStack:
+      "Site vitrine moderne, responsive et optimisé pour les recherches locales (salon de coiffure à Genève).",
+    link: "http://rr-coiffure.com/",
+    img: "/projets/RR-COIFFURE.png",
+
+    client: "RR-COIFFURE",
+    sector: "Beauté / Coiffure",
+    year: 2024,
+    role: "Conception UX/UI & développement front-end",
+    heroSummary:
+      "Site vitrine sur mesure pour un salon de coiffure à Genève, pensé pour rassurer, informer et faciliter la prise de rendez-vous.",
+
+    clientObjectives: [
+      "Rassurer les nouveaux clients qui découvrent le salon en ligne.",
+      "Regrouper toutes les informations pratiques au même endroit.",
+      "Préparer le terrain pour une réservation plus simple.",
+    ],
+    beforeState:
+      "Aucune vraie vitrine en ligne structurée, des informations dispersées et peu de lisibilité pour un nouveau client.",
+    afterState:
+      "Un site clair, centré sur les besoins des clients à Genève, avec une mise en avant des services, des tarifs et des informations pratiques.",
+
+    challenges: [
+      "Rester simple tout en donnant assez d’informations.",
+      "Mettre l’accent sur l’ambiance du salon sans surcharger visuellement.",
+    ],
+    solutions: [
+      "Sections courtes et claires pour les services, tarifs et infos pratiques.",
+      "Photos du salon et des réalisations pour projeter le visiteur.",
+    ],
+
+    results: [
+      "Une présence en ligne claire pour les clients à Genève.",
+      "Des informations pratiques accessibles rapidement (horaires, adresse, téléphone).",
+    ],
+
+    testimonial:
+      "Le site donne une image professionnelle du salon et permet aux clients de trouver facilement les informations dont ils ont besoin.",
+    testimonialName: "Responsable RR-COIFFURE",
+    testimonialRole: "Salon de coiffure à Genève",
+
+    kosmondeRoles: [
+      "Structuration du contenu autour des besoins des clients",
+      "Création d’une mise en page simple et rassurante",
+      "Intégration des informations pratiques (adresse, horaires, contact)",
+      "Optimisation mobile pour les visiteurs sur smartphone",
+    ],
+
+    techBadges: ["Site vitrine", "Responsive", "Orienté SEO local"],
+
+    services: ["Site vitrine complet", "Aide au contenu & structure"],
+    processSteps: [
+      "Écoute des besoins du salon et de sa clientèle.",
+      "Proposition de structure centrée sur les informations pratiques.",
+      "Création d’un design simple et rassurant.",
+      "Intégration du site et tests sur mobile.",
+    ],
+  },
+
+  // ---------------------------------------------------------------------------
+  // PROJET 3 — LashBrowsClub
+  // ---------------------------------------------------------------------------
+  {
+    slug: "lashbrowsclub",
+    title: "LashBrowsClub",
+    type: "Site vitrine",
+    status: "Liste d’attente",
+    shortDesc:
+      "Futur site vitrine pour un studio spécialisé en extensions de cils et restructuration des sourcils.",
+    desc:
+      "Création prévue d’un site vitrine pour un studio beauté spécialisé dans les extensions de cils, le rehaussement et la mise en forme des sourcils. L’objectif est de présenter clairement les prestations, rassurer les clientes et faciliter la prise de contact pour les rendez-vous.",
+    context:
+      "Le studio dispose déjà d’une présence sur les réseaux sociaux, mais pas encore d’un site structuré. Le projet vise à poser des bases solides : texte clair, univers visuel cohérent et parcours simple pour réserver ou poser des questions.",
+    features: [
+      "Présentation des prestations (cils, sourcils, soins)",
+      "Mise en avant des avant/après",
+      "Section FAQ pour rassurer les clientes",
+      "Page contact simple et efficace",
+    ],
+    techStack:
+      "Site vitrine moderne, pensé mobile-first, avec une structure claire pour évoluer plus tard vers la prise de rendez-vous en ligne.",
+    img: "/projets/lashbrowsclub.ch.png",
+
+    client: "LashBrowsClub",
+    sector: "Beauté / Cils & Sourcils",
+    year: 2025,
+    role: "Conception UX/UI & structure de contenu",
+    heroSummary:
+      "Un futur site vitrine pour mettre en valeur les prestations cils & sourcils et préparer le terrain pour la réservation en ligne.",
+
+    clientObjectives: [
+      "Aller au-delà d’Instagram et offrir une vraie vitrine professionnelle.",
+      "Rassurer les clientes avec des explications claires et des avant/après.",
+      "Préparer un futur parcours de réservation en ligne.",
+    ],
+    beforeState:
+      "Présence essentiellement sur les réseaux sociaux, sans site structuré ni parcours dédié pour les clientes.",
+    afterState:
+      "Un site pensé pour expliquer les prestations, montrer des résultats et orienter les clientes vers la prise de contact.",
+
+    challenges: [
+      "Traduire un univers Instagram en expérience de site cohérente.",
+      "Rassurer sur des prestations parfois techniques (cils, sourcils).",
+    ],
+    solutions: [
+      "Création d’une structure claire par type de prestation.",
+      "Mise en avant des avant/après et d’une FAQ rassurante.",
+    ],
+
+    results: [
+      "Brief défini et structure de contenu posée.",
+      "Univers visuel en cours de construction.",
+    ],
+
+    kosmondeRoles: [
+      "Clarification des objectifs du site",
+      "Structure de contenu centrée cliente",
+      "Direction UX pour un futur parcours de réservation",
+    ],
+
+    techBadges: ["Site vitrine", "Mobile-first", "Prêt pour réservation en ligne"],
+
+    services: [
+      "Site vitrine complet",
+      "Création de logo",
+      "Aide au contenu & structure",
+    ],
+    processSteps: [
+      "Atelier pour clarifier l’offre et la cible.",
+      "Définition de la structure et des pages du futur site.",
+      "Création d’un univers visuel cohérent avec le studio.",
+    ],
+  },
+
+  // ---------------------------------------------------------------------------
+  // PROJET 4 — Chiche ou pas Chiche
+  // ---------------------------------------------------------------------------
+  {
+    slug: "chiche-ou-pas-chiche",
+    title: "Chiche ou pas Chiche",
+    type: "Site vitrine",
+    status: "Liste d’attente",
+    shortDesc:
+      "Améliorations ciblées, optimisation du contenu et petites mises à jour pour un site déjà en ligne.",
+    desc:
+      "Intervention légère sur un site existant pour clarifier le contenu, améliorer la mise en page et rendre l’expérience plus fluide. L’objectif n’est pas de tout refaire, mais d’optimiser ce qui existe déjà pour que le site soit plus clair, plus agréable et plus efficace pour les visiteurs.",
+    context:
+      "Le site avait besoin de petites améliorations : certaines sections manquaient de lisibilité, le contenu n’était pas toujours mis en valeur et quelques éléments visuels pouvaient être modernisés. L’intervention se concentre sur des ajustements ciblés plutôt qu’une refonte complète.",
+    features: [
+      "Mise à jour de sections existantes",
+      "Réorganisation légère du contenu",
+      "Amélioration de la lisibilité et de la hiérarchie",
+      "Petites optimisations visuelles",
+    ],
+    techStack:
+      "Petites interventions front-end et ajustements de contenu pour améliorer l’UX sans refonte complète.",
+    img: "/projets/chicheoupaschiche.png",
+
+    client: "Chiche ou pas Chiche",
+    sector: "Coaching / Développement personnel",
+    year: 2025,
+    role: "Petites mises à jour & amélioration UX",
+    heroSummary:
+      "Petites mises à jour ciblées pour rendre le site plus clair, plus cohérent et plus agréable à parcourir.",
+
+    clientObjectives: [
+      "Rendre le site plus agréable à parcourir sans tout refaire.",
+      "Clarifier le message et la proposition de valeur.",
+    ],
+    beforeState:
+      "Un site déjà en place mais avec des sections peu lisibles et un contenu parfois noyé dans la page.",
+    afterState:
+      "Une version optimisée, plus claire, avec une meilleure hiérarchie de l’information et un confort de lecture amélioré.",
+
+    challenges: [
+      "Intervenir sans casser ce qui fonctionnait déjà.",
+      "Améliorer l’UX avec des ajustements légers plutôt qu’une refonte totale.",
+    ],
+    solutions: [
+      "Reprise des titres et sous-titres pour mieux guider la lecture.",
+      "Ajustements visuels pour mieux faire respirer le contenu.",
+    ],
+
+    results: [
+      "Structure de contenu plus lisible.",
+      "Sections clés mieux mises en valeur.",
+      "Site plus cohérent sans refonte totale.",
+    ],
+
+    kosmondeRoles: [
+      "Analyse des points à optimiser",
+      "Ajustements du contenu et des titres",
+      "Améliorations visuelles légères",
+    ],
+
+    techBadges: ["Petites mises à jour", "UX", "Optimisation légère"],
+
+    services: ["Petites mises à jour", "Aide au contenu & structure"],
+    processSteps: [
+      "Analyse du site existant et repérage des points de friction.",
+      "Liste d’actions ciblées pour améliorer la clarté.",
+      "Petites interventions front-end et contenu.",
+    ],
+  },
+
+  // ---------------------------------------------------------------------------
+  // PROJET 5 — GBM AVOCATS
   // ---------------------------------------------------------------------------
   {
     slug: "gbm-avocats",
@@ -245,232 +471,6 @@ export const projects: Project[] = [
       "Création de maquettes pour les pages principales.",
       "Intégration front-end et optimisation de la lisibilité.",
       "Mise en production de la nouvelle version.",
-    ],
-  },
-
-  // ---------------------------------------------------------------------------
-  // PROJET 3 — RR-COIFFURE (Salon à Genève)
-  // ---------------------------------------------------------------------------
-  {
-    slug: "rr-coiffure",
-    title: "RR COIFFURE",
-    type: "Site vitrine",
-    status: "En cours",
-    shortDesc:
-      "Site vitrine sur mesure pour un salon de coiffure à Genève : services, tarifs, galerie et prise de rendez-vous.",
-    desc:
-      "Site vitrine sur mesure pour un salon de coiffure à Genève, avec mise en avant des services, des tarifs, de l’ambiance du salon et des informations pratiques pour venir facilement sur place.",
-    context:
-      "RR-COIFFURE avait besoin d’un site simple et clair pour présenter le salon, rassurer les nouveaux clients et centraliser toutes les informations utiles : horaires, adresse, contact et prise de rendez-vous.",
-    features: [
-      "Présentation des services et des tarifs",
-      "Galerie photo du salon et des réalisations",
-      "Mise en avant de l’adresse et de la localisation à Genève",
-      "Coordonnées claires (téléphone, e-mail, formulaire)",
-      "Lien direct vers la prise de rendez-vous",
-    ],
-    techStack:
-      "Site vitrine moderne, responsive et optimisé pour les recherches locales (salon de coiffure à Genève).",
-    link: "http://rr-coiffure.ch/",
-    img: "/projets/RR-COIFFURE.png",
-
-    client: "RR-COIFFURE",
-    sector: "Beauté / Coiffure",
-    year: 2024,
-    role: "Conception UX/UI & développement front-end",
-    heroSummary:
-      "Site vitrine sur mesure pour un salon de coiffure à Genève, pensé pour rassurer, informer et faciliter la prise de rendez-vous.",
-
-    clientObjectives: [
-      "Rassurer les nouveaux clients qui découvrent le salon en ligne.",
-      "Regrouper toutes les informations pratiques au même endroit.",
-      "Préparer le terrain pour une réservation plus simple.",
-    ],
-    beforeState:
-      "Aucune vraie vitrine en ligne structurée, des informations dispersées et peu de lisibilité pour un nouveau client.",
-    afterState:
-      "Un site clair, centré sur les besoins des clients à Genève, avec une mise en avant des services, des tarifs et des informations pratiques.",
-
-    challenges: [
-      "Rester simple tout en donnant assez d’informations.",
-      "Mettre l’accent sur l’ambiance du salon sans surcharger visuellement.",
-    ],
-    solutions: [
-      "Sections courtes et claires pour les services, tarifs et infos pratiques.",
-      "Photos du salon et des réalisations pour projeter le visiteur.",
-    ],
-
-    results: [
-      "Une présence en ligne claire pour les clients à Genève.",
-      "Des informations pratiques accessibles rapidement (horaires, adresse, téléphone).",
-    ],
-
-    testimonial:
-      "Le site donne une image professionnelle du salon et permet aux clients de trouver facilement les informations dont ils ont besoin.",
-    testimonialName: "Responsable RR-COIFFURE",
-    testimonialRole: "Salon de coiffure à Genève",
-
-    kosmondeRoles: [
-      "Structuration du contenu autour des besoins des clients",
-      "Création d’une mise en page simple et rassurante",
-      "Intégration des informations pratiques (adresse, horaires, contact)",
-      "Optimisation mobile pour les visiteurs sur smartphone",
-    ],
-
-    techBadges: ["Site vitrine", "Responsive", "Orienté SEO local"],
-
-    services: ["Site vitrine complet", "Aide au contenu & structure"],
-    processSteps: [
-      "Écoute des besoins du salon et de sa clientèle.",
-      "Proposition de structure centrée sur les informations pratiques.",
-      "Création d’un design simple et rassurant.",
-      "Intégration du site et tests sur mobile.",
-    ],
-  },
-
-  // ---------------------------------------------------------------------------
-  // PROJET 4 — Chiche ou pas Chiche
-  // ---------------------------------------------------------------------------
-  {
-    slug: "chiche-ou-pas-chiche",
-    title: "Chiche ou pas Chiche",
-    type: "Site vitrine",
-    status: "Liste d’attente",
-    shortDesc:
-      "Améliorations ciblées, optimisation du contenu et petites mises à jour pour un site déjà en ligne.",
-    desc:
-      "Intervention légère sur un site existant pour clarifier le contenu, améliorer la mise en page et rendre l’expérience plus fluide. L’objectif n’est pas de tout refaire, mais d’optimiser ce qui existe déjà pour que le site soit plus clair, plus agréable et plus efficace pour les visiteurs.",
-    context:
-      "Le site avait besoin de petites améliorations : certaines sections manquaient de lisibilité, le contenu n’était pas toujours mis en valeur et quelques éléments visuels pouvaient être modernisés. L’intervention se concentre sur des ajustements ciblés plutôt qu’une refonte complète.",
-    features: [
-      "Mise à jour de sections existantes",
-      "Réorganisation légère du contenu",
-      "Amélioration de la lisibilité et de la hiérarchie",
-      "Petites optimisations visuelles",
-    ],
-    techStack:
-      "Petites interventions front-end et ajustements de contenu pour améliorer l’UX sans refonte complète.",
-    img: "/projets/chicheoupaschiche.png",
-
-    client: "Chiche ou pas Chiche",
-    sector: "Coaching / Développement personnel",
-    year: 2025,
-    role: "Petites mises à jour & amélioration UX",
-    heroSummary:
-      "Petites mises à jour ciblées pour rendre le site plus clair, plus cohérent et plus agréable à parcourir.",
-
-    clientObjectives: [
-      "Rendre le site plus agréable à parcourir sans tout refaire.",
-      "Clarifier le message et la proposition de valeur.",
-    ],
-    beforeState:
-      "Un site déjà en place mais avec des sections peu lisibles et un contenu parfois noyé dans la page.",
-    afterState:
-      "Une version optimisée, plus claire, avec une meilleure hiérarchie de l’information et un confort de lecture amélioré.",
-
-    challenges: [
-      "Intervenir sans casser ce qui fonctionnait déjà.",
-      "Améliorer l’UX avec des ajustements légers plutôt qu’une refonte totale.",
-    ],
-    solutions: [
-      "Reprise des titres et sous-titres pour mieux guider la lecture.",
-      "Ajustements visuels pour mieux faire respirer le contenu.",
-    ],
-
-    results: [
-      "Structure de contenu plus lisible.",
-      "Sections clés mieux mises en valeur.",
-      "Site plus cohérent sans refonte totale.",
-    ],
-
-    kosmondeRoles: [
-      "Analyse des points à optimiser",
-      "Ajustements du contenu et des titres",
-      "Améliorations visuelles légères",
-    ],
-
-    techBadges: ["Petites mises à jour", "UX", "Optimisation légère"],
-
-    services: ["Petites mises à jour", "Aide au contenu & structure"],
-    processSteps: [
-      "Analyse du site existant et repérage des points de friction.",
-      "Liste d’actions ciblées pour améliorer la clarté.",
-      "Petites interventions front-end et contenu.",
-    ],
-  },
-
-  // ---------------------------------------------------------------------------
-  // PROJET 5 — LashBrowsClub
-  // ---------------------------------------------------------------------------
-  {
-    slug: "lashbrowsclub",
-    title: "LashBrowsClub",
-    type: "Site vitrine",
-    status: "Liste d’attente",
-    shortDesc:
-      "Futur site vitrine pour un studio spécialisé en extensions de cils et restructuration des sourcils.",
-    desc:
-      "Création prévue d’un site vitrine pour un studio beauté spécialisé dans les extensions de cils, le rehaussement et la mise en forme des sourcils. L’objectif est de présenter clairement les prestations, rassurer les clientes et faciliter la prise de contact pour les rendez-vous.",
-    context:
-      "Le studio dispose déjà d’une présence sur les réseaux sociaux, mais pas encore d’un site structuré. Le projet vise à poser des bases solides : texte clair, univers visuel cohérent et parcours simple pour réserver ou poser des questions.",
-    features: [
-      "Présentation des prestations (cils, sourcils, soins)",
-      "Mise en avant des avant/après",
-      "Section FAQ pour rassurer les clientes",
-      "Page contact simple et efficace",
-    ],
-    techStack:
-      "Site vitrine moderne, pensé mobile-first, avec une structure claire pour évoluer plus tard vers la prise de rendez-vous en ligne.",
-    img: "/projets/lashbrowsclub.ch.png",
-
-    client: "LashBrowsClub",
-    sector: "Beauté / Cils & Sourcils",
-    year: 2025,
-    role: "Conception UX/UI & structure de contenu",
-    heroSummary:
-      "Un futur site vitrine pour mettre en valeur les prestations cils & sourcils et préparer le terrain pour la réservation en ligne.",
-
-    clientObjectives: [
-      "Aller au-delà d’Instagram et offrir une vraie vitrine professionnelle.",
-      "Rassurer les clientes avec des explications claires et des avant/après.",
-      "Préparer un futur parcours de réservation en ligne.",
-    ],
-    beforeState:
-      "Présence essentiellement sur les réseaux sociaux, sans site structuré ni parcours dédié pour les clientes.",
-    afterState:
-      "Un site pensé pour expliquer les prestations, montrer des résultats et orienter les clientes vers la prise de contact.",
-
-    challenges: [
-      "Traduire un univers Instagram en expérience de site cohérente.",
-      "Rassurer sur des prestations parfois techniques (cils, sourcils).",
-    ],
-    solutions: [
-      "Création d’une structure claire par type de prestation.",
-      "Mise en avant des avant/après et d’une FAQ rassurante.",
-    ],
-
-    results: [
-      "Brief défini et structure de contenu posée.",
-      "Univers visuel en cours de construction.",
-    ],
-
-    kosmondeRoles: [
-      "Clarification des objectifs du site",
-      "Structure de contenu centrée cliente",
-      "Direction UX pour un futur parcours de réservation",
-    ],
-
-    techBadges: ["Site vitrine", "Mobile-first", "Prêt pour réservation en ligne"],
-
-    services: [
-      "Site vitrine complet",
-      "Création de logo",
-      "Aide au contenu & structure",
-    ],
-    processSteps: [
-      "Atelier pour clarifier l’offre et la cible.",
-      "Définition de la structure et des pages du futur site.",
-      "Création d’un univers visuel cohérent avec le studio.",
     ],
   },
 ];
