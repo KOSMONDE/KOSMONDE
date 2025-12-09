@@ -89,8 +89,6 @@ function getStatusStyles(status: NormalizedStatus) {
   }
 }
 
-type Project = (typeof projects)[number];
-
 // -----------------------------------------------------------
 //  COMPOSANTS
 // -----------------------------------------------------------

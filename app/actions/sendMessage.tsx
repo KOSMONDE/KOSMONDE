@@ -4,6 +4,26 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM_EMAIL = "KOSMONDE <contact@kosmonde.ch>";
+const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+function sanitizePlainText(value: string, maxLength = 500) {
+  return value.replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, maxLength);
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function formatMessageHtml(value: string) {
+  const sanitized = sanitizePlainText(value, 2000);
+  if (!sanitized) return "—";
+  return escapeHtml(sanitized).replace(/\r?\n/g, "<br />");
+}
 
 type SendResult = {
   success: boolean;
@@ -20,19 +40,44 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
     };
   }
 
-  const name = (formData.get("name") ?? "").toString().trim();
-  const email = (formData.get("email") ?? "").toString().trim();
-  const projectType = (formData.get("project-type") ?? "").toString().trim();
-  const message = (formData.get("message") ?? "").toString().trim();
+  const nameInput = (formData.get("name") ?? "").toString().trim();
+  const emailInput = (formData.get("email") ?? "").toString().trim();
+  const projectTypeInput = (formData.get("project-type") ?? "").toString().trim();
+  const messageInput = (formData.get("message") ?? "").toString().trim();
+  const honeypot = (formData.get("company") ?? "").toString().trim();
 
-  if (!name || !email || !message) {
+  if (honeypot) {
+    console.warn("Honeypot déclenché pour le formulaire de contact");
+    return {
+      success: false,
+      error: "Validation de sécurité échouée. Merci de réessayer ou d'écrire directement à contact@kosmonde.ch.",
+    };
+  }
+
+  if (!nameInput || !emailInput || !messageInput) {
     return { success: false, error: "Champs requis manquants." };
   }
 
-  const safeProjectType = projectType || "Non précisé";
-  const safeMessage = message || "—";
-  const safeName = name || "—";
+  if (!EMAIL_REGEX.test(emailInput)) {
+    return { success: false, error: "L'adresse email n'est pas valide." };
+  }
+
+  const safeNamePlain = sanitizePlainText(nameInput, 120);
+  const safeMessagePlain = sanitizePlainText(messageInput, 2000);
+
+  if (!safeNamePlain || !safeMessagePlain) {
+    return { success: false, error: "Le message fourni est invalide." };
+  }
+
+  const safeProjectTypePlain = sanitizePlainText(projectTypeInput, 120) || "Non précisé";
+  const safeMessageHtml = formatMessageHtml(messageInput);
+  const safeNameHtml = escapeHtml(safeNamePlain);
+  const safeProjectTypeHtml = escapeHtml(safeProjectTypePlain);
+  const safeEmailHtml = escapeHtml(emailInput);
   const nowLabel = new Date().toLocaleString("fr-CH");
+  const nowLabelHtml = escapeHtml(nowLabel);
+
+  const firstNameHtml = escapeHtml(safeNamePlain.split(/\s+/)[0] ?? safeNamePlain);
 
   try {
     /* =======================
@@ -54,12 +99,12 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                 <div style="margin-top:4px;font-size:12px;color:#9ca3af;">Vous avez reçu un nouveau message via le formulaire de contact.</div>
 
                 <div style="margin-top:10px;font-size:11px;color:#9ca3af;">
-                  <span style="display:inline-block;padding:3px 9px;border-radius:999px;border:1px solid #1f2937;background:rgba(15,23,42,0.9);margin-right:6px;">${safeProjectType}</span>
-                  <span style="display:inline-block;padding:3px 9px;border-radius:999px;border:1px dashed #1f2937;color:#6b7280;">${nowLabel}</span>
+                  <span style="display:inline-block;padding:3px 9px;border-radius:999px;border:1px solid #1f2937;background:rgba(15,23,42,0.9);margin-right:6px;">${safeProjectTypeHtml}</span>
+                  <span style="display:inline-block;padding:3px 9px;border-radius:999px;border:1px dashed #1f2937;color:#6b7280;">${nowLabelHtml}</span>
                 </div>
 
                 <div style="margin-top:8px;font-size:11px;color:#d1d5db;">
-                  ${safeName} • ${safeProjectType}
+                  ${safeNameHtml} • ${safeProjectTypeHtml}
                 </div>
               </td>
             </tr>
@@ -71,7 +116,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                   <tr>
                     <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
                       <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Nom</div>
-                      <div style="font-size:13px;color:#e5e7eb;font-weight:500;">${safeName}</div>
+                      <div style="font-size:13px;color:#e5e7eb;font-weight:500;">${safeNameHtml}</div>
                     </td>
                   </tr>
 
@@ -79,7 +124,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                     <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
                       <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Email</div>
                       <div style="font-size:13px;color:#38bdf8;">
-                        <a href="mailto:${email}" style="color:#38bdf8;text-decoration:none;">${email}</a>
+                        <a href="mailto:${emailInput}" style="color:#38bdf8;text-decoration:none;">${safeEmailHtml}</a>
                       </div>
                     </td>
                   </tr>
@@ -87,7 +132,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                   <tr>
                     <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
                       <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Type de projet</div>
-                      <div style="font-size:13px;color:#e5e7eb;">${safeProjectType}</div>
+                      <div style="font-size:13px;color:#e5e7eb;">${safeProjectTypeHtml}</div>
                     </td>
                   </tr>
 
@@ -95,14 +140,14 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                     <td style="padding:12px 16px;">
                       <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Message</div>
                       <div style="font-size:13px;color:#e5e7eb;line-height:1.6;white-space:pre-line;">
-                        ${safeMessage.replace(/\n/g, "<br>")}
+                        ${safeMessageHtml}
                       </div>
                     </td>
                   </tr>
 
                 </table>
 
-                <div style="margin-top:12px;font-size:11px;color:#6b7280;">Reçu le : ${nowLabel}</div>
+                <div style="margin-top:12px;font-size:11px;color:#6b7280;">Reçu le : ${nowLabelHtml}</div>
               </td>
             </tr>
 
@@ -154,17 +199,13 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
               <td style="padding:20px 24px 18px;">
 
                 <p style="font-size:13px;color:#e5e7eb;margin:0 0 12px;">
-                  ${
-                    safeName
-                      ? `Bonjour ${safeName.split(" ")[0]},`
-                      : "Bonjour,"
-                  }
+                  Bonjour ${firstNameHtml},
                 </p>
 
                 <p style="font-size:13px;color:#d1d5db;margin:0 0 12px;line-height:1.5;">
                   Merci d’avoir pris le temps de m’écrire à propos de votre projet ${
-                    safeProjectType !== "Non précisé"
-                      ? `« ${safeProjectType} »`
+                    safeProjectTypePlain !== "Non précisé"
+                      ? `&laquo; ${safeProjectTypeHtml} &raquo;`
                       : "web"
                   }.
                 </p>
@@ -180,14 +221,11 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                   <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:10px;border:1px solid #1f2937;background:#020617;font-size:12px;color:#d1d5db;">
                     <tr>
                       <td style="padding:8px 12px;border-bottom:1px solid #111827;color:#9ca3af;width:40%;">Type de projet</td>
-                      <td style="padding:8px 12px;border-bottom:1px solid #111827;">${safeProjectType}</td>
+                      <td style="padding:8px 12px;border-bottom:1px solid #111827;">${safeProjectTypeHtml}</td>
                     </tr>
                     <tr>
                       <td style="padding:8px 12px;vertical-align:top;color:#9ca3af;">Message</td>
-                      <td style="padding:8px 12px;line-height:1.5;white-space:pre-line;">${safeMessage.replace(
-                        /\n/g,
-                        "<br>"
-                      )}</td>
+                      <td style="padding:8px 12px;line-height:1.5;white-space:pre-line;">${safeMessageHtml}</td>
                     </tr>
                   </table>
                 </div>
@@ -225,15 +263,15 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
     await resend.emails.send({
       from: FROM_EMAIL,
       to: "mroussadiyanis@icloud.com",
-      subject: `[${safeProjectType}] Nouveau message de ${safeName}`,
-      replyTo: email,
+      subject: `[${safeProjectTypePlain}] Nouveau message de ${safeNamePlain}`,
+      replyTo: emailInput,
       html: adminHtml,
     });
 
     // ENVOI CLIENT
     await resend.emails.send({
       from: FROM_EMAIL,
-      to: email,
+      to: emailInput,
       subject: "Merci pour votre message – KOSMONDE",
       replyTo: "mroussadiyanis@icloud.com",
       html: replyHtml,

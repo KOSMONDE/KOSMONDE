@@ -46,62 +46,70 @@ export default async function ProjectPage({ params }: Props) {
     );
   }
 
+  const {
+    client,
+    sector,
+    year,
+    role,
+    heroSummary,
+    clientObjectives: clientObjectivesRaw,
+    challenges: challengesRaw,
+    solutions: solutionsRaw,
+    beforeState,
+    afterState,
+    results: resultsRaw,
+    metrics: metricsRaw,
+    testimonial,
+    testimonialName,
+    testimonialRole,
+    kosmondeRoles: kosmondeRolesRaw,
+    processSteps: processStepsRaw,
+    techBadges: techBadgesRaw,
+    context,
+    techStack,
+  } = project;
+
   const { label: statusLabel, dotClass: statusDotClass } = getStatusConfig(
-    (project as any).status
+    project.status
   );
 
   // Infos rapides
   const quickInfoItems = [
-    { label: "Client", value: (project as any).client },
-    { label: "Secteur", value: (project as any).sector },
-    { label: "Année", value: (project as any).year },
-    { label: "Rôle", value: (project as any).role },
+    { label: "Client", value: client },
+    { label: "Secteur", value: sector },
+    { label: "Année", value: year },
+    { label: "Rôle", value: role },
     { label: "Type", value: project.type },
   ].filter((i) => i.value);
 
   const hasQuickInfo = quickInfoItems.length > 0;
 
   // Données avancées
-  const clientObjectives =
-    ((project as any).clientObjectives as string[] | undefined) || [];
+  const clientObjectives = clientObjectivesRaw ?? [];
   const hasClientObjectives = clientObjectives.length > 0;
 
-  const challenges =
-    ((project as any).challenges as string[] | undefined) || [];
-  const solutions =
-    ((project as any).solutions as string[] | undefined) || [];
+  const challenges = challengesRaw ?? [];
+  const solutions = solutionsRaw ?? [];
   const hasChallengesSolutions =
     challenges.length > 0 || solutions.length > 0;
 
-  const beforeState = (project as any).beforeState as string | undefined;
-  const afterState = (project as any).afterState as string | undefined;
   const hasBeforeAfter = Boolean(beforeState && afterState);
 
-  const results = ((project as any).results as string[] | undefined) || [];
+  const results = resultsRaw ?? [];
   const hasResults = results.length > 0;
 
-  const metrics = ((project as any).metrics as string[] | undefined) || [];
+  const metrics = metricsRaw ?? [];
   const hasMetrics = metrics.length > 0;
 
-  const testimonial = (project as any).testimonial as string | undefined;
-  const testimonialName = (project as any).testimonialName as
-    | string
-    | undefined;
-  const testimonialRole = (project as any).testimonialRole as
-    | string
-    | undefined;
   const hasTestimonial = Boolean(testimonial);
 
-  const kosmondeRoles =
-    ((project as any).kosmondeRoles as string[] | undefined) || [];
+  const kosmondeRoles = kosmondeRolesRaw ?? [];
   const hasRoles = kosmondeRoles.length > 0;
 
-  const processSteps =
-    ((project as any).processSteps as string[] | undefined) || [];
+  const processSteps = processStepsRaw ?? [];
   const hasProcess = processSteps.length > 0;
 
-  const techBadges =
-    ((project as any).techBadges as string[] | undefined) || [];
+  const techBadges = techBadgesRaw ?? [];
 
   const currentIndex = projects.findIndex((p) => p.slug === cleanSlug);
   const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
@@ -156,9 +164,7 @@ export default async function ProjectPage({ params }: Props) {
                   {project.title}
                 </h1>
                 <p className="max-w-xl text-[13px] sm:text-sm leading-relaxed text-slate-300">
-                  {(project as any).heroSummary ||
-                    project.shortDesc ||
-                    undefined}
+                  {heroSummary || project.shortDesc || undefined}
                 </p>
               </div>
 
@@ -481,12 +487,12 @@ export default async function ProjectPage({ params }: Props) {
                   <p>{project.desc}</p>
 
                   {/* Contexte */}
-                  {(project as any).context && (
+                  {context && (
                     <div className="space-y-1.5">
                       <p className="text-[11px] font-semibold tracking-[0.24em] uppercase text-slate-400">
                         Contexte
                       </p>
-                      <p>{(project as any).context}</p>
+                      <p>{context}</p>
                     </div>
                   )}
 
@@ -518,7 +524,7 @@ export default async function ProjectPage({ params }: Props) {
                     </p>
 
                     <p className="mt-3 text-[13px] leading-relaxed text-slate-200">
-                      {(project as any).techStack}
+                      {techStack}
                     </p>
 
                     {techBadges.length > 0 && (

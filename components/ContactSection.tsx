@@ -129,6 +129,17 @@ export function ContactSection() {
           onSubmit={handleSubmit}
           className="relative mx-auto w-full max-w-xl space-y-4 rounded-2xl border border-slate-800/70 bg-slate-950/95 p-5 sm:p-7 shadow-[0_24px_80px_rgba(15,23,42,0.95)] md:max-w-none"
         >
+          {/* Champ anti-bot (honeypot) */}
+          <div className="hidden" aria-hidden="true">
+            <label htmlFor="company">Votre entreprise</label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
           {/* BADGE KOSMONDE – même bleu que CTA header + glow subtil */}
           <div className="absolute -top-5 left-1/2 -translate-x-1/2">
             <div className="relative">
