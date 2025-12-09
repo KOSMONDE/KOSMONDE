@@ -2,23 +2,30 @@ export function PourquoiSection() {
   const raisons = [
     {
       title: "Clarté",
-      text: "En quelques secondes, vos visiteurs comprennent qui vous êtes et ce que vous proposez.",
-      icon: "✨",
+      text: "Storytelling simplifié, hiérarchie claire et explications orientées bénéfices.",
+      details: ["Diagnostic contenu", "Copywriting orienté conversion"],
+      color: "bg-gradient-to-br from-sky-500/70 via-sky-500/30 to-sky-600/40 shadow-[0_8px_25px_rgba(14,165,233,0.35)]",
     },
     {
-      title: "Efficacité",
-      text: "Le site guide vos visiteurs vers la prise de contact ou la demande de devis.",
-      icon: "🎯",
+      title: "Conception SEO",
+      text: "Structure, balises et vitesse pensées pour le référencement local et les Core Web Vitals.",
+      details: ["Architecture SEO locale", "Audit web performance"],
+      color:
+        "bg-gradient-to-br from-emerald-400/70 via-emerald-400/30 to-emerald-500/40 shadow-[0_8px_25px_rgba(16,185,129,0.3)]",
     },
     {
-      title: "Design moderne",
-      text: "Un design sobre et professionnel qui renforce votre crédibilité.",
-      icon: "🧠",
+      title: "Design premium",
+      text: "Interfaces sur-mesure : palettes, micro-interactions et animations inspirées de l’aéronautique.",
+      details: ["Systèmes de blocs évolutifs", "Maquettes Figma détaillées"],
+      color:
+        "bg-gradient-to-br from-violet-500/70 via-violet-500/30 to-violet-600/40 shadow-[0_8px_25px_rgba(139,92,246,0.35)]",
     },
     {
       title: "Accompagnement",
-      text: "Vous êtes guidé à chaque étape, sans jargon technique ni décisions floues.",
-      icon: "🤝",
+      text: "Process visible, retours en 24 h et feuilles de route actionnables, même après mise en ligne.",
+      details: ["Suivi post-lancement", "Formations rapides"],
+      color:
+        "bg-gradient-to-br from-amber-400/70 via-amber-400/30 to-amber-500/40 shadow-[0_8px_25px_rgba(251,191,36,0.35)]",
     },
   ];
 
@@ -49,34 +56,49 @@ export function PourquoiSection() {
         </div>
 
         {/* GRILLE RAISONS */}
-        <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {raisons.map((item) => (
-            <div
+            <article
               key={item.title}
-              className="relative flex h-full flex-col rounded-2xl border border-slate-800/70 bg-slate-950/85 px-5 py-6 shadow-[0_14px_40px_rgba(15,23,42,0.85)] transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_20px_55px_rgba(8,47,73,0.9)] active:scale-[0.98]"
+              className="relative flex h-full flex-col rounded-2xl border border-slate-800/70 bg-gradient-to-br from-slate-950 via-slate-950/90 to-slate-950 px-6 py-7 shadow-[0_18px_60px_rgba(8,47,73,0.6)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:border-sky-400/60"
+              itemScope
+              itemType="https://schema.org/CreativeWork"
             >
-              {/* Hover glow (desktop) */}
-              <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_70%)] opacity-0 transition-opacity duration-500 hover:opacity-100" />
+              <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.18),transparent_70%)] opacity-0 transition-opacity duration-500 hover:opacity-100" />
 
-              <div className="flex items-center gap-2">
-                <span className="text-xl sm:text-2xl">{item.icon}</span>
-                <h3 className="text-sm font-semibold text-slate-50 sm:text-base">
+              <div className="flex items-center gap-3">
+                <span
+                  className={[
+                    "inline-flex h-11 w-11 items-center justify-center rounded-full",
+                    item.color,
+                  ].join(" ")}
+                  aria-hidden="true"
+                />
+                <h3 className="text-base font-semibold text-slate-50 whitespace-nowrap" itemProp="headline">
                   {item.title}
                 </h3>
               </div>
 
-              <p className="mt-3 text-xs leading-relaxed text-slate-400 sm:text-sm">
+              <p className="mt-3 text-sm leading-relaxed text-slate-300" itemProp="description">
                 {item.text}
               </p>
-            </div>
+
+              <ul className="mt-5 space-y-2 text-xs text-slate-400">
+                {item.details.map((detail) => (
+                  <li key={detail} className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
           ))}
         </div>
 
         {/* TEXTE DE CONFIANCE */}
-        <div className="mx-auto max-w-md text-center">
-          <p className="text-[11px] text-slate-400 sm:text-xs leading-relaxed">
-            Présentez-moi votre projet&nbsp;: je vous aide à définir un site simple,
-            utile et aligné avec vos objectifs.
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-[11px] text-slate-400 sm:text-xs leading-relaxed whitespace-nowrap">
+            Présentez-moi votre projet&nbsp;: je vous aide à définir un site simple, utile et aligné avec vos objectifs.
           </p>
         </div>
       </div>

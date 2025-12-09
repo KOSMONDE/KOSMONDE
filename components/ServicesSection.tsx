@@ -1,6 +1,42 @@
 "use client";
 
+import { useState } from "react";
+
 const SITE_SERVICE_IDS = new Set(["onepage", "vitrine", "surmesure"]);
+
+const TABS = [
+  {
+    id: "sites",
+    label: "Création de sites",
+    description: "One-page, vitrine ou sur mesure",
+  },
+  {
+    id: "accompagnements",
+    label: "Autres accompagnements",
+    description: "Refonte, contenu, identité & maintenance",
+  },
+] as const;
+
+type TabId = (typeof TABS)[number]["id"];
+const TAB_STYLES: Record<
+  TabId,
+  {
+    border: string;
+    shadow: string;
+    accent: string;
+  }
+> = {
+  sites: {
+    border: "border-sky-400/60",
+    shadow: "shadow-[0_15px_45px_rgba(14,165,233,0.25)]",
+    accent: "text-sky-200",
+  },
+  accompagnements: {
+    border: "border-violet-400/60",
+    shadow: "shadow-[0_15px_45px_rgba(124,58,237,0.25)]",
+    accent: "text-violet-200",
+  },
+};
 
 type ServiceCardData = {
   id: string;
@@ -115,6 +151,14 @@ const CARD_DATA: ServiceCardData[] = [
 ];
 
 export function ServicesSection() {
+  const [activeTab, setActiveTab] = useState<TabId>("sites");
+  const activeCards =
+    activeTab === "sites"
+      ? CARD_DATA.filter((card) => SITE_SERVICE_IDS.has(card.id))
+      : CARD_DATA.filter((card) => !SITE_SERVICE_IDS.has(card.id));
+  const activeLabel =
+    TABS.find((tab) => tab.id === activeTab)?.label ?? "Création de sites";
+
   return (
     <section
       id="services"
@@ -141,14 +185,45 @@ export function ServicesSection() {
           </p>
         </div>
 
-        <ServiceGrid
-          title="Création de sites"
-          cards={CARD_DATA.filter((card) => SITE_SERVICE_IDS.has(card.id))}
-        />
-        <ServiceGrid
-          title="Autres accompagnements"
-          cards={CARD_DATA.filter((card) => !SITE_SERVICE_IDS.has(card.id))}
-        />
+        <div className="mx-auto w-full max-w-3xl">
+          <div className="relative rounded-3xl border border-slate-800/70 bg-slate-900/70 p-2 shadow-[0_25px_60px_rgba(8,47,73,0.5)]">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              {TABS.map((tab) => {
+                const isActive = tab.id === activeTab;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveTab(tab.id)}
+                    className={[
+                      "flex-1 rounded-2xl border px-5 py-4 text-left transition duration-300",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
+                      isActive
+                        ? [
+                            "bg-slate-950/95 text-slate-50",
+                            TAB_STYLES[tab.id].border,
+                            TAB_STYLES[tab.id].shadow,
+                          ].join(" ")
+                        : "border-slate-800/80 text-slate-400 hover:text-slate-100 hover:bg-slate-900/40",
+                    ].join(" ")}
+                  >
+                    <span className="block text-sm font-semibold tracking-wide">{tab.label}</span>
+                    <span
+                      className={[
+                        "mt-1 block text-xs",
+                        isActive ? TAB_STYLES[tab.id].accent : "text-slate-500",
+                      ].join(" ")}
+                    >
+                      {tab.description}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <ServiceGrid title={activeLabel} cards={activeCards} />
       </div>
     </section>
   );

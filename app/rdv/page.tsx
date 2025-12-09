@@ -284,15 +284,60 @@ export default function BookingPage() {
       </header>
 
       <section className="container-kosmonde space-y-10 py-12">
-        <header className="mx-auto max-w-4xl space-y-4 text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-sky-400">Rendez-vous & accompagnements</p>
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Choisissez votre service et réservez un créneau commun Kosmonde
-          </h1>
-          <p className="text-sm text-slate-400 sm:text-base">
-            Trois étapes guidées pour préparer un rendez-vous premium : accompagnement, calendrier commun et confirmation personnalisée.
-          </p>
-        </header>
+        <section className="mx-auto max-w-5xl space-y-8 rounded-[2.5rem] border border-slate-800/70 bg-slate-950/85 p-8 text-center shadow-[0_40px_160px_rgba(15,23,42,0.85)]">
+          <div className="space-y-4">
+            <p className="text-xs uppercase tracking-[0.35em] text-sky-400">Rendez-vous Kosmonde</p>
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              Planifiez votre session premium : accompagnement, calendrier commun et confirmation claire.
+            </h1>
+            <p className="text-sm text-slate-400 sm:text-base">
+              Je vous guide en trois étapes : format, créneau, validation. Réponse personnalisée en moins de 24&nbsp;h avec checklist et lien visio.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            {[
+              { label: "Réponse", value: "-24 h", detail: "Pack récap + .ics" },
+              { label: "Session", value: "60 min", detail: "Visio ou Lausanne" },
+              { label: "Formats", value: "3 offres", detail: "One-page, vitrine, refonte" },
+            ].map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-2xl border border-slate-800/70 bg-slate-950/90 p-4 text-left text-sm text-slate-400"
+              >
+                <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">{stat.label}</p>
+                <p className="text-2xl font-semibold text-slate-50">{stat.value}</p>
+                <p>{stat.detail}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="rounded-2xl border border-slate-800/70 bg-slate-950/90 p-5 text-left">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Process express</p>
+            <div className="mt-4 flex flex-col gap-6 text-sm text-slate-300 md:flex-row md:items-center md:justify-between">
+              {[
+                { title: "Sélection", detail: "Service adapté" },
+                { title: "Calendrier", detail: "Créneau commun" },
+                { title: "Validation", detail: "Checklist + .ics" },
+              ].map((step, index) => (
+                <div key={step.title} className="flex flex-1 items-center gap-3">
+                  <div className="relative flex items-center">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full border border-sky-500/50 bg-sky-500/10 text-[11px] font-semibold text-sky-100">
+                      {index + 1}
+                    </span>
+                    {index < 2 && (
+                      <span className="ml-6 hidden h-px w-16 rounded-full bg-gradient-to-r from-sky-500 to-transparent md:block" />
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-slate-50">{step.title}</p>
+                    <p className="text-xs text-slate-400">{step.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section className="mx-auto max-w-3xl rounded-3xl border border-slate-800 bg-slate-950/85 p-6">
           <ol className="flex items-center justify-between gap-3 text-xs sm:text-sm">
@@ -332,178 +377,215 @@ export default function BookingPage() {
           </ol>
         </section>
 
-        <section className="space-y-6 rounded-[2.5rem] border border-slate-800 bg-slate-950/90 p-6 shadow-[0_35px_120px_rgba(14,165,233,0.18)]">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Étape 1 · Service</p>
-              <h2 className="text-xl font-semibold text-slate-50">Votre accompagnement Kosmonde</h2>
-              <p className="text-sm text-slate-400">Choisissez la carte la plus adaptée. Onglets et cartes sont animés pour un focus clair.</p>
+        <section className="rounded-[2.5rem] border border-slate-800 bg-slate-950/90 p-6 shadow-[0_35px_120px_rgba(14,165,233,0.18)]">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,_2.2fr)_minmax(320px,_1fr)]">
+            <div className="space-y-6">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Étape 1 · Service</p>
+                <h2 className="text-xl font-semibold text-slate-50">Votre accompagnement Kosmonde</h2>
+                <p className="text-sm text-slate-400">
+                  Un clic sur une carte enregistre votre choix. Les onglets séparent les créations et les autres prestations.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                {SERVICE_TABS.map((tab) => {
+                  const active = tab.id === activeTab;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setActiveTab(tab.id)}
+                      className={[
+                        "rounded-3xl border px-5 py-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
+                        active
+                          ? "border-sky-400/60 bg-sky-500/15 text-sky-50 shadow-[0_20px_60px_rgba(14,165,233,0.25)]"
+                          : "border-slate-800 bg-slate-950 text-slate-300 hover:text-slate-50",
+                      ].join(" ")}
+                    >
+                      <p className="text-sm font-semibold text-slate-50">{tab.title}</p>
+                      <p className="text-xs text-slate-400">{tab.description}</p>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-3">
+                {activeServices.map((service, idx) => {
+                  const active = service.id === selectedServiceId;
+                  return (
+                    <button
+                      key={service.id}
+                      type="button"
+                      onClick={() => setSelectedServiceId(service.id)}
+                      style={{ animationDelay: `${idx * 60}ms` }}
+                      className={[
+                        "flex h-full flex-col gap-3 rounded-2xl border p-5 text-left transition-all duration-300 animate-fade",
+                        active
+                          ? "border-sky-400/80 bg-sky-500/10 text-sky-50 shadow-[0_35px_100px_rgba(14,165,233,0.3)] -translate-y-1"
+                          : "border-slate-800 bg-slate-950 text-slate-300 hover:border-sky-400/40 hover:shadow-[0_20px_60px_rgba(14,165,233,0.2)]",
+                      ].join(" ")}
+                    >
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-2xl" aria-hidden>
+                          {service.icon}
+                        </span>
+                        <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[11px] text-slate-300">
+                          {service.badge}
+                        </span>
+                      </div>
+                      <p className="text-base font-semibold text-slate-50">{service.title}</p>
+                      <ul className="space-y-1 text-xs text-slate-400">
+                        {service.bullets.map((bullet) => (
+                          <li key={bullet}>• {bullet}</li>
+                        ))}
+                      </ul>
+                      <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">{service.highlight}</p>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-wrap gap-3">
-            {SERVICE_TABS.map((tab) => {
-              const active = tab.id === activeTab;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id)}
-                  className={[
-                    "rounded-3xl border px-5 py-4 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
-                    active
-                      ? "border-sky-400/60 bg-sky-500/15 text-sky-50 shadow-[0_20px_60px_rgba(14,165,233,0.25)]"
-                      : "border-slate-800 bg-slate-950 text-slate-300 hover:text-slate-50",
-                  ].join(" ")}
-                >
-                  <p className="text-sm font-semibold text-slate-50">{tab.title}</p>
-                  <p className="text-xs text-slate-400">{tab.description}</p>
-                </button>
-              );
-            })}
+            <aside className="rounded-3xl border border-slate-800/80 bg-slate-950/80 p-5 text-sm text-slate-300 lg:sticky lg:top-28">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Sélection active</p>
+              {selectedService ? (
+                <>
+                  <p className="mt-3 text-base font-semibold text-sky-200">{selectedService.title}</p>
+                  <p className="text-xs uppercase tracking-[0.25em] text-slate-500">{selectedService.group}</p>
+                  <p className="mt-2 text-slate-400">{selectedService.highlight}</p>
+                </>
+              ) : (
+                <p className="mt-2 text-slate-500">Choisissez un accompagnement pour débloquer le calendrier.</p>
+              )}
+              <div className="mt-4 space-y-2 rounded-2xl border border-slate-800/80 bg-slate-950/70 p-4 text-xs text-slate-400">
+                <p>Vous recevrez :</p>
+                <ul className="list-disc space-y-1 pl-4">
+                  <li>Récap complet + checklist contenus.</li>
+                  <li>Invitation calendrier .ics.</li>
+                  <li>Accès au questionnaire projet.</li>
+                </ul>
+              </div>
+            </aside>
           </div>
-
-          <div className="grid gap-4 md:grid-cols-3">
-            {activeServices.map((service, idx) => {
-              const active = service.id === selectedServiceId;
-              return (
-                <button
-                  key={service.id}
-                  type="button"
-                  onClick={() => setSelectedServiceId(service.id)}
-                  style={{ animationDelay: `${idx * 60}ms` }}
-                  className={[
-                    "flex h-full flex-col gap-3 rounded-2xl border p-5 text-left transition-all duration-300 animate-fade",
-                    active
-                      ? "border-sky-400/80 bg-sky-500/10 text-sky-50 shadow-[0_35px_100px_rgba(14,165,233,0.3)] -translate-y-1"
-                      : "border-slate-800 bg-slate-950 text-slate-300 hover:border-sky-400/40 hover:shadow-[0_20px_60px_rgba(14,165,233,0.2)]",
-                  ].join(" ")}
-                >
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-2xl" aria-hidden>
-                      {service.icon}
-                    </span>
-                    <span className="rounded-full border border-slate-700 px-2 py-0.5 text-[11px] text-slate-300">
-                      {service.badge}
-                    </span>
-                  </div>
-                  <p className="text-base font-semibold text-slate-50">{service.title}</p>
-                  <ul className="space-y-1 text-xs text-slate-400">
-                    {service.bullets.map((bullet) => (
-                      <li key={bullet}>• {bullet}</li>
-                    ))}
-                  </ul>
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">{service.highlight}</p>
-                </button>
-              );
-            })}
-          </div>
-
-          {selectedService && (
-            <div className="rounded-2xl border border-slate-800/80 bg-slate-950/80 p-4 text-sm text-slate-300">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Sélection active</p>
-              <p className="mt-2 font-semibold text-sky-200">
-                {selectedService.group} · {selectedService.title}
-              </p>
-              <p className="text-slate-400">{selectedService.highlight}</p>
-            </div>
-          )}
         </section>
 
-        <section className="space-y-6">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Étape 2 · Créneau</p>
-              <h3 className="text-xl font-semibold">Calendrier hebdomadaire 2026-2027</h3>
-              <p className="text-sm text-slate-400">Vert = créneau libre · Gris = complet · Tirez parti des boutons pour naviguer semaine par semaine.</p>
+        <section className="grid gap-8 lg:grid-cols-[minmax(0,_2.5fr)_minmax(320px,_1fr)]">
+          <div className="space-y-6">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Étape 2 · Créneau</p>
+                <h3 className="text-xl font-semibold">Calendrier hebdomadaire 2026-2027</h3>
+                <p className="text-sm text-slate-400">Vert = créneau libre · Gris = complet · Navigation semaine par semaine.</p>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  disabled={!canGoPrev}
+                  onClick={() => canGoPrev && setWeekStart((prev) => addDays(prev, -7))}
+                  className={[
+                    "rounded-full border px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
+                    canGoPrev ? "border-slate-700 text-slate-100 hover:border-slate-500" : "cursor-not-allowed border-slate-800 text-slate-600",
+                  ].join(" ")}
+                >
+                  Semaine précédente
+                </button>
+                <button
+                  type="button"
+                  disabled={!canGoNext}
+                  onClick={() => canGoNext && setWeekStart((prev) => addDays(prev, 7))}
+                  className={[
+                    "rounded-full border px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
+                    canGoNext ? "border-slate-700 text-slate-100 hover:border-slate-500" : "cursor-not-allowed border-slate-800 text-slate-600",
+                  ].join(" ")}
+                >
+                  Semaine suivante
+                </button>
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                disabled={!canGoPrev}
-                onClick={() => canGoPrev && setWeekStart((prev) => addDays(prev, -7))}
-                className={[
-                  "rounded-full border px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
-                  canGoPrev ? "border-slate-700 text-slate-100 hover:border-slate-500" : "cursor-not-allowed border-slate-800 text-slate-600",
-                ].join(" ")}
-              >
-                Semaine précédente
-              </button>
-              <button
-                type="button"
-                disabled={!canGoNext}
-                onClick={() => canGoNext && setWeekStart((prev) => addDays(prev, 7))}
-                className={[
-                  "rounded-full border px-4 py-2 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
-                  canGoNext ? "border-slate-700 text-slate-100 hover:border-slate-500" : "cursor-not-allowed border-slate-800 text-slate-600",
-                ].join(" ")}
-              >
-                Semaine suivante
-              </button>
+
+            <div className="rounded-[2rem] border border-slate-800 bg-slate-950/80 p-6 animate-fade">
+              <div className="text-center">
+                <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Semaine en cours</p>
+                <p className="text-lg font-semibold text-slate-50">
+                  {rangeFormatter.format(weekStart)} – {rangeFormatter.format(addDays(weekStart, 6))}
+                </p>
+              </div>
+
+              <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 sm:gap-4">
+                {weekDays.map((day, index) => {
+                  const { status, slots } = getDayStatus(day);
+                  const isAvailable = status === "available";
+                  const isOutOfRange = status === "out";
+
+                  return (
+                    <div
+                      key={day.iso}
+                      className={[
+                        "flex flex-col rounded-2xl border px-3 py-3 text-center text-sm transition-all sm:py-4",
+                        isOutOfRange
+                          ? "border-slate-900 text-slate-600"
+                          : isAvailable
+                            ? "border-emerald-400/60 bg-emerald-500/10 text-emerald-100 shadow-[0_10px_30px_rgba(16,185,129,0.2)]"
+                            : "border-slate-800 bg-slate-950/70 text-slate-500",
+                      ].join(" ")}
+                    >
+                      <p className="text-[11px] tracking-[0.2em] text-slate-500">{WEEKDAYS[index]}</p>
+                      <p className="mt-1 text-lg font-semibold">{isOutOfRange ? "—" : cellFormatter.format(day.date)}</p>
+
+                      {isAvailable && (
+                        <div className="mt-3 flex flex-col gap-2">
+                          {slots.map((slot) => {
+                            const isSelected = selectedSlot?.dateISO === day.iso && selectedSlot?.time === slot;
+                            return (
+                              <button
+                                key={slot}
+                                type="button"
+                                onClick={() => setSelectedSlot({ dateISO: day.iso, time: slot })}
+                                aria-label={`Sélectionner le créneau ${slot} le ${recapDateFormatter.format(day.date)}`}
+                                className={[
+                                  "rounded-full border px-2 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
+                                  isSelected
+                                    ? "border-emerald-200 bg-emerald-400/30 text-emerald-50"
+                                    : "border-emerald-300/40 text-emerald-100 hover:border-emerald-200",
+                                ].join(" ")}
+                              >
+                                {slot}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+
+                      {!isAvailable && !isOutOfRange && (
+                        <p className="mt-3 text-[11px] text-slate-500">Complet</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-slate-800 bg-slate-950/80 p-6 animate-fade">
-            <div className="text-center">
-              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Semaine en cours</p>
-              <p className="text-lg font-semibold text-slate-50">
-                {rangeFormatter.format(weekStart)} – {rangeFormatter.format(addDays(weekStart, 6))}
-              </p>
+          <aside className="rounded-[2rem] border border-slate-800/80 bg-slate-950/80 p-6 text-sm text-slate-300 lg:sticky lg:top-28">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Créneau choisi</p>
+            {selectedSlot && selectedSlotLabel ? (
+              <>
+                <p className="mt-3 text-lg font-semibold text-slate-50">{selectedSlotLabel}</p>
+                <p className="text-xs uppercase tracking-[0.25em] text-slate-500">Heure {selectedSlot.time}</p>
+              </>
+            ) : (
+              <p className="mt-2 text-slate-500">Choisissez un slot pour afficher le récapitulatif.</p>
+            )}
+            <div className="mt-4 space-y-2 text-xs text-slate-400">
+              <p>Conseils :</p>
+              <ul className="list-disc space-y-1 pl-4">
+                <li>Prévoyez 60 minutes sans interruption.</li>
+                <li>Réunissez accès, exemples, contenus.</li>
+                <li>Le créneau reste bloqué 48 h en attente de confirmation.</li>
+              </ul>
             </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 sm:gap-4">
-              {weekDays.map((day, index) => {
-                const { status, slots } = getDayStatus(day);
-                const isAvailable = status === "available";
-                const isOutOfRange = status === "out";
-
-                return (
-                  <div
-                    key={day.iso}
-                    className={[
-                      "flex flex-col rounded-2xl border px-3 py-3 text-center text-sm transition-all sm:py-4",
-                      isOutOfRange
-                        ? "border-slate-900 text-slate-600"
-                        : isAvailable
-                          ? "border-emerald-400/60 bg-emerald-500/10 text-emerald-100 shadow-[0_10px_30px_rgba(16,185,129,0.2)]"
-                          : "border-slate-800 bg-slate-950/70 text-slate-500",
-                    ].join(" ")}
-                  >
-                    <p className="text-[11px] tracking-[0.2em] text-slate-500">{WEEKDAYS[index]}</p>
-                    <p className="mt-1 text-lg font-semibold">{isOutOfRange ? "—" : cellFormatter.format(day.date)}</p>
-
-                    {isAvailable && (
-                      <div className="mt-3 flex flex-col gap-2">
-                        {slots.map((slot) => {
-                          const isSelected = selectedSlot?.dateISO === day.iso && selectedSlot?.time === slot;
-                          return (
-                            <button
-                              key={slot}
-                              type="button"
-                              onClick={() => setSelectedSlot({ dateISO: day.iso, time: slot })}
-                              aria-label={`Sélectionner le créneau ${slot} le ${recapDateFormatter.format(day.date)}`}
-                              className={[
-                                "rounded-full border px-2 py-1 text-xs font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
-                                isSelected
-                                  ? "border-emerald-200 bg-emerald-400/30 text-emerald-50"
-                                  : "border-emerald-300/40 text-emerald-100 hover:border-emerald-200",
-                              ].join(" ")}
-                            >
-                              {slot}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {!isAvailable && !isOutOfRange && (
-                      <p className="mt-3 text-[11px] text-slate-500">Complet</p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          </aside>
         </section>
 
         <section className="rounded-[2.5rem] border border-slate-800 bg-slate-950/85 p-6">
@@ -549,38 +631,40 @@ export default function BookingPage() {
         </section>
 
         <section className="rounded-[2.5rem] border border-slate-800 bg-slate-950/80 p-6">
-          <h3 className="text-xl font-semibold">Process complet pour valider un rendez-vous</h3>
-          <p className="mt-2 text-sm text-slate-400">Chaque étape est guidée pour éviter les allers-retours et sécuriser votre créneau.</p>
-          <ol className="mt-6 space-y-4 text-sm">
+          <h3 className="text-xl font-semibold">Parcours Kosmonde</h3>
+          <p className="mt-2 text-sm text-slate-400">
+            Process premium, transparent, optimisé SEO : chaque étape est cadrée et documentée.
+          </p>
+          <div className="mt-6 grid gap-4 text-sm md:grid-cols-4">
             {[
               {
-                title: "1. Sélection du créneau",
-                detail: "Service + calendrier commun, créneau bloqué 48 h.",
+                title: "Brief express",
+                detail: "Service + créneau retenu, blocage 48 h.",
               },
               {
-                title: "2. Questionnaire projet",
-                detail: "Objectifs, contraintes, contenus pour préparer la session.",
+                title: "Questionnaire",
+                detail: "Objectifs, contenus, accès. Templates fournis.",
               },
               {
-                title: "3. Validation & acompte",
-                detail: "Récap complet (durée, livrables) puis paiement pour confirmer.",
+                title: "Validation",
+                detail: "Livrables, devis et acompte pour confirmer.",
               },
               {
-                title: "4. Session & suivi",
-                detail: "Visio/présentiel + plan d’action et livrables envoyés sous 24 h.",
+                title: "Session & suivi",
+                detail: "Visio 60 min + plan d’action, fichiers et .ics sous 24 h.",
               },
             ].map((step) => (
-              <li key={step.title} className="rounded-2xl border border-slate-800/60 bg-slate-950/70 p-4">
+              <div key={step.title} className="rounded-2xl border border-slate-800/60 bg-slate-950/70 p-4">
                 <p className="font-semibold text-sky-200">{step.title}</p>
                 <p className="mt-1 text-slate-300">{step.detail}</p>
-              </li>
+              </div>
             ))}
-          </ol>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-slate-400">Une confirmation avec lien visio et checklist est envoyée 48 h avant la session.</p>
+          </div>
+          <div className="mt-6 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+            <p>Checklist et lien visio envoyés 48 h avant la session.</p>
             <Link
               href="mailto:bonjour@kosmonde.studio"
-              className="inline-flex items-center justify-center rounded-full border border-sky-400/40 px-6 py-2 text-sm font-semibold text-sky-200 transition hover:bg-sky-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+              className="inline-flex items-center justify-center rounded-full border border-sky-400/40 px-6 py-2 font-semibold text-sky-200 transition hover:bg-sky-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
             >
               bonjour@kosmonde.studio
             </Link>

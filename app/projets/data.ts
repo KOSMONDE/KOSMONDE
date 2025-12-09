@@ -317,78 +317,7 @@ export const projects: Project[] = [
   },
 
   // ---------------------------------------------------------------------------
-  // PROJET 4 — Chiche ou pas Chiche
-  // ---------------------------------------------------------------------------
-  {
-    slug: "chiche-ou-pas-chiche",
-    title: "Chiche ou pas Chiche",
-    type: "Site vitrine",
-    status: "Liste d’attente",
-    shortDesc:
-      "Améliorations ciblées, optimisation du contenu et petites mises à jour pour un site déjà en ligne.",
-    desc:
-      "Intervention légère sur un site existant pour clarifier le contenu, améliorer la mise en page et rendre l’expérience plus fluide. L’objectif n’est pas de tout refaire, mais d’optimiser ce qui existe déjà pour que le site soit plus clair, plus agréable et plus efficace pour les visiteurs.",
-    context:
-      "Le site avait besoin de petites améliorations : certaines sections manquaient de lisibilité, le contenu n’était pas toujours mis en valeur et quelques éléments visuels pouvaient être modernisés. L’intervention se concentre sur des ajustements ciblés plutôt qu’une refonte complète.",
-    features: [
-      "Mise à jour de sections existantes",
-      "Réorganisation légère du contenu",
-      "Amélioration de la lisibilité et de la hiérarchie",
-      "Petites optimisations visuelles",
-    ],
-    techStack:
-      "Petites interventions front-end et ajustements de contenu pour améliorer l’UX sans refonte complète.",
-    img: "/projets/chicheoupaschiche.png",
-
-    client: "Chiche ou pas Chiche",
-    sector: "Coaching / Développement personnel",
-    year: 2025,
-    role: "Petites mises à jour & amélioration UX",
-    heroSummary:
-      "Petites mises à jour ciblées pour rendre le site plus clair, plus cohérent et plus agréable à parcourir.",
-
-    clientObjectives: [
-      "Rendre le site plus agréable à parcourir sans tout refaire.",
-      "Clarifier le message et la proposition de valeur.",
-    ],
-    beforeState:
-      "Un site déjà en place mais avec des sections peu lisibles et un contenu parfois noyé dans la page.",
-    afterState:
-      "Une version optimisée, plus claire, avec une meilleure hiérarchie de l’information et un confort de lecture amélioré.",
-
-    challenges: [
-      "Intervenir sans casser ce qui fonctionnait déjà.",
-      "Améliorer l’UX avec des ajustements légers plutôt qu’une refonte totale.",
-    ],
-    solutions: [
-      "Reprise des titres et sous-titres pour mieux guider la lecture.",
-      "Ajustements visuels pour mieux faire respirer le contenu.",
-    ],
-
-    results: [
-      "Structure de contenu plus lisible.",
-      "Sections clés mieux mises en valeur.",
-      "Site plus cohérent sans refonte totale.",
-    ],
-
-    kosmondeRoles: [
-      "Analyse des points à optimiser",
-      "Ajustements du contenu et des titres",
-      "Améliorations visuelles légères",
-    ],
-
-    techBadges: ["Petites mises à jour", "UX", "Optimisation légère"],
-
-    services: ["Petites mises à jour", "Aide au contenu & structure"],
-    processSteps: [
-      "Analyse du site existant et repérage des points de friction.",
-      "Liste d’actions ciblées pour améliorer la clarté.",
-      "Petites interventions front-end et contenu.",
-    ],
-  },
-
-  // ---------------------------------------------------------------------------
-  // PROJET 5 — GBM AVOCATS
+  // PROJET 4 — GBM AVOCATS
   // ---------------------------------------------------------------------------
   {
     slug: "gbm-avocats",

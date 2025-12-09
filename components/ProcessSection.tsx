@@ -1,24 +1,26 @@
 "use client";
 
+import Link from "next/link";
+
 export function ProcessSection() {
   const steps = [
     {
       step: "01",
-      title: "Discussion & besoins",
-      text: "On clarifie votre projet, votre public, vos objectifs et les contenus nécessaires.",
-      icon: "💬",
+      title: "Brief & audit",
+      subtitle: "Contenus clarifiés",
+      text: "On pose ensemble les objectifs, les pages clés et les priorités SEO locales.",
     },
     {
       step: "02",
-      title: "Maquette & structure",
-      text: "Je prépare une structure claire, une maquette simple et un premier rendu.",
-      icon: "🧩",
+      title: "Design & structure",
+      subtitle: "Prototype validé",
+      text: "Maquettes, wording et plan de pages sont testés et ajustés avec vous.",
     },
     {
       step: "03",
       title: "Mise en ligne & suivi",
-      text: "Le site est mis en ligne, avec un accompagnement pour la suite.",
-      icon: "🚀",
+      subtitle: "Lancement maîtrisé",
+      text: "Intégration, tests Core Web Vitals et support pour la prise en main.",
     },
   ];
 
@@ -47,45 +49,40 @@ export function ProcessSection() {
         </div>
 
         {/* STEPS */}
-        <ol className="grid gap-8 md:gap-6 md:grid-cols-3 max-w-5xl mx-auto">
-          {steps.map((item) => (
-            <li
-              key={item.step}
-              className="
-                relative flex flex-col rounded-2xl border border-slate-800/60 bg-slate-950/80
-                px-6 py-8
-                shadow-[0_10px_30px_rgba(15,23,42,0.7)]
-                md:shadow-[0_14px_45px_rgba(15,23,42,0.8)]
-                transition-transform duration-300
-                hover:-translate-y-1
-                hover:shadow-[0_16px_45px_rgba(8,47,73,0.8)]
-                md:hover:shadow-[0_22px_55px_rgba(8,47,73,0.85)]
-              "
-            >
-              {/* Glow hover */}
-              <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.22),transparent_70%)]" />
+        <div className="relative max-w-5xl mx-auto">
+          <span className="pointer-events-none absolute left-12 right-12 top-10 hidden h-px bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 md:block" />
+          <ol className="grid gap-8 md:gap-6 md:grid-cols-3">
+            {steps.map((item) => (
+              <li
+                key={item.step}
+                className="
+                  relative flex flex-col rounded-2xl border border-slate-800/60 bg-slate-950/85
+                  px-6 py-8
+                  shadow-[0_12px_35px_rgba(15,23,42,0.75)]
+                  transition-transform duration-300
+                  hover:-translate-y-1 hover:border-slate-700/80
+                  hover:shadow-[0_18px_55px_rgba(8,47,73,0.8)]
+                "
+              >
+                <div className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.18),transparent_70%)] hover:opacity-100" />
 
-              {/* STEP HEADER */}
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-lg">{item.icon}</span>
-                <span className="text-xs font-mono text-sky-300 tracking-[0.2em]">
-                  {item.step}
-                </span>
-                <span className="flex-1 h-px bg-gradient-to-r from-sky-400/60 via-slate-700 to-transparent" />
-              </div>
+                <div className="mb-4 flex items-center gap-3">
+                  <span className="relative flex h-11 w-11 items-center justify-center rounded-full border border-sky-400/60 bg-slate-950 text-[11px] font-semibold tracking-[0.25em] text-sky-200 shadow-[0_10px_30px_rgba(14,165,233,0.25)]">
+                    {item.step}
+                  </span>
+                  <div className="flex-1 h-px bg-gradient-to-r from-sky-500/30 via-slate-700 to-transparent" />
+                </div>
 
-              {/* TITLE */}
-              <h3 className="text-sm font-semibold text-slate-50">
-                {item.title}
-              </h3>
+                <p className="text-[11px] uppercase tracking-[0.28em] text-slate-500">
+                  {item.subtitle}
+                </p>
+                <h3 className="mt-2 text-base font-semibold text-slate-50">{item.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-slate-400">{item.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
 
-              {/* DESCRIPTION */}
-              <p className="mt-3 text-xs text-slate-400 leading-relaxed">
-                {item.text}
-              </p>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
   );

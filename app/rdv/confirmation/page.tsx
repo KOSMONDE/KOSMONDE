@@ -145,7 +145,7 @@ function ConfirmationPageContent() {
   const mailDate = formattedDate || "—";
   const mailTime = time || "—";
 
-  const mailtoHref = `mailto:bonjour@kosmonde.studio?subject=${encodeURIComponent("Confirmation rendez-vous Kosmonde")}&body=${encodeURIComponent(
+  const mailtoHref = `mailto:contact@kosmonde.ch?subject=${encodeURIComponent("Confirmation rendez-vous Kosmonde")}&body=${encodeURIComponent(
     `Service : ${mailService}\nDate : ${mailDate}\nHeure : ${mailTime}`
   )}`;
 
@@ -169,6 +169,8 @@ function ConfirmationPageContent() {
                 ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-200"
                 : "border-amber-400/40 bg-amber-500/10 text-amber-200",
             ].join(" ")}
+            role="status"
+            aria-live="polite"
           >
             {isComplete ? "Prêt à confirmer" : "Incomplet"}
           </span>
@@ -190,6 +192,9 @@ function ConfirmationPageContent() {
             <h1 className="text-3xl font-semibold text-slate-50">Votre rendez-vous est presque prêt</h1>
             <p className="mx-auto max-w-xl text-sm text-slate-400">
               Vérifiez votre accompagnement et le créneau associé avant d’envoyer la demande. Vous pourrez aussi télécharger un rappel .ics.
+            </p>
+            <p className="mx-auto max-w-2xl text-xs text-slate-500 sm:text-sm">
+              Après validation, vous recevez un e-mail personnalisé avec questionnaire, checklist contenus, lien visio et invitation calendrier optimisée SEO.
             </p>
           </div>
 
@@ -242,12 +247,30 @@ function ConfirmationPageContent() {
               </Link>
             )}
 
-            <Link
-              href="/rdv"
-              className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-100 transition hover:border-sky-400 hover:text-sky-200"
-            >
-              Modifier
-            </Link>
+            <div className="flex w-full flex-col gap-3 sm:flex-row">
+              <Link
+                href="/rdv"
+                className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-100 transition hover:border-sky-400 hover:text-sky-200"
+              >
+                Modifier
+              </Link>
+              <Link
+                href="/#services"
+                className="inline-flex w-full items-center justify-center rounded-full border border-slate-700 px-5 py-2 text-sm font-semibold text-slate-100 transition hover:border-sky-400 hover:text-sky-200"
+              >
+                Voir les services
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-3 text-xs text-slate-400 sm:grid-cols-2">
+            <p>
+              Votre créneau reste bloqué 48&nbsp;h le temps de valider questionnaire, checklist et acompte si nécessaire.
+            </p>
+            <p>
+              Besoin d’aide ? Écrivez à <Link href="mailto:contact@kosmonde.ch" className="text-sky-300 hover:text-sky-100">contact@kosmonde.ch</Link> ou découvrez les formats sur{" "}
+              <Link href="/#services" className="text-sky-300 hover:text-sky-100">notre page services</Link>.
+            </p>
           </div>
 
           <details className="mt-10 rounded-2xl border border-slate-800 bg-slate-950/80 p-5 text-sm text-slate-300 animate-fadeInSlow">

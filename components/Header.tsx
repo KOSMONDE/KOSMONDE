@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // NOUVEL ORDRE DES LIENS
 const navLinks = [
@@ -14,6 +15,16 @@ const navLinks = [
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  function getBasePath(href: string) {
+    const [path] = href.split("#");
+    return path || "/";
+  }
+
+  function isActive(href: string) {
+    return getBasePath(href) === pathname;
+  }
 
   function toggleMenu() {
     setOpen((o) => !o);
@@ -37,12 +48,13 @@ export function Header() {
           </Link>
 
           {/* NAV DESKTOP */}
-          <nav className="hidden md:flex items-center gap-8 text-xs text-slate-300">
+          <nav className="hidden md:flex items-center gap-8 text-xs text-slate-300" aria-label="Navigation principale">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative group hover:text-white transition"
+                className={`relative group transition ${isActive(link.href) ? "text-white" : "hover:text-white"}`}
+                aria-current={isActive(link.href) ? "page" : undefined}
               >
                 {link.label}
                 <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-sky-400 transition-all duration-300 group-hover:w-full" />
@@ -53,9 +65,11 @@ export function Header() {
           {/* CTA DESKTOP */}
           <Link
             href="/rdv"
-            className="hidden md:inline-flex rounded-full bg-sky-400 px-5 py-2 text-xs font-medium text-slate-950 shadow-sm hover:bg-sky-300"
+            aria-label="Accéder à la page de prise de rendez-vous"
+            className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-6 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-950 shadow-[0_10px_30px_rgba(56,189,248,0.35)] transition hover:translate-y-0.5 hover:brightness-110"
           >
-            RDV
+            Prendre rendez-vous
+            <span aria-hidden="true" className="text-base leading-none">↗</span>
           </Link>
 
           {/* BOUTON MOBILE */}
@@ -63,17 +77,19 @@ export function Header() {
             className="md:hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-300 hover:text-white transition"
             onClick={toggleMenu}
             aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            type="button"
           >
-            <svg
-              width="20"
-              height="20"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              aria-hidden="true"
-            >
-              <path d="M4 6h12M4 10h12M4 14h12" strokeLinecap="round" />
-            </svg>
+            {open ? (
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M6 6l8 8M14 6l-8 8" strokeLinecap="round" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M4 6h12M4 10h12M4 14h12" strokeLinecap="round" />
+              </svg>
+            )}
           </button>
         </div>
       </header>
@@ -88,10 +104,12 @@ export function Header() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.15),transparent_75%)] pointer-events-none" />
 
         {/* MENU MOBILE */}
-        <div
+        <nav
+          id="mobile-menu"
           className={`relative h-full transition-transform duration-300 ${
             open ? "translate-y-0" : "-translate-y-4"
           }`}
+          aria-label="Navigation mobile"
         >
           <div className="container-kosmonde flex h-full flex-col pt-4 pb-8">
             {/* TOP */}
@@ -125,18 +143,21 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={closeMenu}
-                  className="text-lg text-slate-100 hover:text-white tracking-wide transition"
+                  className={`text-lg tracking-wide transition ${isActive(link.href) ? "text-white" : "text-slate-100 hover:text-white"}`}
+                  aria-current={isActive(link.href) ? "page" : undefined}
                 >
                   {link.label}
                 </Link>
               ))}
 
               <Link
-                href="/#contact"
+                href="/rdv"
                 onClick={closeMenu}
-                className="mt-4 inline-flex rounded-full bg-sky-400 px-7 py-3 text-sm font-medium text-slate-950 hover:bg-sky-300 shadow-[0_12px_30px_rgba(8,47,73,0.6)]"
+                aria-label="Accéder à la page de prise de rendez-vous"
+                className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-8 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-[0_12px_30px_rgba(8,47,73,0.6)] transition hover:brightness-110"
               >
-                Contact
+                Prendre rendez-vous
+                <span aria-hidden="true">↗</span>
               </Link>
             </div>
 
@@ -145,7 +166,7 @@ export function Header() {
               Studio web basé en Suisse · Disponible à distance
             </div>
           </div>
-        </div>
+        </nav>
       </div>
     </>
   );

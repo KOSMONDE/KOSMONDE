@@ -21,6 +21,7 @@ function normalizeStatus(status: ProjectStatus | string): NormalizedStatus {
       return "progress";
     case "Liste d’attente":
       return "queue";
+    case "Refont":
     case "Refonte":
       return "refonte";
     default:
@@ -51,6 +52,13 @@ function getFilterLabel(value: StatusFilter): string {
   }
 }
 
+const STATUS_DESCRIPTIONS: Record<NormalizedStatus, string> = {
+  online: "Projets déjà publiés.",
+  progress: "Sites en cours de réalisation.",
+  queue: "Demandes programmées.",
+  refonte: "Refontes ou évolutions.",
+};
+
 function getStatusStyles(status: NormalizedStatus) {
   switch (status) {
     case "online":
@@ -60,6 +68,9 @@ function getStatusStyles(status: NormalizedStatus) {
         badgeBorderClass: "border-emerald-400/75",
         badgeBgClass: "bg-slate-950/95",
         dotExtraClass: "",
+        cardBorder: "border-emerald-400/50",
+        glow: "from-emerald-400/25 to-transparent",
+        timelineDot: "bg-emerald-300",
       };
     case "progress":
       return {
@@ -68,6 +79,9 @@ function getStatusStyles(status: NormalizedStatus) {
         badgeBorderClass: "border-amber-300/80",
         badgeBgClass: "bg-slate-950/95",
         dotExtraClass: "animate-pulse",
+        cardBorder: "border-amber-300/60",
+        glow: "from-amber-300/25 to-transparent",
+        timelineDot: "bg-amber-300",
       };
     case "queue":
       return {
@@ -76,6 +90,9 @@ function getStatusStyles(status: NormalizedStatus) {
         badgeBorderClass: "border-dashed border-violet-400/90",
         badgeBgClass: "bg-slate-950/95",
         dotExtraClass: "",
+        cardBorder: "border-violet-400/60",
+        glow: "from-violet-400/20 to-transparent",
+        timelineDot: "bg-violet-400",
       };
     case "refonte":
     default:
@@ -85,6 +102,9 @@ function getStatusStyles(status: NormalizedStatus) {
         badgeBorderClass: "border-sky-300/80",
         badgeBgClass: "bg-slate-950/95",
         dotExtraClass: "",
+        cardBorder: "border-sky-300/60",
+        glow: "from-sky-400/20 to-transparent",
+        timelineDot: "bg-sky-300",
       };
   }
 }
@@ -130,21 +150,13 @@ function ProjectServices({
   if (!services || services.length === 0) return null;
 
   const hasPack = services.length > 1;
-  const dense = services.length >= 3;
 
   if (hasPack) {
-    const wrapperPadding = compact
-      ? "px-3 py-2"
-      : dense
-      ? "px-3.5 py-2.5"
-      : "px-4 py-3";
+    const wrapperPadding = compact ? "px-3 py-2" : "px-4 py-3";
 
-    const pillsLayout = dense
-      ? "flex flex-wrap gap-1.5"
-      : "flex flex-wrap gap-2 sm:flex-nowrap sm:gap-3";
+    const pillsLayout = "flex flex-col gap-2";
 
-    const pillSize =
-      dense || compact ? "px-3 py-1 text-[10px]" : "px-3.5 py-1.5 text-[11px]";
+    const pillSize = compact ? "px-3.5 py-1.5 text-[11px]" : "px-4 py-2 text-[12px]";
 
     return (
       <div
@@ -162,12 +174,17 @@ function ProjectServices({
             <span
               key={service}
               className={[
-                "inline-flex items-center gap-1 rounded-full border border-sky-400/80 bg-sky-500/15 text-slate-100",
+                "inline-flex w-full items-center justify-between gap-2 rounded-full border border-sky-400/80 bg-sky-500/10 text-slate-100 shadow-[0_4px_18px_rgba(15,23,42,0.35)]",
                 pillSize,
               ].join(" ")}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
-              {service}
+              <span className="inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
+                {service}
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.15em] text-slate-300">
+                incl.
+              </span>
             </span>
           ))}
         </div>
@@ -198,6 +215,7 @@ export function ProjectsSection() {
   const hasProjects = filteredProjects.length > 0;
   const heroProject = hasProjects ? filteredProjects[0] : null;
   const otherProjects = hasProjects ? filteredProjects.slice(1) : [];
+  const timelineProjects = otherProjects;
 
   return (
     <section
@@ -263,7 +281,7 @@ export function ProjectsSection() {
                       aria-pressed={isActive}
                       onClick={() => setStatusFilter(f.value)}
                       className={[
-                        "inline-flex items-center gap-1 rounded-full border px-3.5 py-2 text-xs font-medium tracking-wide transition-all duration-150",
+                        "inline-flex items-center gap-1 rounded-full border px-4 py-2.5 text-xs font-medium tracking-wide transition-all duration-150",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
                         isActive
                           ? "border-sky-400 bg-sky-500/15 text-sky-100 shadow-[0_0_0_1px_rgba(56,189,248,0.25)]"
@@ -282,6 +300,11 @@ export function ProjectsSection() {
                 })}
               </div>
             </div>
+            {statusFilter !== "all" && (
+              <p className="text-[11px] text-slate-500">
+                {STATUS_DESCRIPTIONS[statusFilter as NormalizedStatus]}
+              </p>
+            )}
           </div>
         </div>
 
@@ -293,80 +316,100 @@ export function ProjectsSection() {
         )}
 
         {hasProjects && (
-          <div className="space-y-8">
-            {/* HERO CARD */}
+          <div className="space-y-12">
             {heroProject &&
               (() => {
                 const normalizedStatus = normalizeStatus(heroProject.status);
                 const services = heroProject.services ?? [];
+                const statusMeta = getStatusStyles(normalizedStatus);
+                const heroMetric =
+                  heroProject.metrics?.[0] ??
+                  heroProject.results?.[0] ??
+                  heroProject.heroSummary ??
+                  heroProject.sector ??
+                  null;
+                const heroMeta = [
+                  heroProject.sector,
+                  heroProject.year ? `Depuis ${heroProject.year}` : null,
+                  heroProject.link ? "Site publié" : null,
+                ].filter(Boolean) as string[];
 
                 return (
                   <Link
                     href={`/projets/${heroProject.slug}`}
-                    aria-label={`Voir le projet "${heroProject.title}" en détail`}
+                    aria-label={`Voir le projet "${heroProject.title}" (${statusMeta.label}) en détail`}
                     className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                   >
-                    <article
-                      className={[
-                        "group relative flex h-full flex-col overflow-hidden rounded-2xl lg:flex-row",
-                        "border border-sky-400/60 bg-slate-950/80 px-0 py-0",
-                        "shadow-[0_14px_45px_rgba(15,23,42,0.8)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(8,47,73,0.85)]",
-                      ].join(" ")}
-                    >
-                      {/* Glow hover */}
-                      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.22),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-                      {/* Image hero + badge */}
-                      <div className="relative w-full border-b border-slate-800/80 bg-slate-900/60 lg:w-[55%] lg:border-r">
-                        <ProjectStatusBadge
-                          status={normalizedStatus}
-                          className="absolute right-4 top-4 lg:right-5 lg:top-5"
-                        />
-                        <div className="relative aspect-[16/9] flex items-center justify-center overflow-hidden lg:aspect-auto lg:h-full">
-                          <Image
-                            src={heroProject.img}
-                            alt={heroProject.title}
-                            fill
-                            quality={90}
-                            className="object-contain"
+                    <article className="group relative overflow-hidden rounded-[2.4rem] border border-slate-800/70 bg-slate-950/90 shadow-[0_25px_80px_rgba(8,47,73,0.55)] transition-all duration-500 hover:-translate-y-1 hover:scale-[1.005]">
+                      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.18),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.16),transparent_55%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                      <div className="flex flex-col lg:flex-row">
+                        <div className="relative w-full overflow-hidden lg:w-[58%]">
+                          <ProjectStatusBadge
+                            status={normalizedStatus}
+                            className="absolute left-5 top-5"
                           />
+                          <div className="relative h-full min-h-[300px]">
+                            <Image
+                              src={heroProject.img}
+                              alt={heroProject.title}
+                              fill
+                              quality={95}
+                              className="object-cover object-center lg:object-contain"
+                            />
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                          </div>
+                          <div className="absolute bottom-6 left-6 flex flex-wrap gap-2 text-[11px] text-slate-200">
+                            {heroMeta.map((meta) => (
+                              <span
+                                key={meta}
+                                className="rounded-full border border-white/15 bg-slate-950/70 px-3 py-1 backdrop-blur-sm"
+                              >
+                                {meta}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Contenu hero */}
-                      <div className="flex flex-1 flex-col gap-6 px-7 py-7">
-                        <header className="space-y-1.5">
-                          <p className="text-[11px] uppercase tracking-[0.23em] text-slate-400">
-                            {heroProject.type}
+                        <div className="flex flex-1 flex-col gap-6 px-7 py-8 lg:px-10 lg:py-10">
+                          <header className="space-y-2">
+                            <p className="text-[11px] uppercase tracking-[0.23em] text-slate-500">
+                              {heroProject.type}
+                            </p>
+                            <div className="flex flex-wrap items-center gap-3">
+                              <h3 className="text-[1.85rem] font-semibold text-slate-50">
+                                {heroProject.title}
+                              </h3>
+                              <span className="rounded-full border border-sky-400/60 bg-sky-500/15 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-sky-100">
+                                Projet phare
+                              </span>
+                            </div>
+                            {heroMetric && (
+                              <p className="text-sm text-slate-300">{heroMetric}</p>
+                            )}
+                          </header>
+
+                          <p className="text-sm leading-relaxed text-slate-300">
+                            {heroProject.shortDesc}
                           </p>
-                          <h3 className="text-[1.55rem] font-semibold text-slate-50">
-                            {heroProject.title}
-                          </h3>
-                        </header>
 
-                        {/* Zone badges */}
-                        <div className="min-h-[72px] sm:min-h-[88px] flex items-start">
-                          <ProjectServices services={services} />
-                        </div>
+                          <div className="rounded-2xl border border-slate-800/70 bg-slate-950/70 p-4">
+                            <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
+                              Services livrés
+                            </p>
+                            <div className="mt-3">
+                              <ProjectServices services={services} />
+                            </div>
+                          </div>
 
-                        <p className="text-sm leading-relaxed text-slate-300">
-                          {heroProject.shortDesc}
-                        </p>
-
-                        {/* Bouton Découvrir : plus large + centré */}
-                        <div className="mt-auto flex justify-center pt-4">
-                          <span
-                            className="
-                              inline-flex items-center justify-center gap-1.5 rounded-full border border-sky-400/50
-                              bg-sky-500/10 px-6 py-2.5 text-[12px] font-medium text-sky-100
-                              min-w-[9rem]
-                              transition-all duration-300
-                              group-hover:bg-sky-500/20 group-hover:text-sky-50 group-hover:border-sky-400/80
-                            "
-                          >
-                            Découvrir
-                            <span className="translate-y-[1px]">↗</span>
-                          </span>
+                          <div className="mt-auto flex flex-wrap items-center gap-4">
+                            <span className="inline-flex items-center gap-2 rounded-full border border-sky-400/50 bg-sky-500/10 px-6 py-2.5 text-[12px] font-semibold text-slate-100 transition group-hover:border-sky-400 group-hover:text-white">
+                              Voir l’étude de cas
+                              <span className="text-base">↗</span>
+                            </span>
+                            <span className="text-xs uppercase tracking-[0.25em] text-slate-500">
+                              Dernière mise à jour · {heroProject.year ?? "2024"}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </article>
@@ -374,80 +417,64 @@ export function ProjectsSection() {
                 );
               })()}
 
-            {/* AUTRES PROJETS */}
-            {otherProjects.length > 0 && (
-              <div className="grid items-stretch gap-7 md:grid-cols-2">
-                {otherProjects.map((proj) => {
+            {timelineProjects.length > 0 && (
+              <div className="grid gap-8 md:grid-cols-3">
+                {timelineProjects.map((proj) => {
                   const normalizedStatus = normalizeStatus(proj.status);
                   const services = proj.services ?? [];
+                  const statusMeta = getStatusStyles(normalizedStatus);
+                  const highlight =
+                    proj.metrics?.[0] ??
+                    proj.results?.[0] ??
+                    proj.sector ??
+                    null;
 
                   return (
                     <Link
                       key={proj.slug}
                       href={`/projets/${proj.slug}`}
-                      aria-label={`Voir le projet "${proj.title}" en détail`}
-                      className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                      aria-label={`Voir le projet "${proj.title}" (${statusMeta.label}) en détail`}
+                      className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                     >
                       <article
                         className={[
-                          "group relative flex h-full flex-col overflow-hidden rounded-2xl",
-                          "border border-sky-400/60 bg-slate-950/80 px-0 py-0",
-                          "shadow-[0_14px_45px_rgba(15,23,42,0.8)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(8,47,73,0.85)]",
+                          "relative flex h-full flex-col overflow-hidden rounded-[1.8rem] border bg-slate-950/85 shadow-[0_18px_55px_rgba(8,47,73,0.55)] transition-transform duration-300 hover:-translate-y-1 hover:scale-[1.01]",
+                          statusMeta.cardBorder,
                         ].join(" ")}
                       >
-                        {/* Glow hover */}
-                        <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.22),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-                        {/* Image + badge */}
-                        <div className="relative w-full border-b border-slate-800/80 bg-slate-900/60">
+                        <div className="relative aspect-[5/3] overflow-hidden border-b border-slate-800/70">
+                          <Image
+                            src={proj.img}
+                            alt={proj.title}
+                            fill
+                            quality={85}
+                            className="object-cover object-center"
+                          />
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
                           <ProjectStatusBadge
                             status={normalizedStatus}
-                            className="absolute right-3.5 top-3.5 lg:right-5 lg:top-5"
+                            className="absolute right-4 top-4"
                           />
-                          <div className="relative aspect-[4/3] flex items-center justify-center overflow-hidden">
-                            <Image
-                              src={proj.img}
-                              alt={proj.title}
-                              fill
-                              quality={90}
-                              className="object-contain"
-                            />
-                          </div>
                         </div>
-
-                        {/* Contenu */}
                         <div className="flex flex-1 flex-col gap-4 px-6 py-6">
                           <header className="space-y-1">
-                            <p className="text-[11px] uppercase tracking-[0.23em] text-slate-400">
+                            <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
                               {proj.type}
                             </p>
-                            <h3 className="text-lg font-semibold text-slate-50">
+                            <h3 className="text-xl font-semibold text-slate-50">
                               {proj.title}
                             </h3>
+                            {highlight && (
+                              <p className="text-sm text-slate-300">{highlight}</p>
+                            )}
                           </header>
-
-                          {/* Badges */}
-                          <div className="min-h-[72px] sm:min-h-[88px] flex items-start">
-                            <ProjectServices services={services} compact />
-                          </div>
-
-                          <p className="text-sm leading-relaxed text-slate-300">
-                            {proj.shortDesc}
-                          </p>
-
-                          {/* Bouton Découvrir : plus large + centré */}
-                          <div className="mt-auto flex justify-center pt-4">
-                            <span
-                              className="
-                                inline-flex items-center justify-center gap-1.5 rounded-full border border-sky-400/50
-                                bg-sky-500/10 px-6 py-2.5 text-[12px] font-medium text-sky-100
-                                min-w-[9rem]
-                                transition-all duration-300
-                                group-hover:bg-sky-500/20 group-hover:text-sky-50 group-hover:border-sky-400/80
-                              "
-                            >
-                              Découvrir
-                              <span className="translate-y-[1px]">↗</span>
+                          <p className="text-sm text-slate-300">{proj.shortDesc}</p>
+                          <ProjectServices services={services} compact />
+                          <div className="mt-auto flex items-center justify-between text-xs text-slate-500">
+                            <span>{proj.client ?? "Client Kosmonde"}</span>
+                            <span className="inline-flex items-center gap-2 text-sky-200">
+                              Voir le projet
+                              <span className="text-base">↗</span>
                             </span>
                           </div>
                         </div>
@@ -457,8 +484,19 @@ export function ProjectsSection() {
                 })}
               </div>
             )}
+
           </div>
         )}
+
+        <div className="flex justify-center">
+          <Link
+            href="/projets"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-700 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-sky-400 hover:text-sky-200"
+          >
+            Voir tous les projets
+            <span className="text-base">↗</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

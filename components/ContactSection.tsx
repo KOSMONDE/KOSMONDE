@@ -15,6 +15,7 @@ export function ContactSection() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSending, setIsSending] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [projectType, setProjectType] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -106,48 +107,88 @@ export function ContactSection() {
       id="contact"
       className="scroll-mt-24 md:scroll-mt-28 relative overflow-hidden bg-slate-950 border-b border-slate-900/40"
     >
-      {/* Glows de fond */}
-      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_65%),radial-gradient(circle_at_bottom,rgba(15,118,110,0.18),transparent_65%)]" />
-      <div className="pointer-events-none absolute inset-0 -z-10 opacity-25 mix-blend-screen bg-[radial-gradient(circle_at_top_right,rgba(148,163,184,0.32),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.14),transparent_60%),radial-gradient(circle_at_bottom,rgba(15,118,110,0.12),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 opacity-30 mix-blend-screen bg-[radial-gradient(circle_at_top_right,rgba(148,163,184,0.28),transparent_55%)]" />
 
-      <div className="container-kosmonde relative space-y-12 sm:space-y-14 py-12 sm:py-16">
-        {/* HEADER */}
-        <div className="mx-auto max-w-xl space-y-3 text-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
-            Parlons de votre projet
-          </h2>
-          <p className="text-sm leading-relaxed text-slate-200 sm:text-base">
-            Expliquez votre besoin en quelques mots, je vous indique la meilleure suite.
-          </p>
-          <p className="text-[11px] uppercase tracking-[0.22em] text-slate-300">
-            Premier échange · Sans engagement
-          </p>
-        </div>
+      <div className="container-kosmonde relative py-12 sm:py-16">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,_4fr)_minmax(0,_6fr)] lg:items-start">
+          {/* COLONNE INFO / CONTEXTE */}
+          <div className="space-y-7">
+            <div className="space-y-3">
+              <p className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1 text-[11px] uppercase tracking-[0.25em] text-sky-100">
+                Studio web & SEO · Suisse
+              </p>
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
+                Parlons de votre prochain site vitrine
+              </h2>
+              <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
+                Partagez votre activité et vos objectifs. Je vous réponds personnellement en moins de 24&nbsp;h avec un plan clair et les meilleures suites possibles.
+              </p>
+            </div>
 
-        {/* FORMULAIRE */}
-        <form
-          onSubmit={handleSubmit}
-          className="relative mx-auto w-full max-w-xl space-y-4 rounded-2xl border border-slate-800/70 bg-slate-950/95 p-5 sm:p-7 shadow-[0_24px_80px_rgba(15,23,42,0.95)] md:max-w-none"
-        >
-          {/* Champ anti-bot (honeypot) */}
-          <div className="hidden" aria-hidden="true">
-            <label htmlFor="company">Votre entreprise</label>
-            <input
-              id="company"
-              name="company"
-              type="text"
-              tabIndex={-1}
-              autoComplete="off"
-            />
+            <ul className="space-y-3 text-sm text-slate-200">
+              {[
+                "Un seul interlocuteur du premier message à la mise en ligne.",
+                "Plan d’action orienté conversion, contenu et SEO local.",
+                "Créneau visio de 15 min possible dès cette semaine.",
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2 text-left">
+                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-sky-400" aria-hidden="true" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="rounded-2xl border border-slate-800/70 bg-slate-950/70 p-5 shadow-[0_15px_45px_rgba(15,23,42,0.6)]">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-slate-400">
+                Preuves rapides
+              </p>
+              <dl className="mt-4 grid gap-3 sm:grid-cols-3">
+                <div className="text-center">
+                  <dt className="text-2xl font-semibold text-slate-50">60+</dt>
+                  <dd className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
+                    Sites livrés
+                  </dd>
+                </div>
+                <div className="text-center">
+                  <dt className="text-2xl font-semibold text-slate-50">24&nbsp;h</dt>
+                  <dd className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
+                    Réponse max
+                  </dd>
+                </div>
+                <div className="text-center">
+                  <dt className="text-2xl font-semibold text-slate-50">3</dt>
+                  <dd className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
+                    Formats proposés
+                  </dd>
+                </div>
+              </dl>
+            </div>
+
           </div>
-          {/* BADGE KOSMONDE – même bleu que CTA header + glow subtil */}
+
+          {/* FORMULAIRE */}
+          <form
+            onSubmit={handleSubmit}
+            className="relative isolate w-full space-y-4 rounded-3xl border border-slate-800/70 bg-slate-950/95 p-5 sm:p-7 shadow-[0_24px_80px_rgba(15,23,42,0.95)]"
+          >
+            {/* Champ anti-bot (honeypot) */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="company">Votre entreprise</label>
+              <input
+                id="company"
+                name="company"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+          {/* BADGE KOSMONDE – inspiré des CTA principaux, glow plus feutré */}
           <div className="absolute -top-5 left-1/2 -translate-x-1/2">
             <div className="relative">
-              {/* Glow */}
-              <div className="absolute inset-0 -z-10 blur-xl bg-sky-400/60" />
-              {/* Badge */}
-              <div className="rounded-full bg-sky-400 px-6 py-1.5 text-[10px] font-semibold tracking-[0.25em] text-slate-950 shadow-[0_0_26px_rgba(56,189,248,0.85)] ring-1 ring-sky-100/60">
-                KOSMONDE
+              <div className="absolute inset-0 -z-10 blur-2xl bg-sky-300/30" aria-hidden="true" />
+              <div className="rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-5 py-1 text-[10px] font-semibold tracking-[0.28em] text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.5)] ring-1 ring-slate-200/30">
+                STUDIO WEB SEO
               </div>
             </div>
           </div>
@@ -210,23 +251,36 @@ export function ContactSection() {
           </div>
 
           {/* TYPE DE PROJET */}
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <label className="text-xs font-medium text-slate-100">
-              Type de projet
+              Type de projet (rapide)
             </label>
-            <select
-              name="project-type"
-              className="w-full rounded-xl border border-slate-700 bg-slate-950/70 px-3 py-2.5 text-xs text-slate-50 outline-none backdrop-blur-sm focus:ring-1 focus:ring-sky-400/80"
-              defaultValue=""
-            >
-              <option value="" disabled>
-                Choisir une option
-              </option>
-              <option value="One-page">Site One-page</option>
-              <option value="Vitrine">Site vitrine</option>
-              <option value="Sur-mesure">Projet sur mesure</option>
-              <option value="Autre">Je ne sais pas encore</option>
-            </select>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: "Site one-page", value: "site-one-page" },
+                { label: "Site vitrine", value: "site-vitrine" },
+                { label: "Refonte", value: "refonte" },
+                { label: "Autre accompagnement", value: "autre" },
+              ].map((option) => {
+                const isActive = projectType === option.value;
+                return (
+                  <button
+                    type="button"
+                    key={option.value}
+                    onClick={() => setProjectType(option.value)}
+                    className={[
+                      "rounded-full border px-3.5 py-1.5 text-[11px] font-semibold transition",
+                      isActive
+                        ? "border-sky-400 bg-sky-500/20 text-sky-100"
+                        : "border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 hover:text-slate-200",
+                    ].join(" ")}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+            <input type="hidden" name="project-type" value={projectType} />
           </div>
 
           {/* MESSAGE */}
@@ -251,7 +305,6 @@ export function ContactSection() {
             )}
           </div>
 
-          {/* BOUTON – même bleu que CTA header */}
           <button
             type="submit"
             disabled={isSending}
@@ -271,115 +324,14 @@ export function ContactSection() {
           <p className="text-[11px] text-slate-300">
             Vous envoyez un message, je vous réponds personnellement. Aucun envoi automatique.
           </p>
+
+          <div className="rounded-2xl border border-slate-800/70 bg-slate-950/75 p-5 shadow-[0_12px_35px_rgba(15,23,42,0.55)] text-sm text-slate-300">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-slate-400 mb-2">Note</p>
+            <p>Réponse personnelle sous 24&nbsp;h, sans automatisation ni relances marketing.</p>
+          </div>
         </form>
-
-        {/* BLOCS D’INFOS */}
-        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
-          {/* Bloc 1 — Message direct */}
-          <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-950/90 p-6 shadow-[0_18px_55px_rgba(15,23,42,0.9)] backdrop-blur-sm">
-            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.2),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/80 bg-slate-900/90 text-sm">
-                  💬
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-slate-300">
-                    Premier contact
-                  </p>
-                  <h3 className="text-sm font-semibold text-slate-50">
-                    M’écrire en quelques lignes
-                  </h3>
-                </div>
-              </div>
-              <span className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
-                1 / 2
-              </span>
-            </div>
-
-            <p className="mt-4 text-sm leading-relaxed text-slate-200">
-              Présentez votre activité et votre besoin en quelques phrases. Je vous réponds avec une orientation simple et directe.
-            </p>
-
-            <ul className="mt-3 space-y-1 text-[12px] leading-relaxed text-slate-200">
-              <li>• Votre activité</li>
-              <li>• Ce que vous souhaitez</li>
-              <li>• Votre délai idéal</li>
-            </ul>
-
-            {/* BADGES PREMIUM – gamme bleue uniquement */}
-            <div className="mt-4 flex flex-wrap gap-2 text-[11px]">
-              <span className="rounded-full border border-sky-500/70 bg-sky-500/10 px-3 py-1 text-sky-100">
-                Refaire un site
-              </span>
-              <span className="rounded-full border border-sky-400/70 bg-sky-400/10 px-3 py-1 text-sky-100">
-                Premier site
-              </span>
-              <span className="rounded-full border border-cyan-300/70 bg-cyan-300/10 px-3 py-1 text-cyan-100">
-                Avis rapide
-              </span>
-            </div>
-
-            <p className="mt-4 text-[11px] text-slate-300">
-              Vous obtenez une première direction adaptée à votre situation.
-            </p>
-          </div>
-
-          {/* Bloc 2 — Coordonnées */}
-          <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-950/90 p-6 text-xs shadow-[0_18px_55px_rgba(15,23,42,0.9)] backdrop-blur-sm">
-            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(56,189,248,0.2),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700/80 bg-slate-900/90 text-sm">
-                  ✉️
-                </div>
-                <div className="space-y-0.5">
-                  <p className="text-[10px] uppercase tracking-[0.22em] text-slate-300">
-                    Coordonnées
-                  </p>
-                  <h3 className="text-sm font-semibold text-slate-50">
-                    Contact direct avec le studio
-                  </h3>
-                </div>
-              </div>
-              <span className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
-                2 / 2
-              </span>
-            </div>
-
-            <p className="mt-4 text-xs leading-relaxed text-slate-200">
-              Vous échangez avec une seule personne, du premier message à la mise en ligne.
-            </p>
-
-            {/* Email + délai – bleu au lieu de vert */}
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-sky-400/80 bg-slate-950/90 px-3 py-1.5 text-[11px] text-slate-200">
-              <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
-              <a
-                href="mailto:contact@kosmonde.ch"
-                className="truncate text-sky-300 hover:text-sky-200"
-              >
-                contact@kosmonde.ch
-              </a>
-              <span className="text-slate-300">· Réponse sous 24–48h</span>
-            </div>
-
-            {/* BADGES DE CONFIANCE – bleus + gris */}
-            <div className="mt-5 flex flex-wrap gap-2 text-[10px]">
-              <span className="rounded-full border border-slate-600/80 bg-slate-900/80 px-3 py-1 text-slate-200">
-                Pas de newsletter
-              </span>
-              <span className="rounded-full border border-cyan-300/70 bg-cyan-300/10 px-3 py-1 text-cyan-100">
-                Données non revendues
-              </span>
-              <span className="rounded-full border border-sky-400/70 bg-sky-400/10 px-3 py-1 text-sky-200">
-                Échange confidentiel
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 }
