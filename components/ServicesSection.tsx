@@ -1,11 +1,11 @@
 "use client";
 
 const SITE_SERVICE_IDS = new Set(["onepage", "vitrine", "surmesure"]);
-export function ServicesSection() {
-  const cards = [
-    /* --- Création de sites --- */
-    {
-      id: "onepage",
+
+const CARD_DATA = [
+  /* --- Création de sites --- */
+  {
+    id: "onepage",
       title: "Site One-page",
       badge: "Idéal pour démarrer",
       bullets: [
@@ -97,11 +97,12 @@ export function ServicesSection() {
       highlight:
         "Pour garder votre site stable, à jour et agréable à utiliser.",
       featured: false,
-      timeline: "Formule mensuelle ou tickets ponctuels",
-      iconClass: "text-emerald-200",
-    },
-  ];
+    timeline: "Formule mensuelle ou tickets ponctuels",
+    iconClass: "text-emerald-200",
+  },
+] as const;
 
+export function ServicesSection() {
   return (
     <section
       id="services"
@@ -130,18 +131,18 @@ export function ServicesSection() {
 
         <ServiceGrid
           title="Création de sites"
-          cards={cards.filter((card) => SITE_SERVICE_IDS.has(card.id))}
+          cards={CARD_DATA.filter((card) => SITE_SERVICE_IDS.has(card.id))}
         />
         <ServiceGrid
           title="Autres accompagnements"
-          cards={cards.filter((card) => !SITE_SERVICE_IDS.has(card.id))}
+          cards={CARD_DATA.filter((card) => !SITE_SERVICE_IDS.has(card.id))}
         />
       </div>
     </section>
   );
 }
 
-type ServiceCardData = (typeof cards)[number];
+type ServiceCardData = (typeof CARD_DATA)[number];
 
 function ServiceGrid({ title, cards }: { title: string; cards: ServiceCardData[] }) {
   return (
