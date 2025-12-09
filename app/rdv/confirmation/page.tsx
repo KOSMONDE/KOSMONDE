@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 const dateFormatter = new Intl.DateTimeFormat("fr-FR", {
@@ -136,7 +136,7 @@ function useICS(service: string, dateISO: string, time: string) {
   }, [service, dateISO, time]);
 }
 
-export default function ConfirmationPage() {
+function ConfirmationPageContent() {
   const { serviceId, service, dateISO, time, formattedDate, hasSlot, isComplete } = useConfirmationParams();
   const style = SERVICE_STYLES[serviceId] ?? SERVICE_STYLES.default;
   const icsHref = useICS(service, dateISO, time);
@@ -271,5 +271,13 @@ export default function ConfirmationPage() {
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
     </main>
+  );
+}
+
+export default function ConfirmationPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">Chargement…</div>}>
+      <ConfirmationPageContent />
+    </Suspense>
   );
 }

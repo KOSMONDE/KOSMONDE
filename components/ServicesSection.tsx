@@ -2,7 +2,19 @@
 
 const SITE_SERVICE_IDS = new Set(["onepage", "vitrine", "surmesure"]);
 
-const CARD_DATA = [
+type ServiceCardData = {
+  id: string;
+  title: string;
+  badge: string;
+  bullets: string[];
+  highlight: string;
+  featured: boolean;
+  timeline?: string;
+  iconClass?: string;
+  icon?: string;
+};
+
+const CARD_DATA: ServiceCardData[] = [
   /* --- Création de sites --- */
   {
     id: "onepage",
@@ -100,7 +112,7 @@ const CARD_DATA = [
     timeline: "Formule mensuelle ou tickets ponctuels",
     iconClass: "text-emerald-200",
   },
-] as const;
+];
 
 export function ServicesSection() {
   return (
@@ -141,8 +153,6 @@ export function ServicesSection() {
     </section>
   );
 }
-
-type ServiceCardData = (typeof CARD_DATA)[number];
 
 function ServiceGrid({ title, cards }: { title: string; cards: ServiceCardData[] }) {
   return (
