@@ -60,6 +60,9 @@ export type Project = {
   // Tech / badges
   techBadges?: string[];
 
+  // Avancement (0-100) optionnel
+  progress?: number;
+
   // Services utilisés pour ce projet (badges + Pack du projet)
   services?: ProjectService[];
 };
