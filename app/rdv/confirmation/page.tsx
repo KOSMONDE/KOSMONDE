@@ -352,6 +352,15 @@ function ConfirmationPageContent() {
         </div>
       </section>
 
+      <div className="container-kosmonde mt-6 flex justify-center pb-10">
+        <Link
+          href="/"
+          className="inline-flex items-center justify-center rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-100 transition hover:border-sky-400 hover:text-sky-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+        >
+          ← Retour au site
+        </Link>
+      </div>
+
       <style>{`
         .animate-fadeIn { animation: fadeIn 0.7s ease both; }
         .animate-fadeInDelay { animation: fadeIn 0.9s ease both; }

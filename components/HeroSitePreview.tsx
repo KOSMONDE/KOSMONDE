@@ -215,7 +215,7 @@ export function HeroSitePreview() {
             <div className="grid gap-2 sm:grid-cols-2">
               <div className="flex items-center justify-between rounded-lg border border-slate-800/70 bg-slate-900/60 px-3 py-2 text-slate-200">
                 <span>Sites livrés</span>
-                <span className="font-semibold text-emerald-300">60+</span>
+                <span className="font-semibold text-emerald-300">20+</span>
               </div>
               <div className="flex items-center justify-between rounded-lg border border-slate-800/70 bg-slate-900/60 px-3 py-2 text-slate-200">
                 <span>Réponse</span>

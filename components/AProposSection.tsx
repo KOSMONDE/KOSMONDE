@@ -25,7 +25,7 @@ export function AProposSection() {
     },
   ];
   const quickFacts = [
-    { label: "Sites livrés", value: "60+" },
+    { label: "Sites livrés", value: "20+" },
     { label: "Années d’expérience", value: "8" },
     { label: "Réponse sous", value: "24 h" },
   ];
