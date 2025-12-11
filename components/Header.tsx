@@ -37,7 +37,7 @@ export function Header() {
   return (
     <>
       {/* HEADER */}
-      <header className="sticky top-0 z-30 border-b border-slate-900/50 bg-[#0B1525CC] backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-slate-900/50 bg-slate-950/85 backdrop-blur-xl">
         <div className="container-kosmonde flex h-14 items-center justify-between md:h-20">
           {/* LOGO */}
           <Link
@@ -66,7 +66,7 @@ export function Header() {
           <Link
             href="/rdv"
             aria-label="Accéder à la page de prise de rendez-vous"
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-6 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-950 shadow-[0_10px_30px_rgba(56,189,248,0.35)] transition hover:translate-y-0.5 hover:brightness-110"
+            className="hidden md:inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-5 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-[0_8px_22px_rgba(56,189,248,0.28)] transition hover:translate-y-0.5 hover:brightness-110"
           >
             Prendre rendez-vous
             <span aria-hidden="true" className="text-base leading-none">↗</span>

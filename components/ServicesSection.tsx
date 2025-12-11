@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const SITE_SERVICE_IDS = new Set(["onepage", "vitrine", "surmesure"]);
+export const SITE_SERVICE_IDS = new Set(["onepage", "vitrine", "surmesure"]);
 
 const TABS = [
   {
@@ -13,7 +13,7 @@ const TABS = [
   {
     id: "accompagnements",
     label: "Autres accompagnements",
-    description: "Refonte, contenu, identité & maintenance",
+    description: "Logo, cartes de visite, maintenance",
   },
 ] as const;
 
@@ -50,103 +50,96 @@ type ServiceCardData = {
   icon?: string;
 };
 
-const CARD_DATA: ServiceCardData[] = [
+export const SERVICE_CARD_DATA: ServiceCardData[] = [
   /* --- Création de sites --- */
   {
     id: "onepage",
-      title: "Site One-page",
-      badge: "Idéal pour démarrer",
-      bullets: [
-        "Une page claire et structurée",
-        "Parfait pour présenter une offre",
-        "Rapide à mettre en place",
-      ],
-      highlight: "Pour tester une idée ou poser une présence claire en ligne.",
-      featured: false,
-      timeline: "Livré en 3-4 semaines · Dès 2 400 CHF",
-      iconClass: "text-sky-300",
-    },
-    {
-      id: "vitrine",
-      title: "Site vitrine",
-      badge: "Format complet",
-      bullets: [
-        "Plusieurs pages (Accueil, Services, À propos…)",
-        "Image professionnelle et contenu organisé",
-        "Pensé pour évoluer dans le temps",
-      ],
-      highlight:
-        "Pour installer une image professionnelle et rassurer vos visiteurs.",
-      featured: true,
-      timeline: "Livré en 5-6 semaines · Dès 3 800 CHF",
-      iconClass: "text-violet-300",
-    },
-    {
-      id: "surmesure",
-      title: "Site sur mesure",
-      badge: "Besoins particuliers",
-      bullets: [
-        "Architecture pensée avec vous",
-        "Fonctionnalités personnalisées",
-        "Accompagnement plus poussé",
-      ],
-      highlight: "Pour un besoin précis ou un projet à fort potentiel.",
-      featured: false,
-      timeline: "Planning dédié · Budget sur devis",
-      iconClass: "text-emerald-300",
-    },
+    title: "Site one-page",
+    badge: "One-page locale",
+    bullets: [
+      "Page claire pour lancer une offre",
+      "CTA unique + SEO local",
+    ],
+    highlight: "Présence rapide pour valider une idée.",
+    featured: false,
+    timeline: "Livré en 3-4 semaines · Dès 2 400 CHF",
+    iconClass: "text-sky-300",
+  },
+  {
+    id: "vitrine",
+    title: "Site vitrine",
+    badge: "SEO local",
+    bullets: [
+      "Parcours structuré (Accueil/Services)",
+      "Contenus optimisés + preuves sociales",
+    ],
+    highlight: "Image pro et rassurante pour vos visiteurs.",
+    featured: true,
+    timeline: "Livré en 5-6 semaines · Dès 3 800 CHF",
+    iconClass: "text-sky-300",
+  },
+  {
+    id: "surmesure",
+    title: "Site sur mesure",
+    badge: "Unique",
+    bullets: [
+      "Architecture pensée avec vous",
+      "UX/UI conversion + connecteurs",
+    ],
+    highlight: "Besoin précis ou projet ambitieux.",
+    featured: false,
+    timeline: "Planning dédié · Budget sur devis",
+    iconClass: "text-sky-300",
+  },
 
     /* --- Améliorer un site existant --- */
 
     /* --- Identité visuelle --- */
 
     /* --- Maintenance --- */
-    {
-      id: "logo",
+  {
+    id: "logo",
       title: "Création de logo",
       badge: "Identité visuelle",
       bullets: [
         "Logo simple, lisible et moderne",
-        "Version principale + simplifiée",
-        "Formats adaptés au web et à l’impression",
+        "Formats web + impression",
       ],
-      highlight:
-        "Pour poser une base visuelle cohérente avec votre présence en ligne.",
-      featured: false,
-      timeline: "Moodboard + logo livrés en 2 semaines",
-      iconClass: "text-rose-300",
-    },
+    highlight:
+      "Base visuelle cohérente pour votre présence en ligne.",
+    featured: false,
+    timeline: "Moodboard + logo livrés en 2 semaines",
+    iconClass: "text-sky-300",
+  },
     {
       id: "cartes-visite",
       title: "Cartes de visite",
       badge: "Supports imprimés",
-      bullets: [
-        "Design aligné avec votre site",
-        "Recto ou recto-verso",
-        "Prêtes pour l’impression",
-      ],
-      highlight:
-        "Pour présenter votre activité avec une identité cohérente.",
-      featured: false,
-      timeline: "Fichiers prêts à imprimer sous 5 jours",
-      iconClass: "text-amber-200",
-    },
+    bullets: [
+      "Design aligné avec votre site",
+      "Recto ou recto-verso",
+    ],
+    highlight:
+      "Présenter votre activité avec une identité cohérente.",
+    featured: true,
+    timeline: "Fichiers prêts à imprimer sous 5 jours",
+    iconClass: "text-sky-300",
+  },
 
     /* --- Maintenance --- */
     {
       id: "maintenance",
       title: "Maintenance & support",
-      badge: "Suivi continu",
-      bullets: [
-        "Corrections régulières",
-        "Mises à jour techniques",
-        "Ajouts ponctuels de contenu",
-      ],
-      highlight:
-        "Pour garder votre site stable, à jour et agréable à utiliser.",
-      featured: false,
+    badge: "Suivi continu",
+    bullets: [
+      "Corrections régulières",
+      "Mises à jour techniques",
+    ],
+    highlight:
+      "Site stable, à jour et agréable à utiliser.",
+    featured: false,
     timeline: "Formule mensuelle ou tickets ponctuels",
-    iconClass: "text-emerald-200",
+    iconClass: "text-sky-300",
   },
 ];
 
@@ -154,8 +147,8 @@ export function ServicesSection() {
   const [activeTab, setActiveTab] = useState<TabId>("sites");
   const activeCards =
     activeTab === "sites"
-      ? CARD_DATA.filter((card) => SITE_SERVICE_IDS.has(card.id))
-      : CARD_DATA.filter((card) => !SITE_SERVICE_IDS.has(card.id));
+      ? SERVICE_CARD_DATA.filter((card) => SITE_SERVICE_IDS.has(card.id))
+      : SERVICE_CARD_DATA.filter((card) => !SITE_SERVICE_IDS.has(card.id));
   const activeLabel =
     TABS.find((tab) => tab.id === activeTab)?.label ?? "Création de sites";
 
@@ -171,6 +164,10 @@ export function ServicesSection() {
       <div className="container-kosmonde relative py-16 space-y-14">
         {/* TITRE */}
         <div className="mx-auto max-w-3xl text-center space-y-3">
+          <span className="inline-flex w-fit items-center justify-center rounded-full border border-sky-500/40 bg-sky-500/10 pl-4 pr-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-sky-200/90 shadow-[0_0_0_1px_rgba(8,47,73,0.45)] sm:text-[11px]">
+            <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-sky-400" />
+            Sites prêts à convertir
+          </span>
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50">
             Offres & services
           </h2>
@@ -181,13 +178,17 @@ export function ServicesSection() {
           </p>
 
           <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500 whitespace-normal sm:whitespace-nowrap">
-            Création · Refonte · Contenu · Visuel · Maintenance
+            Création · Logo & cartes · Maintenance
           </p>
         </div>
 
         <div className="mx-auto w-full max-w-3xl">
           <div className="relative rounded-3xl border border-slate-800/70 bg-slate-900/70 p-2 shadow-[0_25px_60px_rgba(8,47,73,0.5)]">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div
+              className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+              role="tablist"
+              aria-label="Choisir un type de service"
+            >
               {TABS.map((tab) => {
                 const isActive = tab.id === activeTab;
                 return (
@@ -195,6 +196,9 @@ export function ServicesSection() {
                     key={tab.id}
                     type="button"
                     onClick={() => setActiveTab(tab.id)}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-pressed={isActive}
                     className={[
                       "flex-1 rounded-2xl border px-5 py-4 text-left transition duration-300",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
@@ -276,11 +280,8 @@ function ServiceCard({ card }: { card: ServiceCardData }) {
               {card.icon ?? "•"}
             </span>
           )}
-          <h3 className="text-base font-semibold text-slate-50">{card.title}</h3>
+          <h3 className="text-base font-semibold leading-tight text-slate-50 whitespace-nowrap">{card.title}</h3>
         </div>
-        <span className="rounded-full whitespace-nowrap border border-slate-700/80 bg-slate-900/90 px-2 py-1 text-[10px] font-medium tracking-wide text-slate-200">
-          {card.badge}
-        </span>
       </div>
 
       <ul className="mt-4 space-y-2 text-xs text-slate-300">

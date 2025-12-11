@@ -11,7 +11,7 @@ export function HeroSitePreview() {
   const [buildStage, setBuildStage] = useState(0); // 0 → 3
 
   useEffect(() => {
-    const totalTicks = 8;
+    const totalTicks = 5;
     let tick = 0;
 
     const interval = setInterval(() => {
@@ -34,12 +34,12 @@ export function HeroSitePreview() {
 
   return (
     <div
-      className="
+        className="
         relative w-full
         rounded-3xl border border-slate-800/80
         bg-gradient-to-b from-slate-900/95 to-slate-950
         px-4 py-4 shadow-[0_22px_60px_rgba(15,23,42,0.95)]
-        min-h-[460px] sm:min-h-[560px]
+        min-h-[260px] sm:min-h-[340px] lg:min-h-[420px]
         sm:px-5 sm:py-5
       "
     >
@@ -81,7 +81,7 @@ export function HeroSitePreview() {
               </p>
 
               <p className="mt-1 text-[11px] text-slate-200/85">
-                Sections servicielles, preuves sociales et CTA visibles pour capter des leads qualifiés sans multiplier les allers-retours.
+                Sections claires, preuves sociales et CTA visibles pour capter des leads qualifiés.
               </p>
             </div>
           </div>
@@ -136,7 +136,7 @@ export function HeroSitePreview() {
               <div className="space-y-1.5">
                 <p className="text-[11px] font-semibold text-slate-100">Site one-page</p>
                 <p className="text-[11px] text-slate-400">
-                  Une page fluide avec CTA unique et focus SEO local pour lancer une offre ou tester un service.
+                  Page fluide, CTA unique et focus SEO local pour lancer ou tester une offre.
                 </p>
               </div>
 
@@ -166,7 +166,7 @@ export function HeroSitePreview() {
               <div className="space-y-1.5">
                 <p className="text-[11px] font-semibold text-sky-300">Site vitrine</p>
                 <p className="text-[11px] text-slate-400">
-                  Parcours client structuré, preuves sociales et balises optimisées sur chaque page.
+                  Parcours structuré, preuves sociales, balises SEO optimisées par page.
                 </p>
               </div>
 
@@ -186,15 +186,12 @@ export function HeroSitePreview() {
             </div>
           </div>
 
-          {/* BANDE CTA */}
+          {/* CTA synthétique */}
           <div className="relative flex flex-col gap-3 rounded-xl border border-slate-800/80 bg-slate-900/80 px-3 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <p className="text-[11px] font-semibold text-slate-100">Choisir le format adapté</p>
-              <p className="text-[11px] text-slate-400">
-                One-page pour tester une offre, vitrine pour exposer toute votre expertise, sur-mesure pour planifier un lancement complet.
-              </p>
+              <p className="text-[11px] font-semibold text-slate-100">Formats principaux</p>
+              <p className="text-[11px] text-slate-400">One-page, vitrine ou sur-mesure.</p>
             </div>
-
             <div className="sm:flex-shrink-0 w-full sm:w-auto">
               <Link
                 href="/#services"
@@ -202,45 +199,29 @@ export function HeroSitePreview() {
                 onClick={(e) => {
                   if (isBuilding) e.preventDefault();
                 }}
-                className={`flex h-11 w-full sm:w-36 items-center justify-center rounded-full text-xs font-semibold tracking-wide transition-all duration-500 ${
+                className={`flex h-11 w-full sm:w-40 items-center justify-center rounded-full text-xs font-semibold tracking-[0.18em] transition-all duration-500 ${
                   isBuilding
                     ? "cursor-default bg-sky-500/60 text-slate-900/70"
-                    : "bg-gradient-to-r from-sky-400 via-sky-300 to-sky-400 text-slate-950 shadow-[0_12px_30px_rgba(8,47,73,0.9)] hover:brightness-110"
+                    : "bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 text-slate-950 shadow-[0_12px_30px_rgba(8,47,73,0.9)] hover:brightness-110"
                 }`}
               >
                 Voir les formats
               </Link>
             </div>
-
-            <div
-              className={`pointer-events-none absolute inset-0 rounded-xl bg-slate-950/85 transition-opacity duration-500 backdrop-blur ${
-                isBuilding ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
-            >
-              <div className="h-full w-full animate-pulse rounded-xl bg-slate-900/70">
-                <div className="space-y-2 px-3 py-3">
-                  <div className="h-2.5 w-36 rounded-full bg-slate-800/80" />
-                  <div className="h-2 w-40 rounded-full bg-slate-800/80" />
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Texte final + Stats */}
+          {/* Stats synthétiques */}
           <div className="space-y-2 text-[11px] text-slate-400">
             <div className="grid gap-2 sm:grid-cols-2">
               <div className="flex items-center justify-between rounded-lg border border-slate-800/70 bg-slate-900/60 px-3 py-2 text-slate-200">
-                <span>Sites vitrines livrés</span>
+                <span>Sites livrés</span>
                 <span className="font-semibold text-emerald-300">60+</span>
               </div>
               <div className="flex items-center justify-between rounded-lg border border-slate-800/70 bg-slate-900/60 px-3 py-2 text-slate-200">
-                <span>Réponse en moins de</span>
+                <span>Réponse</span>
                 <span className="font-semibold text-emerald-300">24 h</span>
               </div>
             </div>
-            <p className="leading-relaxed">
-              Objectif : un site structuré, lisible et optimisé pour la recherche locale. La base parfaite pour faire évoluer votre activité sans repartir de zéro.
-            </p>
           </div>
         </div>
       </div>

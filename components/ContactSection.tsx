@@ -116,13 +116,13 @@ export function ContactSection() {
           <div className="space-y-7">
             <div className="space-y-3">
               <p className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1 text-[11px] uppercase tracking-[0.25em] text-sky-100">
-                Studio web & SEO · Suisse
+                Studio web & SEO · Genève
               </p>
               <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
                 Parlons de votre prochain site vitrine
               </h2>
               <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
-                Partagez votre activité et vos objectifs. Je vous réponds personnellement en moins de 24&nbsp;h avec un plan clair et les meilleures suites possibles.
+                Partagez votre activité et vos objectifs. Nous vous répondons en moins de 24&nbsp;h avec un plan clair et les meilleures suites possibles.
               </p>
             </div>
 
@@ -139,27 +139,28 @@ export function ContactSection() {
               ))}
             </ul>
 
-            <div className="rounded-2xl border border-slate-800/70 bg-slate-950/70 p-5 shadow-[0_15px_45px_rgba(15,23,42,0.6)]">
-              <p className="text-[10px] uppercase tracking-[0.25em] text-slate-400">
+            <div className="relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-950/80 p-5 shadow-[0_15px_45px_rgba(15,23,42,0.6)] ring-1 ring-slate-800/60">
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.14),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(52,211,153,0.12),transparent_55%)]" />
+              <p className="text-center text-[10px] uppercase tracking-[0.25em] text-slate-400">
                 Preuves rapides
               </p>
-              <dl className="mt-4 grid gap-3 sm:grid-cols-3">
+              <dl className="mt-4 grid gap-2 sm:gap-3 sm:grid-cols-3">
                 <div className="text-center">
-                  <dt className="text-2xl font-semibold text-slate-50">60+</dt>
+                  <dt className="text-2xl font-semibold text-slate-50 motion-safe:animate-[pulse_3s_ease-in-out_infinite]">20+</dt>
                   <dd className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
                     Sites livrés
                   </dd>
                 </div>
                 <div className="text-center">
-                  <dt className="text-2xl font-semibold text-slate-50">24&nbsp;h</dt>
+                  <dt className="text-2xl font-semibold text-slate-50 motion-safe:animate-[pulse_3s_ease-in-out_infinite]">24&nbsp;h</dt>
                   <dd className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
                     Réponse max
                   </dd>
                 </div>
                 <div className="text-center">
-                  <dt className="text-2xl font-semibold text-slate-50">3</dt>
-                  <dd className="text-[11px] uppercase tracking-[0.2em] text-slate-400">
-                    Formats proposés
+                  <dt className="text-2xl font-semibold text-slate-50 motion-safe:animate-[pulse_3s_ease-in-out_infinite]">95%</dt>
+                  <dd className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                    Satisf. clients
                   </dd>
                 </div>
               </dl>
@@ -170,8 +171,9 @@ export function ContactSection() {
           {/* FORMULAIRE */}
           <form
             onSubmit={handleSubmit}
-            className="relative isolate w-full space-y-4 rounded-3xl border border-slate-800/70 bg-slate-950/95 p-5 sm:p-7 shadow-[0_24px_80px_rgba(15,23,42,0.95)]"
+            className="relative isolate flex h-full w-full flex-col overflow-visible space-y-5 rounded-3xl border border-slate-800/70 bg-slate-950/90 backdrop-blur-sm p-5 sm:p-7 shadow-[0_24px_80px_rgba(15,23,42,0.95)] ring-1 ring-slate-800/60"
           >
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.12),transparent_55%),radial-gradient(circle_at_80%_0%,rgba(52,211,153,0.1),transparent_60%),radial-gradient(circle_at_80%_80%,rgba(14,165,233,0.1),transparent_60%)]" />
             {/* Champ anti-bot (honeypot) */}
             <div className="hidden" aria-hidden="true">
               <label htmlFor="company">Votre entreprise</label>
@@ -184,11 +186,11 @@ export function ContactSection() {
               />
             </div>
           {/* BADGE KOSMONDE – inspiré des CTA principaux, glow plus feutré */}
-          <div className="absolute -top-5 left-1/2 -translate-x-1/2">
+          <div className="absolute -top-4 left-1/2 -translate-x-1/2">
             <div className="relative">
               <div className="absolute inset-0 -z-10 blur-2xl bg-sky-300/30" aria-hidden="true" />
-              <div className="rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-5 py-1 text-[10px] font-semibold tracking-[0.28em] text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.5)] ring-1 ring-slate-200/30">
-                STUDIO WEB SEO
+              <div className="rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-5 py-1 text-[10px] font-semibold tracking-[0.28em] text-slate-950 shadow-[0_0_20px_rgba(56,189,248,0.5)] ring-1 ring-slate-200/30 whitespace-nowrap">
+                CONTACTEZ-NOUS
               </div>
             </div>
           </div>
@@ -206,19 +208,19 @@ export function ContactSection() {
           )}
 
           {/* NOM + EMAIL */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-100">
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div className="space-y-2">
+              <label className="text-[11px] font-medium text-slate-100">
                 Nom *
               </label>
               <input
                 name="name"
                 type="text"
                 aria-invalid={fieldErrors.name ? "true" : "false"}
-                className={`w-full rounded-xl border bg-slate-950/70 px-3 py-2.5 text-xs text-slate-50 outline-none backdrop-blur-sm focus:ring-1 ${
+                className={`mt-1.5 w-full rounded-xl border bg-slate-950/70 px-3 py-2.5 text-sm text-slate-50 outline-none backdrop-blur-sm transition ${
                   fieldErrors.name
-                    ? "border-rose-500 focus:ring-rose-500/70"
-                    : "border-slate-700 focus:ring-sky-400/80"
+                    ? "border-rose-500 focus:ring-1 focus:ring-rose-500/70"
+                    : "border-slate-700 hover:border-slate-500 focus:ring-1 focus:ring-sky-400/80"
                 }`}
                 placeholder="Votre nom ou structure"
                 onChange={() => clearFieldError("name")}
@@ -228,18 +230,18 @@ export function ContactSection() {
               )}
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-slate-100">
+            <div className="space-y-2">
+              <label className="text-[11px] font-medium text-slate-100">
                 Email *
               </label>
               <input
                 name="email"
                 type="email"
                 aria-invalid={fieldErrors.email ? "true" : "false"}
-                className={`w-full rounded-xl border bg-slate-950/70 px-3 py-2.5 text-xs text-slate-50 outline-none backdrop-blur-sm focus:ring-1 ${
+                className={`mt-1.5 w-full rounded-xl border bg-slate-950/70 px-3 py-2.5 text-sm text-slate-50 outline-none backdrop-blur-sm transition ${
                   fieldErrors.email
-                    ? "border-rose-500 focus:ring-rose-500/70"
-                    : "border-slate-700 focus:ring-sky-400/80"
+                    ? "border-rose-500 focus:ring-1 focus:ring-rose-500/70"
+                    : "border-slate-700 hover:border-slate-500 focus:ring-1 focus:ring-sky-400/80"
                 }`}
                 placeholder="adresse@email.ch"
                 onChange={() => clearFieldError("email")}
@@ -250,52 +252,31 @@ export function ContactSection() {
             </div>
           </div>
 
-          {/* TYPE DE PROJET */}
           <div className="space-y-2">
-            <label className="text-xs font-medium text-slate-100">
-              Type de projet (rapide)
+            <label className="text-[11px] font-medium text-slate-100">
+              Téléphone (optionnel)
             </label>
-            <div className="flex flex-wrap gap-2">
-              {[
-                { label: "Site one-page", value: "site-one-page" },
-                { label: "Site vitrine", value: "site-vitrine" },
-                { label: "Refonte", value: "refonte" },
-                { label: "Autre accompagnement", value: "autre" },
-              ].map((option) => {
-                const isActive = projectType === option.value;
-                return (
-                  <button
-                    type="button"
-                    key={option.value}
-                    onClick={() => setProjectType(option.value)}
-                    className={[
-                      "rounded-full border px-3.5 py-1.5 text-[11px] font-semibold transition",
-                      isActive
-                        ? "border-sky-400 bg-sky-500/20 text-sky-100"
-                        : "border-slate-700 bg-slate-900/60 text-slate-400 hover:border-slate-500 hover:text-slate-200",
-                    ].join(" ")}
-                  >
-                    {option.label}
-                  </button>
-                );
-              })}
-            </div>
-            <input type="hidden" name="project-type" value={projectType} />
+            <input
+              name="phone"
+              type="tel"
+              className="mt-1.5 w-full rounded-xl border border-slate-700 bg-slate-950/70 px-3 py-2.5 text-sm text-slate-50 outline-none backdrop-blur-sm transition hover:border-slate-500 focus:ring-1 focus:ring-sky-400/80"
+              placeholder="+33 6 12 34 56 78"
+            />
           </div>
 
           {/* MESSAGE */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-medium text-slate-100">
+          <div className="space-y-2">
+            <label className="text-[11px] font-medium text-slate-100">
               Message *
             </label>
             <textarea
               name="message"
-              rows={4}
+              rows={5}
               aria-invalid={fieldErrors.message ? "true" : "false"}
-              className={`w-full rounded-xl border bg-slate-950/70 px-3 py-2.5 text-xs text-slate-50 outline-none backdrop-blur-sm focus:ring-1 ${
+              className={`mt-2 w-full rounded-xl border bg-slate-950/70 px-3 py-3 text-sm text-slate-50 outline-none backdrop-blur-sm transition ${
                 fieldErrors.message
-                  ? "border-rose-500 focus:ring-rose-500/70"
-                  : "border-slate-700 focus:ring-sky-400/80"
+                  ? "border-rose-500 focus:ring-1 focus:ring-rose-500/70"
+                  : "border-slate-700 hover:border-slate-500 focus:ring-1 focus:ring-sky-400/80"
               }`}
               placeholder="Expliquez votre besoin en quelques phrases."
               onChange={() => clearFieldError("message")}
@@ -308,7 +289,7 @@ export function ContactSection() {
           <button
             type="submit"
             disabled={isSending}
-            className={`mt-3 inline-flex w-full sm:w-auto items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-slate-950 transition ${
+            className={`mt-3 inline-flex w-full sm:w-auto items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold tracking-[0.15em] text-slate-950 transition ${
               isSending
                 ? "cursor-not-allowed bg-sky-400/70"
                 : "bg-sky-400 hover:bg-sky-300 shadow-[0_0_22px_rgba(56,189,248,0.6)]"
@@ -321,14 +302,6 @@ export function ContactSection() {
               : "Envoyer le message"}
           </button>
 
-          <p className="text-[11px] text-slate-300">
-            Vous envoyez un message, je vous réponds personnellement. Aucun envoi automatique.
-          </p>
-
-          <div className="rounded-2xl border border-slate-800/70 bg-slate-950/75 p-5 shadow-[0_12px_35px_rgba(15,23,42,0.55)] text-sm text-slate-300">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-slate-400 mb-2">Note</p>
-            <p>Réponse personnelle sous 24&nbsp;h, sans automatisation ni relances marketing.</p>
-          </div>
         </form>
       </div>
     </div>

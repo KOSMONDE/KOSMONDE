@@ -5,19 +5,19 @@ import { useState } from "react";
 export function MiniFAQ() {
   const faq = [
     {
-      q: "Quel délai pour livrer un site ?",
+      q: "Délai de livraison ?",
       a: "One-page : 3 à 4 semaines si vos contenus sont prêts. Site vitrine complet : 5 à 7 semaines avec ateliers, maquettes et intégration.",
     },
     {
-      q: "Comment se déroule le paiement ?",
+      q: "Comment paye-t-on ?",
       a: "30 % à la signature pour réserver le créneau, 40 % après validation des maquettes, 30 % au moment de la mise en ligne.",
     },
     {
-      q: "Le site sera-t-il optimisé pour le mobile et le référencement ?",
+      q: "Site optimisé mobile/SEO ?",
       a: "Oui. Maquettes mobile-first, optimisation Lighthouse et structure pensée pour le référencement local.",
     },
     {
-      q: "Que se passe-t-il après la mise en ligne ?",
+      q: "Après la mise en ligne ?",
       a: "Je reste disponible pour une phase de retours inclus et peux proposer des tickets ponctuels ou une formule de suivi.",
     },
   ];
@@ -58,17 +58,20 @@ export function MiniFAQ() {
         {/* HEADER */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-center sm:text-left">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1 text-[11px] uppercase tracking-[0.2em] text-sky-100">
-              Process & délais
-            </div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-sky-500/40 bg-sky-500/10 px-4 py-1 text-[11px] uppercase tracking-[0.2em] text-sky-100 shadow-[0_0_0_1px_rgba(8,47,73,0.4)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+              FAQ express
+            </span>
             <h2 className="text-2xl font-semibold text-slate-50 sm:text-3xl whitespace-normal">
               Questions fréquentes
             </h2>
-            <p className="text-sm text-slate-400">
-              Process, délais, paiement : tout est transparent dès le départ.
+            <p className="text-sm text-slate-400 sm:whitespace-normal sm:overflow-visible sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="sm:inline hidden">Process, délais, paiement : tout est transparent dès le départ.</span>
+              <span className="sm:hidden inline">Process, délais, paiement transparents.</span>
             </p>
-            <div className="text-xs text-slate-500">
-              Réponse sous 24&nbsp;h · Créneaux réservés 3 semaines à l’avance
+            <div className="text-xs text-slate-500 sm:whitespace-normal sm:overflow-visible whitespace-nowrap overflow-hidden text-ellipsis">
+              <span className="sm:inline hidden">Réponse sous 24&nbsp;h · Créneaux réservés 3 semaines à l’avance</span>
+              <span className="sm:hidden inline">Réponse 24 h · Créneaux sous 3 semaines</span>
             </div>
           </div>
 
@@ -100,23 +103,23 @@ export function MiniFAQ() {
                     : "hover:-translate-y-0.5 hover:border-sky-400/60"
                 }`}
               >
-                <div className="flex items-stretch">
+                <div className="flex items-stretch h-full">
                   <div
                     className={[
-                      "relative flex w-16 flex-col items-center justify-center border-r border-slate-900 bg-slate-950/95 text-[12px] font-semibold tracking-[0.3em] text-slate-500 transition-all py-4",
+                      "relative flex w-12 flex-col items-center justify-center border-r border-slate-900 bg-slate-950/95 text-[11px] font-semibold tracking-[0.26em] text-slate-500 transition-all py-2.5 sm:py-3",
                       isOpen ? "text-sky-200" : "",
                     ].join(" ")}
                   >
                     <span>0{index + 1}</span>
                   </div>
-                  <div className="flex-1 p-5">
+                  <div className="flex-1 p-4 sm:p-5 flex flex-col gap-2">
                     <div className="flex items-center justify-between gap-3">
-                      <p className="text-[12.5px] font-medium text-slate-50 group-hover:text-sky-300 sm:text-[14px] whitespace-normal">
+                      <p className="text-[12px] sm:text-[14px] font-medium text-slate-50 group-hover:text-sky-300 whitespace-nowrap overflow-hidden text-ellipsis">
                         {item.q}
                       </p>
 
                       <span
-                        className={`mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border text-[11px] transition-all ${
+                        className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border text-[10px] transition-all ${
                           isOpen
                             ? "border-sky-400/70 bg-sky-500/10 text-sky-300 rotate-180"
                             : "border-slate-700 bg-slate-900/60 text-slate-400 group-hover:border-sky-500/60 group-hover:text-sky-300"
@@ -127,12 +130,16 @@ export function MiniFAQ() {
                     </div>
 
                     {isOpen && (
-                      <p
-                        id={answerId}
-                        className="mt-3 text-xs leading-relaxed text-slate-400 sm:text-[13px]"
-                      >
-                        {item.a}
-                      </p>
+                      <>
+                        <div className="h-px w-full bg-slate-800/70" />
+                        <p
+                          id={answerId}
+                          className="text-[12px] sm:text-[13px] leading-relaxed text-slate-400"
+                        >
+                          {item.a}
+                        </p>
+                        <div className="mt-auto" />
+                      </>
                     )}
                   </div>
                 </div>
@@ -141,7 +148,7 @@ export function MiniFAQ() {
           })}
         </div>
 
-        <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-slate-800/70 bg-slate-950/80 px-6 py-6 text-center shadow-[0_18px_55px_rgba(8,47,73,0.55)] sm:flex-row sm:text-left">
+        <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-slate-800/70 bg-slate-950/80 px-6 py-5 text-center shadow-[0_18px_55px_rgba(8,47,73,0.55)] sm:flex-row sm:text-left">
           <div>
             <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
               Encore des questions ?
@@ -153,13 +160,13 @@ export function MiniFAQ() {
           <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end">
             <a
               href="/faq"
-              className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900/40 px-6 py-2.5 text-xs font-medium text-slate-100 transition-colors hover:border-slate-500 hover:bg-slate-900/70"
+              className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900/40 px-5 py-2 text-[11px] font-medium text-slate-100 transition-colors hover:border-slate-500 hover:bg-slate-900/70"
             >
               Voir toutes les questions →
             </a>
             <a
               href="/rdv"
-              className="inline-flex items-center justify-center rounded-full bg-sky-500/90 px-6 py-2.5 text-xs font-semibold text-slate-950 shadow-[0_12px_35px_rgba(14,165,233,0.35)] transition hover:bg-sky-400"
+              className="inline-flex items-center justify-center rounded-full bg-sky-500/90 px-5 py-2 text-[11px] font-semibold text-slate-950 shadow-[0_12px_35px_rgba(14,165,233,0.35)] transition hover:bg-sky-400"
             >
               Planifier un appel ↗
             </a>

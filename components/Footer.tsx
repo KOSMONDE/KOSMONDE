@@ -73,38 +73,84 @@ function WhatsAppIcon({ className }: IconProps) {
 }
 
 export function Footer() {
-  const year = new Date().getFullYear();
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "33775867250";
+  const whatsappMessage = encodeURIComponent("Bonjour Kosmonde");
+  const whatsappHref = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
   const cardClass =
-    "relative overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-950/90 p-5 text-left text-sm text-slate-200 shadow-[0_10px_32px_rgba(15,23,42,0.6)] backdrop-blur-sm flex h-full flex-col gap-4 justify-between before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_65%)]";
-  const dividerClass =
-    "h-px w-full rounded-full bg-gradient-to-r from-slate-800 via-sky-900/40 to-transparent";
+    "relative overflow-hidden rounded-2xl border border-slate-800/50 bg-slate-950/90 p-4 sm:p-5 text-left text-sm text-slate-200 shadow-[0_10px_28px_rgba(15,23,42,0.35)] backdrop-blur-sm flex h-full min-h-[150px] flex-col gap-4 before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.12),transparent_65%)]";
 
   return (
-    <footer className="relative overflow-hidden border-t border-slate-900/60 bg-[#0A111C]">
-      {/* Glow de fond */}
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.05),transparent_70%)]" />
+    <footer className="relative overflow-hidden border-t border-slate-900/60 bg-[#0A111C] scroll-m-24">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.04),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-r from-slate-950 via-slate-900/60 to-slate-950" />
 
-      <div className="container-kosmonde py-10 sm:py-12">
-        <div className="mx-auto grid max-w-6xl auto-rows-fr gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {/* Cartes alignées */}
+      <div className="container-kosmonde px-4 sm:px-6 py-8 sm:py-10">
+        <div className="mx-auto grid max-w-5xl auto-rows-fr gap-4 sm:gap-4 md:grid-cols-2 lg:grid-cols-3 justify-items-stretch">
           <div className={cardClass}>
             <div className="space-y-3">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.38em] text-slate-400">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.34em] text-slate-200">
                 KOSMONDE
-              </p>
-              <p className="leading-relaxed text-slate-200">
-                Studio web & SEO romand. Sites vitrines SEO-ready, rapides à charger et faciles à mettre à jour pour les petites structures ambitieuses.
+              </h3>
+              <div className="h-px w-12 bg-gradient-to-r from-sky-400/70 via-cyan-300/70 to-sky-400/70" />
+              <p className="leading-snug text-slate-100">
+                Studio web indépendant : cadrage d’offre, UX de conversion, sites vitrines et one-page qui transforment vos prospects en clients.
               </p>
             </div>
-            <div aria-hidden className={dividerClass} />
+            <div className="pt-3">
+              <Link
+                href="/rdv"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-[0_12px_26px_rgba(56,189,248,0.28)] transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
+                aria-label="Accéder à la page de prise de rendez-vous"
+              >
+                Prendre rendez-vous
+                <span aria-hidden="true" className="text-base leading-none">↗</span>
+              </Link>
+            </div>
           </div>
 
-          {/* Colonne 2 – Contact direct */}
           <div className={cardClass}>
             <div className="space-y-3">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
-                Contact direct
+              <h3 className="text-xs uppercase tracking-[0.3em] text-slate-300">
+                Réseaux
+              </h3>
+              <div className="h-px w-12 bg-gradient-to-r from-sky-400/70 via-cyan-300/70 to-sky-400/70" />
+              <p className="leading-snug text-slate-100">
+                Suivez KOSMONDE et discutez en direct via nos canaux préférés.
               </p>
+            </div>
+            <div className="flex items-center gap-4 pt-2">
+              <a
+                href="https://www.instagram.com/kosmonde/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+                className="group flex flex-col items-center gap-2 text-slate-200 transition"
+              >
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 transition group-hover:-translate-y-0.5 group-hover:border-sky-500 group-hover:text-sky-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 md:h-10 md:w-10">
+                  <InstagramIcon className="h-5 w-5" />
+                </span>
+              </a>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="WhatsApp"
+                className="group flex flex-col items-center gap-2 text-slate-200 transition"
+              >
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 transition group-hover:-translate-y-0.5 group-hover:border-sky-500 group-hover:text-sky-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 md:h-10 md:w-10">
+                  <WhatsAppIcon className="h-5 w-5" />
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div className={cardClass}>
+            <div className="space-y-4">
+              <h3 className="text-xs uppercase tracking-[0.3em] text-slate-300">
+                Contact direct
+              </h3>
+              <div className="h-px w-12 bg-gradient-to-r from-sky-400/70 via-cyan-300/70 to-sky-400/70" />
               <a
                 href="mailto:contact@kosmonde.ch"
                 className="inline-flex items-center gap-2 text-sky-200 transition hover:text-sky-100"
@@ -112,106 +158,47 @@ export function Footer() {
                 <span className="h-1.5 w-1.5 rounded-full bg-sky-400" aria-hidden="true" />
                 contact@kosmonde.ch
               </a>
-              <p className="text-xs text-slate-300">
-                Lundi — jeudi · 9&nbsp;h / 18&nbsp;h · réponse &lt; 24&nbsp;h · visio sous 48&nbsp;h.
+              <p className="text-[11px] text-slate-300">
+                Lun–Ven, 9h–18h CET. Réponse sous 24h.
               </p>
-              <p className="text-xs text-slate-400">
-                Je vous accompagne de l’audit à la mise en ligne : un interlocuteur unique.
-              </p>
-              
-            </div>
-            <div aria-hidden className={dividerClass} />
-          </div>
-
-          {/* Colonne 3 – Réseaux */}
-          <div className={cardClass}>
-            <div className="space-y-2">
-              <p className="text-[10px] uppercase tracking-[0.22em] text-slate-400">
-                Réseaux
-              </p>
-              <p className="text-xs text-slate-300">
-                Instagram & LinkedIn pour suivre les maquettes, process et retours clients.
-              </p>
-              <p className="text-xs text-slate-500">
-                Stories des coulisses, mini-analyses SEO et partages de newsletters techniques.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3">
-              <div aria-hidden className={dividerClass} />
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap gap-3 pt-3">
+                <Link
+                  href="/rdv"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-[13px] font-semibold text-slate-100 transition hover:border-sky-500 hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
+                >
+                  Prendre rendez-vous
+                </Link>
                 <a
-                  href="https://www.instagram.com/kosmonde/"
+                  href={whatsappHref}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label="Instagram"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 transition hover:border-sky-500 hover:text-sky-300 md:h-8 md:w-8"
+                  className="inline-flex items-center gap-2 rounded-full border border-emerald-500/80 bg-slate-900/60 px-4 py-2 text-[13px] font-semibold text-emerald-200 transition hover:border-emerald-400 hover:text-emerald-100 hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
                 >
-                  <InstagramIcon className="h-4 w-4" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/company/kosmonde"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="LinkedIn"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 transition hover:border-sky-500 hover:text-sky-300 md:h-8 md:w-8"
-                >
-                  <LinkedInIcon className="h-4 w-4" />
-                </a>
-                <a
-                  href="https://wa.me/41790000000?text=Bonjour%20Kosmonde"
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="WhatsApp"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-700 bg-slate-900/70 text-slate-200 transition hover:border-sky-500 hover:text-sky-300 md:h-8 md:w-8"
-                >
-                  <WhatsAppIcon className="h-4 w-4" />
+                  WhatsApp
                 </a>
               </div>
             </div>
           </div>
 
-          {/* Colonne 4 – Positionnement */}
-          <div className={cardClass}>
-            <div className="space-y-3">
-              <dl className="flex items-start justify-between gap-4 text-left text-slate-200">
-                <div>
-                  <dt className="text-[10px] uppercase tracking-[0.28em] text-slate-500">
-                    Projets livrés
-                  </dt>
-                  <dd className="text-xl font-semibold text-slate-50">60+</dd>
-                </div>
-                <div>
-                  <dt className="text-[10px] uppercase tracking-[0.28em] text-slate-500">
-                    Réponse
-                  </dt>
-                  <dd className="text-xl font-semibold text-slate-50">24&nbsp;h</dd>
-                </div>
-              </dl>
-              <p className="text-sm leading-relaxed text-slate-300">
-                Sites lisibles, UI premium, contenus clarifiés et plan SEO local intégré dès la conception.
-              </p>
-            </div>
-            <div aria-hidden className={dividerClass} />
-          </div>
         </div>
       </div>
 
       {/* Bas de page : copyright + liens légaux */}
-      <div className="border-t border-slate-900/70 py-3">
+      <div className="mt-6 border-t border-slate-900/70 py-3">
         <div className="container-kosmonde">
-          <div className="flex flex-col items-center justify-center gap-1 text-center text-[10px] text-slate-400 md:flex-row md:gap-3">
-            <span>© {year} KOSMONDE — Studio web & SEO basé en Suisse romande. Tous droits réservés.</span>
-            <div className="flex items-center gap-3">
+          <div className="relative flex w-full flex-col items-center gap-3 text-center text-xs text-slate-300 md:flex-row md:items-center md:justify-center md:gap-4">
+            <span className="text-center md:px-8">© 2025 KOSMONDE. Tous droits réservés.</span>
+            <div className="flex items-center gap-3 md:absolute md:right-0">
               <Link
                 href="/mentions-legales"
-                className="transition hover:text-sky-300"
+                className="transition hover:text-sky-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400"
               >
                 Mentions légales
               </Link>
               <span className="text-slate-700">•</span>
               <Link
                 href="/politique-confidentialite"
-                className="transition hover:text-sky-300"
+                className="transition hover:text-sky-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400"
               >
                 Confidentialité
               </Link>

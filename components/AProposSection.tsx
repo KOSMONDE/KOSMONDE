@@ -6,7 +6,6 @@ export function AProposSection() {
       label: "Ce qui compte pour moi",
       text: [
         "Sites utiles ancrés dans le réel",
-        "Vos objectifs et vos clients",
         "Prioriser ce qui apporte de la clarté",
       ],
     },
@@ -15,7 +14,6 @@ export function AProposSection() {
       text: [
         "Un cadre simple à comprendre",
         "Explications claires à chaque étape",
-        "Vision d’ensemble de votre projet",
       ],
     },
     {
@@ -23,7 +21,6 @@ export function AProposSection() {
       text: [
         "Rythme posé, étapes visibles",
         "Décisions prises ensemble",
-        "Communication claire et directe",
       ],
     },
   ];
@@ -47,15 +44,15 @@ export function AProposSection() {
         <div className="mx-auto max-w-3xl space-y-3 text-center sm:space-y-4">
           <span className="inline-flex w-fit items-center justify-center rounded-full border border-sky-500/40 bg-sky-500/10 pl-4 pr-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-sky-200/90 shadow-[0_0_0_1px_rgba(8,47,73,0.45)] sm:text-[11px]">
             <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-sky-400" />
-            Studio web SEO en Suisse
+            Studio web & SEO · petites structures
           </span>
           <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
             À propos de KOSMONDE
           </h2>
 
-          <p className="text-sm leading-relaxed text-slate-400 sm:text-base">
-            Studio web basé en Suisse, j’accompagne les indépendants et petites structures à s’organiser, clarifier leur message et transformer leurs contenus en une expérience digitale cohérente. Mon rôle : filtrer les idées, prioriser ce qui compte et livrer un site simple à faire évoluer.
-          </p>
+            <p className="text-sm leading-relaxed text-slate-400 sm:text-base">
+              Studio web à Genève. Nous aidons les indépendants et petites structures à livrer des sites rapides, SEO local, avec un message clair et une mise en ligne sereine.
+            </p>
           <p className="text-xs italic text-slate-500 sm:text-sm">
             « On simplifie le digital pour les indépendants : un plan clair, un site net, aucune surprise. »
           </p>
@@ -82,7 +79,7 @@ export function AProposSection() {
         {/* MA FAÇON DE TRAVAILLER */}
         <div className="mx-auto max-w-4xl space-y-3 text-center">
           <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-slate-500">
-            Ma façon de travailler
+            Notre façon de travailler
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3 sm:overflow-visible overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] justify-items-center">
@@ -97,14 +94,14 @@ export function AProposSection() {
                   <p className="flex items-center gap-3 text-[11px] font-medium text-slate-100">
                     <span
                       className={[
-                        "flex h-7 w-7 items-center justify-center rounded-full transition-all duration-300 group-hover:shadow-[0_0_12px_rgba(56,189,248,0.4)]",
-                        index === 0 ? "bg-amber-500/15" : index === 1 ? "bg-violet-500/15" : "bg-emerald-500/15",
+                        "flex h-7 w-7 items-center justify-center rounded-full transition-all duration-300 group-hover:shadow-[0_0_12px_rgba(56,189,248,0.35)]",
+                        "bg-sky-500/15",
                       ].join(" ")}
                     >
                       <span
                         className={[
                           "h-2 w-2 rounded-full transition-transform duration-300 group-hover:scale-125",
-                          index === 0 ? "bg-amber-400" : index === 1 ? "bg-violet-400" : "bg-emerald-400",
+                          "bg-sky-400",
                         ].join(" ")}
                       />
                     </span>
@@ -135,13 +132,10 @@ export function AProposSection() {
 
         {/* Phrase remontée */}
         <div className="pt-1">
-          <div className="flex flex-col gap-1 text-center text-[11px] text-slate-500 sm:hidden">
-            <span>Réponse sous 24 h · 60+ projets</span>
-          </div>
           <div className="mt-2 flex flex-col gap-3 sm:mt-0 sm:flex-row sm:justify-center">
             <a
               href="#contact"
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-400 via-sky-300 to-sky-400 px-6 py-2.5 text-sm font-semibold text-slate-950 shadow-[0_14px_35px_rgba(8,47,73,0.7)] transition hover:-translate-y-0.5 hover:brightness-110"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-6 py-2.5 text-sm font-semibold text-slate-950 shadow-[0_14px_35px_rgba(8,47,73,0.7)] transition hover:-translate-y-0.5 hover:brightness-110"
             >
               Parler de votre projet
             </a>

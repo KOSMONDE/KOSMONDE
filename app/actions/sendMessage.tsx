@@ -30,6 +30,16 @@ type SendResult = {
   error?: string;
 };
 
+type BookingPayload = {
+  name: string;
+  email: string;
+  phone?: string;
+  service: string;
+  date: string;
+  time: string;
+  notes?: string;
+};
+
 export async function sendMessage(formData: FormData): Promise<SendResult> {
   if (!process.env.RESEND_API_KEY) {
     console.error("RESEND_API_KEY manquante dans l'environnement serveur");
@@ -43,6 +53,7 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
   const nameInput = (formData.get("name") ?? "").toString().trim();
   const emailInput = (formData.get("email") ?? "").toString().trim();
   const projectTypeInput = (formData.get("project-type") ?? "").toString().trim();
+  const phoneInput = (formData.get("phone") ?? "").toString().trim();
   const messageInput = (formData.get("message") ?? "").toString().trim();
   const honeypot = (formData.get("company") ?? "").toString().trim();
 
@@ -70,9 +81,11 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
   }
 
   const safeProjectTypePlain = sanitizePlainText(projectTypeInput, 120) || "Non précisé";
+  const safePhonePlain = sanitizePlainText(phoneInput, 50);
   const safeMessageHtml = formatMessageHtml(messageInput);
   const safeNameHtml = escapeHtml(safeNamePlain);
   const safeProjectTypeHtml = escapeHtml(safeProjectTypePlain);
+  const safePhoneHtml = safePhonePlain ? escapeHtml(safePhonePlain) : "Non fourni";
   const safeEmailHtml = escapeHtml(emailInput);
   const nowLabel = new Date().toLocaleString("fr-CH");
   const nowLabelHtml = escapeHtml(nowLabel);
@@ -126,6 +139,13 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
                       <div style="font-size:13px;color:#38bdf8;">
                         <a href="mailto:${emailInput}" style="color:#38bdf8;text-decoration:none;">${safeEmailHtml}</a>
                       </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
+                      <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Téléphone</div>
+                      <div style="font-size:13px;color:#e5e7eb;font-weight:500;">${safePhoneHtml}</div>
                     </td>
                   </tr>
 
@@ -284,5 +304,217 @@ export async function sendMessage(formData: FormData): Promise<SendResult> {
       success: false,
       error: "Échec de l’envoi du message.",
     };
+  }
+}
+
+export async function sendBookingEmail(formData: FormData): Promise<SendResult> {
+  if (!process.env.RESEND_API_KEY) {
+    console.error("RESEND_API_KEY manquante dans l'environnement serveur");
+    return {
+      success: false,
+      error:
+        "Configuration email manquante. Vérifie la clé RESEND_API_KEY sur le serveur.",
+    };
+  }
+
+  const payload: BookingPayload = {
+    name: sanitizePlainText((formData.get("name") ?? "").toString(), 120),
+    email: (formData.get("email") ?? "").toString().trim(),
+    phone: sanitizePlainText((formData.get("phone") ?? "").toString(), 60),
+    service: sanitizePlainText((formData.get("service") ?? "").toString(), 200),
+    date: sanitizePlainText((formData.get("date") ?? "").toString(), 80),
+    time: sanitizePlainText((formData.get("time") ?? "").toString(), 20),
+    notes: sanitizePlainText((formData.get("notes") ?? "").toString(), 500),
+  };
+
+  if (!payload.name || !payload.email || !payload.service || !payload.date || !payload.time) {
+    return { success: false, error: "Champs requis manquants pour le rendez-vous." };
+  }
+
+  if (!EMAIL_REGEX.test(payload.email)) {
+    return { success: false, error: "L'adresse email n'est pas valide." };
+  }
+
+  const nowLabel = new Date().toLocaleString("fr-CH");
+  const safeEmailHtml = escapeHtml(payload.email);
+  const safeNameHtml = escapeHtml(payload.name);
+  const safePhoneHtml = payload.phone ? escapeHtml(payload.phone) : "Non fourni";
+  const safeServiceHtml = escapeHtml(payload.service);
+  const safeDateHtml = escapeHtml(payload.date);
+  const safeTimeHtml = escapeHtml(payload.time);
+  const safeNotesHtml = payload.notes ? formatMessageHtml(payload.notes) : "—";
+  const nowLabelHtml = escapeHtml(nowLabel);
+  const firstNameHtml = escapeHtml(payload.name.split(/\s+/)[0] ?? payload.name);
+
+  const adminHtml = `
+<html lang="fr" style="background:#020617;">
+  <body style="margin:0;padding:0;background:#020617;font-family:-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#020617;padding:32px 0;">
+      <tr>
+        <td>
+          <table width="100%" cellpadding="0" cellspacing="0" align="center" style="max-width:600px;margin:0 auto;background:#020617;color:#e5e7eb;border-radius:16px;border:1px solid #020617;box-shadow:0 24px 80px rgba(15,23,42,0.9);overflow:hidden;">
+            <tr>
+              <td style="padding:20px 24px 16px;border-bottom:1px solid #1f2937;background:radial-gradient(circle at top,rgba(56,189,248,0.18),rgba(2,6,23,0) 55%);">
+                <div style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#38bdf8;margin-bottom:6px;">KOSMONDE</div>
+                <div style="font-size:18px;font-weight:600;color:#f9fafb;">Nouveau rendez-vous à confirmer</div>
+                <div style="margin-top:4px;font-size:12px;color:#9ca3af;">Demande reçue depuis la page RDV.</div>
+                <div style="margin-top:8px;font-size:11px;color:#d1d5db;">${safeServiceHtml} • ${safeDateHtml} • ${safeTimeHtml}</div>
+                <div style="margin-top:8px;font-size:11px;color:#d1d5db;">${safeNameHtml}</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:20px 24px 16px;">
+                <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:12px;border:1px solid #1f2937;background:#020617;">
+                  <tr>
+                    <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
+                      <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Nom</div>
+                      <div style="font-size:13px;color:#e5e7eb;font-weight:500;">${safeNameHtml}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
+                      <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Email</div>
+                      <div style="font-size:13px;color:#38bdf8;">
+                        <a href="mailto:${payload.email}" style="color:#38bdf8;text-decoration:none;">${safeEmailHtml}</a>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
+                      <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Téléphone</div>
+                      <div style="font-size:13px;color:#e5e7eb;font-weight:500;">${safePhoneHtml}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
+                      <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Service</div>
+                      <div style="font-size:13px;color:#e5e7eb;">${safeServiceHtml}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;border-bottom:1px solid #1f2937;">
+                      <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Créneau</div>
+                      <div style="font-size:13px;color:#e5e7eb;">${safeDateHtml} à ${safeTimeHtml}</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;">
+                      <div style="font-size:11px;color:#9ca3af;margin-bottom:2px;">Notes</div>
+                      <div style="font-size:13px;color:#e5e7eb;line-height:1.6;white-space:pre-line;">
+                        ${safeNotesHtml}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+                <div style="margin-top:12px;font-size:11px;color:#6b7280;">Reçu le : ${nowLabelHtml}</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+  `.trim();
+
+  const clientHtml = `
+<html lang="fr" style="background:#020617;">
+  <body style="margin:0;padding:0;background:#020617;font-family:-apple-system,BlinkMacSystemFont,system-ui,'Segoe UI',sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#020617;padding:32px 0;">
+      <tr>
+        <td>
+          <table width="600" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;background:#020617;color:#e5e7eb;border-radius:16px;border:1px solid #020617;box-shadow:0 24px 80px rgba(15,23,42,0.9);overflow:hidden;">
+
+            <tr>
+              <td style="font-size:0;line-height:0;display:none;mso-hide:all;color:transparent;max-height:0;max-width:0;opacity:0;overflow:hidden;">
+                Votre demande de rendez-vous est bien reçue. Nous revenons vers vous rapidement.
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:20px 24px 16px;border-bottom:1px solid #1f2937;background:radial-gradient(circle at top,rgba(56,189,248,0.18),rgba(2,6,23,0) 55%);">
+                <div style="font-size:11px;letter-spacing:0.28em;text-transform:uppercase;color:#38bdf8;margin-bottom:6px;">KOSMONDE</div>
+                <div style="font-size:18px;font-weight:600;color:#f9fafb;">Merci, votre demande est bien reçue</div>
+                <div style="margin-top:4px;font-size:12px;color:#9ca3af;">Nous bloquons le créneau 48 h en attente de validation.</div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:20px 24px 18px;">
+                <p style="font-size:13px;color:#e5e7eb;margin:0 0 12px;">Bonjour ${firstNameHtml},</p>
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 12px;line-height:1.5;">
+                  Votre demande de rendez-vous est bien enregistrée. Nous revenons vers vous sous 24 h (hors week-end) avec la confirmation et le lien visio.
+                </p>
+
+                <div style="margin-top:16px;margin-bottom:14px;">
+                  <div style="font-size:12px;font-weight:600;color:#e5e7eb;margin-bottom:6px;">Récapitulatif</div>
+                  <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:10px;border:1px solid #1f2937;background:#020617;font-size:12px;color:#d1d5db;">
+                    <tr>
+                      <td style="padding:8px 12px;border-bottom:1px solid #111827;color:#9ca3af;width:40%;">Service</td>
+                      <td style="padding:8px 12px;">${safeServiceHtml}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:8px 12px;border-bottom:1px solid #111827;color:#9ca3af;">Créneau</td>
+                      <td style="padding:8px 12px;">${safeDateHtml} à ${safeTimeHtml}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:8px 12px;border-bottom:1px solid #111827;color:#9ca3af;">Téléphone</td>
+                      <td style="padding:8px 12px;">${safePhoneHtml}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding:8px 12px;vertical-align:top;color:#9ca3af;">Notes</td>
+                      <td style="padding:8px 12px;line-height:1.5;">${safeNotesHtml}</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <p style="font-size:13px;color:#d1d5db;margin:0 0 12px;line-height:1.5;">
+                  Vous pourrez modifier ce créneau si besoin. Nous enverrons également l’invitation calendrier (.ics) avec le lien visio.
+                </p>
+
+                <p style="font-size:13px;color:#9ca3af;margin:0;line-height:1.6;">
+                  À bientôt,<br />
+                  Yanis – KOSMONDE
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding:14px 24px 18px;border-top:1px solid #1f2937;font-size:11px;color:#6b7280;">
+                Vous développez votre projet, KOSMONDE vous aide à lui donner une présence claire sur le web.
+                <a href="https://kosmonde.ch" style="color:#38bdf8;text-decoration:none;">kosmonde.ch</a>
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+  `.trim();
+
+  try {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: process.env.CONTACT_EMAIL_TO ?? "contact@kosmonde.ch",
+      subject: `Nouveau rendez-vous : ${payload.service} (${payload.date} • ${payload.time})`,
+      html: adminHtml,
+      replyTo: payload.email,
+    });
+
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: payload.email,
+      subject: `Nous avons bien reçu votre demande de rendez-vous`,
+      html: clientHtml,
+      replyTo: process.env.CONTACT_EMAIL_TO ?? "contact@kosmonde.ch",
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Erreur lors de l'envoi des emails de rendez-vous", error);
+    return { success: false, error: "Impossible d'envoyer la confirmation pour l’instant." };
   }
 }

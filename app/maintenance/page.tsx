@@ -5,7 +5,7 @@ export default function MaintenancePage() {
         <p className="text-sm font-semibold uppercase tracking-[0.4em] text-slate-400">KOSMONDE</p>
         <h1 className="text-3xl font-semibold">Mise à jour en cours...</h1>
         <p className="max-w-md text-sm text-slate-400">
-          Nous améliorons actuellement l'expérience.<br />
+          Nous améliorons actuellement l&apos;expérience.<br />
           Revenez très vite ou contactez-nous à{" "}
           <a href="mailto:contact@kosmonde.ch" className="text-sky-300 hover:text-sky-100">
             contact@kosmonde.ch

@@ -93,7 +93,7 @@ export const projects: Project[] = [
     techStack:
       "Site vitrine moderne avec intégration d’outils de réservation et d’avis externes.",
     link: "https://www.sekoba-coiffure.ch/",
-    img: "/projets/sekoba-coiffure.png",
+    img: "/projets/PROJETSEKOBACOIFFURE.png",
 
     client: "Salon de coiffure SEKOBA",
     sector: "Beauté / Coiffure",
@@ -127,16 +127,6 @@ export const projects: Project[] = [
       "Lien vers l’outil de réservation intégré de manière fluide dans le parcours.",
     ],
 
-    // Résultats
-    results: [
-      "Prise de rendez-vous en ligne simplifiée pour les clientes.",
-      "Image de marque plus professionnelle et cohérente.",
-    ],
-    metrics: [
-      "Plus de prises de rendez-vous directement via le site (à préciser avec le salon).",
-      "Réduction du temps passé à gérer les demandes par messages.",
-    ],
-
     testimonial:
       "Le site est clair, moderne et nos clientes prennent facilement rendez-vous en ligne.",
     testimonialName: "Gérant·e du salon SEKOBA",
@@ -152,6 +142,7 @@ export const projects: Project[] = [
     techBadges: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
 
     services: ["Site vitrine complet", "Création de logo", "Cartes de visite"],
+    progress: 100,
     processSteps: [
       "Échange initial pour comprendre l’univers du salon et ses besoins.",
       "Proposition de structure de site et de maquettes.",
@@ -213,11 +204,6 @@ export const projects: Project[] = [
       "Photos du salon et des réalisations pour projeter le visiteur.",
     ],
 
-    results: [
-      "Une présence en ligne claire pour les clients à Genève.",
-      "Des informations pratiques accessibles rapidement (horaires, adresse, téléphone).",
-    ],
-
     testimonial:
       "Le site donne une image professionnelle du salon et permet aux clients de trouver facilement les informations dont ils ont besoin.",
     testimonialName: "Responsable RR-COIFFURE",
@@ -233,6 +219,7 @@ export const projects: Project[] = [
     techBadges: ["Site vitrine", "Responsive", "Orienté SEO local"],
 
     services: ["Site vitrine complet", "Aide au contenu & structure"],
+    progress: 99,
     processSteps: [
       "Écoute des besoins du salon et de sa clientèle.",
       "Proposition de structure centrée sur les informations pratiques.",
@@ -309,6 +296,7 @@ export const projects: Project[] = [
       "Création de logo",
       "Aide au contenu & structure",
     ],
+    progress: 0,
     processSteps: [
       "Atelier pour clarifier l’offre et la cible.",
       "Définition de la structure et des pages du futur site.",
@@ -371,15 +359,6 @@ export const projects: Project[] = [
       "Design sobre, lisible et compatible avec tous les écrans.",
     ],
 
-    results: [
-      "Structure plus claire des domaines de compétence.",
-      "Expérience plus rassurante pour les visiteurs.",
-    ],
-    metrics: [
-      "Augmentation du temps passé sur les pages domaines (à mesurer après mise en ligne).",
-      "Parcours de contact plus fluide pour les nouveaux clients.",
-    ],
-
     testimonial:
       "Le nouveau site renforce la confiance de nos clients et présente mieux nos services.",
     testimonialName: "Associé du cabinet GBM",
@@ -394,6 +373,7 @@ export const projects: Project[] = [
     techBadges: ["JavaScript", "Next.js", "Tailwind CSS"],
 
     services: ["Refonte de site", "Aide au contenu & structure"],
+    progress: 0,
     processSteps: [
       "Audit de l’ancienne version du site.",
       "Reprise de l’architecture de contenu avec le cabinet.",

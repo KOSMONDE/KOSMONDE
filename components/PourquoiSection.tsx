@@ -2,30 +2,43 @@ export function PourquoiSection() {
   const raisons = [
     {
       title: "Clarté",
-      text: "Storytelling simplifié, hiérarchie claire et explications orientées bénéfices.",
-      details: ["Diagnostic contenu", "Copywriting orienté conversion"],
-      color: "bg-gradient-to-br from-sky-500/70 via-sky-500/30 to-sky-600/40 shadow-[0_8px_25px_rgba(14,165,233,0.35)]",
+      text: [
+        "Storytelling simplifié",
+        "Hiérarchie claire",
+        "Explications orientées ROI",
+      ],
+      details: ["Diagnostic contenu", "Copywriting conversion"],
+      color: "bg-gradient-to-br from-sky-500/40 via-sky-500/20 to-sky-600/30 shadow-[0_8px_25px_rgba(14,165,233,0.3)]",
     },
     {
       title: "Conception SEO",
-      text: "Structure, balises et vitesse pensées pour le référencement local et les Core Web Vitals.",
+      text: [
+        "Structure & balises optimisées",
+        "Vitesse Core Web Vitals",
+        "SEO local maîtrisé",
+      ],
       details: ["Architecture SEO locale", "Audit web performance"],
-      color:
-        "bg-gradient-to-br from-emerald-400/70 via-emerald-400/30 to-emerald-500/40 shadow-[0_8px_25px_rgba(16,185,129,0.3)]",
+      color: "bg-gradient-to-br from-sky-500/40 via-sky-500/20 to-sky-600/30 shadow-[0_8px_25px_rgba(14,165,233,0.3)]",
     },
     {
       title: "Design premium",
-      text: "Interfaces sur-mesure : palettes, micro-interactions et animations inspirées de l’aéronautique.",
-      details: ["Systèmes de blocs évolutifs", "Maquettes Figma détaillées"],
-      color:
-        "bg-gradient-to-br from-violet-500/70 via-violet-500/30 to-violet-600/40 shadow-[0_8px_25px_rgba(139,92,246,0.35)]",
+      text: [
+        "Interfaces sur mesure",
+        "Micro-interactions premium",
+        "Palettes & animations",
+      ],
+      details: ["Blocs évolutifs", "Maquettes Figma"],
+      color: "bg-gradient-to-br from-sky-500/40 via-sky-500/20 to-sky-600/30 shadow-[0_8px_25px_rgba(14,165,233,0.3)]",
     },
     {
       title: "Accompagnement",
-      text: "Process visible, retours en 24 h et feuilles de route actionnables, même après mise en ligne.",
+      text: [
+        "Process visible",
+        "Retours en 24 h",
+        "Feuilles de route claires",
+      ],
       details: ["Suivi post-lancement", "Formations rapides"],
-      color:
-        "bg-gradient-to-br from-amber-400/70 via-amber-400/30 to-amber-500/40 shadow-[0_8px_25px_rgba(251,191,36,0.35)]",
+      color: "bg-gradient-to-br from-sky-500/40 via-sky-500/20 to-sky-600/30 shadow-[0_8px_25px_rgba(14,165,233,0.3)]",
     },
   ];
 
@@ -42,6 +55,10 @@ export function PourquoiSection() {
       <div className="container-kosmonde relative space-y-12 py-14 sm:space-y-16 sm:py-20">
         {/* HEADER CENTRÉ */}
         <div className="mx-auto max-w-lg space-y-3 text-center">
+          <span className="inline-flex w-fit items-center justify-center rounded-full border border-sky-500/40 bg-sky-500/10 pl-4 pr-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-sky-200/90 shadow-[0_0_0_1px_rgba(8,47,73,0.45)] sm:text-[11px]">
+            <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-sky-400" />
+            Nos piliers
+          </span>
           <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
             Pourquoi choisir KOSMONDE ?
           </h2>
@@ -50,7 +67,7 @@ export function PourquoiSection() {
             Pour un site clair, professionnel et pensé pour générer des contacts.
           </p>
 
-          <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500 sm:text-[12px]">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 sm:text-[12px]">
             Clarté · Simplicité · Résultats · Accompagnement
           </p>
         </div>
@@ -60,7 +77,7 @@ export function PourquoiSection() {
           {raisons.map((item) => (
             <article
               key={item.title}
-              className="relative flex h-full flex-col rounded-2xl border border-slate-800/70 bg-gradient-to-br from-slate-950 via-slate-950/90 to-slate-950 px-6 py-7 shadow-[0_18px_60px_rgba(8,47,73,0.6)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:border-sky-400/60"
+              className="relative flex h-full flex-col rounded-2xl border border-slate-800/70 bg-gradient-to-br from-slate-950 via-slate-950/90 to-slate-950 px-5 py-6 sm:px-6 sm:py-7 shadow-[0_18px_60px_rgba(8,47,73,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.005] hover:border-sky-400/60"
               itemScope
               itemType="https://schema.org/CreativeWork"
             >
@@ -69,24 +86,33 @@ export function PourquoiSection() {
               <div className="flex items-center gap-3">
                 <span
                   className={[
-                    "inline-flex h-11 w-11 items-center justify-center rounded-full",
+                    "inline-flex h-10 w-10 items-center justify-center rounded-full border border-sky-400/50",
                     item.color,
+                    "shadow-[0_6px_18px_rgba(14,165,233,0.25)] transition-transform duration-300",
+                    "group-hover:scale-103 group-hover:border-sky-300/70",
                   ].join(" ")}
                   aria-hidden="true"
-                />
-                <h3 className="text-base font-semibold text-slate-50 whitespace-nowrap" itemProp="headline">
+                >
+                  <span className="h-2 w-2 rounded-full bg-sky-200 shadow-[0_0_6px_rgba(186,230,253,0.6)]" />
+                </span>
+                <h3 className="text-lg font-semibold text-slate-50 whitespace-nowrap" itemProp="headline">
                   {item.title}
                 </h3>
               </div>
 
-              <p className="mt-3 text-sm leading-relaxed text-slate-300" itemProp="description">
-                {item.text}
-              </p>
+              <ul className="mt-3 space-y-1.5 text-sm leading-relaxed text-slate-300" itemProp="description">
+                {item.text.map((part) => (
+                  <li key={part} className="flex items-start gap-2 whitespace-nowrap">
+                    <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-sky-300" />
+                    <span>{part}</span>
+                  </li>
+                ))}
+              </ul>
 
-              <ul className="mt-5 space-y-2 text-xs text-slate-400">
+              <ul className="mt-4 space-y-1.5 text-[12px] leading-relaxed text-slate-400">
                 {item.details.map((detail) => (
-                  <li key={detail} className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+                  <li key={detail} className="flex items-start gap-2 whitespace-nowrap">
+                    <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-sky-400" />
                     <span>{detail}</span>
                   </li>
                 ))}
@@ -98,7 +124,7 @@ export function PourquoiSection() {
         {/* TEXTE DE CONFIANCE */}
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-[11px] text-slate-400 sm:text-xs leading-relaxed whitespace-nowrap">
-            Présentez-moi votre projet&nbsp;: je vous aide à définir un site simple, utile et aligné avec vos objectifs.
+            Présentez-nous votre projet : un site utile et aligné à vos objectifs.
           </p>
         </div>
       </div>
