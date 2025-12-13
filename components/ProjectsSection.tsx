@@ -37,6 +37,12 @@ const FILTERS: { label: string; value: StatusFilter }[] = [
   { label: "Refonte", value: "refonte" },
 ];
 
+const MOBILE_FILTERS: { label: string; value: StatusFilter }[] = [
+  { label: "Tous", value: "all" },
+  { label: "En ligne", value: "online" },
+  { label: "En cours", value: "progress" },
+];
+
 function getFilterLabel(value: StatusFilter): string {
   switch (value) {
     case "online":
@@ -231,7 +237,7 @@ export function ProjectsSection() {
               Projets & réalisations
             </h2>
             <p className="text-sm text-slate-400 sm:text-base">
-              Inspirez-vous. Votre prochain site commence ici.
+              Inspirez-vous : votre site commence ici.
             </p>
           </div>
 
@@ -242,33 +248,41 @@ export function ProjectsSection() {
               {getFilterLabel(statusFilter)}
             </p>
 
-            {/* MOBILE : select simple */}
-            <div className="sm:hidden">
-              <label htmlFor="projects-status-filter" className="sr-only">
-                Filtrer par statut
-              </label>
-              <select
-                id="projects-status-filter"
-                value={statusFilter}
-                onChange={(e) =>
-                  setStatusFilter(e.target.value as StatusFilter)
-                }
-                className="w-full rounded-full border border-slate-700/80 bg-slate-900/90 px-4 py-2 text-xs text-slate-100 shadow-[0_10px_25px_rgba(15,23,42,0.7)] focus:outline-none focus:ring-2 focus:ring-sky-400/70 focus:ring-offset-2 focus:ring-offset-slate-950"
-              >
-                {FILTERS.map((f) => (
-                  <option key={f.value} value={f.value}>
-                    {f.label}
-                  </option>
-                ))}
-              </select>
+            {/* Filtres mobile (pills simplifiées) */}
+            <div className="block sm:hidden">
+              <div className="flex flex-nowrap gap-2 pb-1 text-[11px] justify-center">
+                {MOBILE_FILTERS.map((f) => {
+                  const isActive = statusFilter === f.value;
+                  return (
+                    <button
+                      key={f.value}
+                      type="button"
+                      aria-pressed={isActive}
+                      onClick={() => setStatusFilter(f.value)}
+                      className={[
+                        "inline-flex items-center gap-1 rounded-full border px-3 py-2 text-[11px] font-medium tracking-wide transition-all duration-150",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
+                        isActive
+                          ? "border-sky-400 bg-sky-500/15 text-sky-100 shadow-[0_0_0_1px_rgba(56,189,248,0.25)]"
+                          : "border-slate-700/80 bg-slate-900/70 text-slate-300 hover:border-slate-500 hover:bg-slate-900/90",
+                      ].join(" ")}
+                    >
+                      {isActive && (
+                        <span
+                          className="h-1.5 w-1.5 rounded-full bg-sky-300 shadow-[0_0_6px_rgba(56,189,248,0.8)]"
+                          aria-hidden="true"
+                        />
+                      )}
+                      {f.label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* TABLETTE / DESKTOP : pills */}
-            <div className="relative hidden sm:block">
-              <div className="pointer-events-none absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-slate-950 to-transparent md:hidden" />
-              <div className="pointer-events-none absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-slate-950 to-transparent md:hidden" />
-
-              <div className="flex gap-2 overflow-x-auto pb-1 text-xs scrollbar-none justify-end">
+            {/* Filtres desktop/tablette */}
+            <div className="hidden sm:block">
+              <div className="flex flex-wrap gap-2 pb-1 text-[11px] justify-end">
                 {FILTERS.map((f) => {
                   const isActive = statusFilter === f.value;
                   return (
@@ -278,7 +292,7 @@ export function ProjectsSection() {
                       aria-pressed={isActive}
                       onClick={() => setStatusFilter(f.value)}
                       className={[
-                        "inline-flex items-center gap-1 rounded-full border px-4 py-2.5 text-xs font-medium tracking-wide transition-all duration-150",
+                        "inline-flex items-center gap-1 rounded-full border px-3 py-2 text-[11px] font-medium tracking-wide transition-all duration-150",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
                         isActive
                           ? "border-sky-400 bg-sky-500/15 text-sky-100 shadow-[0_0_0_1px_rgba(56,189,248,0.25)]"
@@ -400,16 +414,11 @@ export function ProjectsSection() {
                             </div>
                           </div>
 
-                          <div className="mt-auto flex w-full flex-col gap-2 pb-2">
+                          <div className="mt-auto flex w-full flex-col gap-3 pb-4">
                             <div className="flex w-full justify-center sm:justify-start lg:pl-1">
                               <span className="inline-flex items-center gap-2 rounded-full border border-sky-400/50 bg-sky-500/10 px-6 py-2.5 text-[12px] font-semibold text-slate-100 transition group-hover:border-sky-400 group-hover:text-white">
                                 Voir le projet
                                 <span className="text-base">↗</span>
-                              </span>
-                            </div>
-                            <div className="flex w-full justify-center sm:justify-start lg:pl-1">
-                              <span className="text-xs uppercase tracking-[0.25em] text-slate-500">
-                                Dernière mise à jour · {heroProject.year ?? "2024"}
                               </span>
                             </div>
                           </div>
@@ -494,9 +503,8 @@ export function ProjectsSection() {
                             </div>
                           )}
                           <ProjectServices services={services} compact />
-                          <div className="mt-auto flex items-center justify-between text-xs text-slate-500">
-                            <span>{proj.client ?? "Client Kosmonde"}</span>
-                            <span className="inline-flex items-center gap-2 text-sky-200">
+                          <div className="mt-auto flex items-center justify-end text-xs text-sky-200">
+                            <span className="inline-flex items-center gap-2">
                               Voir le projet
                               <span className="text-base">↗</span>
                             </span>

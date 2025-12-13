@@ -64,11 +64,11 @@ export function PourquoiSection() {
           </h2>
 
           <p className="text-sm leading-relaxed text-slate-400 sm:text-base">
-            Pour un site clair, professionnel et pensé pour générer des contacts.
+            Un site clair, pro, fait pour convertir.
           </p>
 
           <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 sm:text-[12px]">
-            Clarté · Simplicité · Résultats · Accompagnement
+            Simplicité · Résultats · Accompagnement
           </p>
         </div>
 
@@ -95,15 +95,15 @@ export function PourquoiSection() {
                 >
                   <span className="h-2 w-2 rounded-full bg-sky-200 shadow-[0_0_6px_rgba(186,230,253,0.6)]" />
                 </span>
-                <h3 className="text-lg font-semibold text-slate-50 whitespace-nowrap" itemProp="headline">
+                <h3 className="text-lg font-semibold text-slate-50" itemProp="headline">
                   {item.title}
                 </h3>
               </div>
 
               <ul className="mt-3 space-y-1.5 text-sm leading-relaxed text-slate-300" itemProp="description">
                 {item.text.map((part) => (
-                  <li key={part} className="flex items-start gap-2 whitespace-nowrap">
-                    <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-sky-300" />
+                  <li key={part} className="flex items-start gap-2">
+                    <span className="self-center h-1.5 w-1.5 rounded-full bg-sky-300" />
                     <span>{part}</span>
                   </li>
                 ))}
@@ -111,8 +111,8 @@ export function PourquoiSection() {
 
               <ul className="mt-4 space-y-1.5 text-[12px] leading-relaxed text-slate-400">
                 {item.details.map((detail) => (
-                  <li key={detail} className="flex items-start gap-2 whitespace-nowrap">
-                    <span className="mt-[6px] h-1.5 w-1.5 rounded-full bg-sky-400" />
+                  <li key={detail} className="flex items-start gap-2">
+                    <span className="self-center h-1.5 w-1.5 rounded-full bg-sky-400" />
                     <span>{detail}</span>
                   </li>
                 ))}
@@ -123,8 +123,8 @@ export function PourquoiSection() {
 
         {/* TEXTE DE CONFIANCE */}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[11px] text-slate-400 sm:text-xs leading-relaxed whitespace-nowrap">
-            Présentez-nous votre projet : un site utile et aligné à vos objectifs.
+          <p className="text-[11px] text-slate-400 sm:text-xs leading-relaxed">
+            Présentez-nous votre projet : un site utile, aligné à vos objectifs.
           </p>
         </div>
       </div>

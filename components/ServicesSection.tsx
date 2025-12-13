@@ -32,17 +32,24 @@ const TAB_STYLES: Record<
     accent: "text-sky-200",
   },
   accompagnements: {
-    border: "border-violet-400/60",
-    shadow: "shadow-[0_15px_45px_rgba(124,58,237,0.25)]",
-    accent: "text-violet-200",
+    border: "border-sky-400/60",
+    shadow: "shadow-[0_15px_45px_rgba(14,165,233,0.25)]",
+    accent: "text-sky-200",
   },
 };
+
+type Bullet =
+  | string
+  | {
+      text: string;
+      hint?: string;
+    };
 
 type ServiceCardData = {
   id: string;
   title: string;
   badge: string;
-  bullets: string[];
+  bullets: Bullet[];
   highlight: string;
   featured: boolean;
   timeline?: string;
@@ -52,17 +59,35 @@ type ServiceCardData = {
 
 export const SERVICE_CARD_DATA: ServiceCardData[] = [
   /* --- Création de sites --- */
-  {
+    {
     id: "onepage",
     title: "Site one-page",
     badge: "One-page locale",
     bullets: [
-      "Page claire pour lancer une offre",
-      "CTA unique + SEO local",
+      {
+        text: "Page claire pour ton offre",
+        hint: "Une seule page structurée pour présenter ton offre principale.",
+      },
+      {
+        text: "Structure courte, CTA unique",
+        hint: "Navigation courte et un appel à l’action mis en avant.",
+      },
+      {
+        text: "SEO local, balises propres",
+        hint: "Mots-clés locaux, balises title/meta et titres Hn propres.",
+      },
+      {
+        text: "Preuves rapides (avis/chiffres)",
+        hint: "Ajout d’avis, notes ou chiffres clés visibles.",
+      },
+      {
+        text: "Chargement rapide + tracking",
+        hint: "Optimisation poids/perf et installation d’un suivi analytics.",
+      },
     ],
-    highlight: "Présence rapide pour valider une idée.",
+    highlight: "Présence en ligne en quelques semaines.",
     featured: false,
-    timeline: "Livré en 3-4 semaines · Dès 2 400 CHF",
+    timeline: "2-3 semaines · 400 CHF",
     iconClass: "text-sky-300",
   },
   {
@@ -70,25 +95,61 @@ export const SERVICE_CARD_DATA: ServiceCardData[] = [
     title: "Site vitrine",
     badge: "SEO local",
     bullets: [
-      "Parcours structuré (Accueil/Services)",
-      "Contenus optimisés + preuves sociales",
+      {
+        text: "Parcours multi-pages clair",
+        hint: "Navigation simple : Accueil, Services, Contact, à la carte.",
+      },
+      {
+        text: "Contenus optimisés + preuves",
+        hint: "Textes pensés pour rassurer, avec avis ou références.",
+      },
+      {
+        text: "SEO local + balises par page",
+        hint: "Titres, meta, Hn et mots-clés locaux page par page.",
+      },
+      {
+        text: "CTA visibles (contact/devis)",
+        hint: "Appels à l’action mis en évidence pour générer des prises de contact.",
+      },
+      {
+        text: "Chargement rapide + analytics",
+        hint: "Perf optimisées et installation d’un suivi analytique.",
+      },
     ],
     highlight: "Image pro et rassurante pour vos visiteurs.",
     featured: true,
-    timeline: "Livré en 5-6 semaines · Dès 3 800 CHF",
+    timeline: "3-5 semaines · 800 CHF",
     iconClass: "text-sky-300",
   },
   {
     id: "surmesure",
     title: "Site sur mesure",
     badge: "Unique",
-    bullets: [
-      "Architecture pensée avec vous",
-      "UX/UI conversion + connecteurs",
+      bullets: [
+      {
+        text: "Parcours et pages co-conçus",
+        hint: "Co-conception des pages et du chemin utilisateur.",
+      },
+      {
+        text: "UX/UI sur mesure",
+        hint: "Design adapté à vos usages, orienté résultats.",
+      },
+      {
+        text: "CRM, paiement, réservation",
+        hint: "Connexion à vos outils métiers, CRM, paiement, réservations.",
+      },
+      {
+        text: "SEO, perfs, sécurité",
+        hint: "Optimisations techniques, perfs et sécurité.",
+      },
+      {
+        text: "Support prioritaire + module RDV",
+        hint: "Accompagnement prioritaire et prise de rendez-vous intégrée.",
+      },
     ],
     highlight: "Besoin précis ou projet ambitieux.",
     featured: false,
-    timeline: "Planning dédié · Budget sur devis",
+    timeline: "Devis gratuit",
     iconClass: "text-sky-300",
   },
 
@@ -97,18 +158,19 @@ export const SERVICE_CARD_DATA: ServiceCardData[] = [
     /* --- Identité visuelle --- */
 
     /* --- Maintenance --- */
-  {
-    id: "logo",
-      title: "Création de logo",
-      badge: "Identité visuelle",
-      bullets: [
-        "Logo simple, lisible et moderne",
-        "Formats web + impression",
+    {
+      id: "logo",
+        title: "Création de logo",
+        badge: "Identité visuelle",
+        bullets: [
+          "Logo simple et lisible",
+          "Formats web + impression",
+          "Couleurs/typo alignées",
       ],
     highlight:
-      "Base visuelle cohérente pour votre présence en ligne.",
+      "Base visuelle cohérente en ligne.",
     featured: false,
-    timeline: "Moodboard + logo livrés en 2 semaines",
+    timeline: "Livré en 3-5 jours · 120 CHF",
     iconClass: "text-sky-300",
   },
     {
@@ -116,29 +178,30 @@ export const SERVICE_CARD_DATA: ServiceCardData[] = [
       title: "Cartes de visite",
       badge: "Supports imprimés",
     bullets: [
-      "Design aligné avec votre site",
-      "Recto ou recto-verso",
+      "Design aligné à votre site",
+      "Recto/verso, formats standards",
+      "Fichiers prêts à imprimer (PDF)",
     ],
-    highlight:
-      "Présenter votre activité avec une identité cohérente.",
+    highlight: "Identité cohérente pour vos cartes.",
     featured: true,
-    timeline: "Fichiers prêts à imprimer sous 5 jours",
+    timeline: "Livré en 3-5 jours · 90 CHF",
     iconClass: "text-sky-300",
   },
 
     /* --- Maintenance --- */
     {
       id: "maintenance",
-      title: "Maintenance & support",
+      title: "Maintenance",
     badge: "Suivi continu",
     bullets: [
       "Corrections régulières",
       "Mises à jour techniques",
+      "Optimisations sécu/perf",
     ],
     highlight:
       "Site stable, à jour et agréable à utiliser.",
     featured: false,
-    timeline: "Formule mensuelle ou tickets ponctuels",
+    timeline: "Sous 48h · 70 CHF/mois",
     iconClass: "text-sky-300",
   },
 ];
@@ -166,15 +229,14 @@ export function ServicesSection() {
         <div className="mx-auto max-w-3xl text-center space-y-3">
           <span className="inline-flex w-fit items-center justify-center rounded-full border border-sky-500/40 bg-sky-500/10 pl-4 pr-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-sky-200/90 shadow-[0_0_0_1px_rgba(8,47,73,0.45)] sm:text-[11px]">
             <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-sky-400" />
-            Sites prêts à convertir
+            Nos prestations
           </span>
           <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-50">
             Offres & services
           </h2>
 
-          <p className="text-sm sm:text-base leading-relaxed text-slate-400 whitespace-normal sm:whitespace-nowrap">
-            Sites web, améliorations et identité visuelle : l’essentiel pour une
-            présence claire et professionnelle.
+          <p className="text-sm sm:text-base leading-relaxed text-slate-400 whitespace-normal sm:whitespace-normal">
+            Sites web, améliorations et identité visuelle : l’essentiel pour une présence claire.
           </p>
 
           <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500 whitespace-normal sm:whitespace-nowrap">
@@ -183,47 +245,45 @@ export function ServicesSection() {
         </div>
 
         <div className="mx-auto w-full max-w-3xl">
-          <div className="relative rounded-3xl border border-slate-800/70 bg-slate-900/70 p-2 shadow-[0_25px_60px_rgba(8,47,73,0.5)]">
-            <div
-              className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
-              role="tablist"
-              aria-label="Choisir un type de service"
-            >
-              {TABS.map((tab) => {
-                const isActive = tab.id === activeTab;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id)}
-                    role="tab"
-                    aria-selected={isActive}
-                    aria-pressed={isActive}
+          <div
+            className="flex flex-col items-center gap-3 sm:flex-row sm:items-center sm:justify-between md:justify-center md:gap-4"
+            role="tablist"
+            aria-label="Choisir un type de service"
+          >
+            {TABS.map((tab) => {
+              const isActive = tab.id === activeTab;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  role="tab"
+                  aria-selected={isActive}
+                  aria-pressed={isActive}
+                  className={[
+                    "w-full max-w-[320px] sm:w-auto sm:flex-1 rounded-2xl border px-5 py-4 text-center sm:text-left md:text-center transition duration-300",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
+                    isActive
+                      ? [
+                          "bg-slate-950/95 text-slate-50",
+                          TAB_STYLES[tab.id].border,
+                          TAB_STYLES[tab.id].shadow,
+                        ].join(" ")
+                      : "border-slate-800/80 text-slate-400 hover:text-slate-100 hover:bg-slate-900/40",
+                  ].join(" ")}
+                >
+                  <span className="block text-sm font-semibold tracking-wide">{tab.label}</span>
+                  <span
                     className={[
-                      "flex-1 rounded-2xl border px-5 py-4 text-left transition duration-300",
-                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
-                      isActive
-                        ? [
-                            "bg-slate-950/95 text-slate-50",
-                            TAB_STYLES[tab.id].border,
-                            TAB_STYLES[tab.id].shadow,
-                          ].join(" ")
-                        : "border-slate-800/80 text-slate-400 hover:text-slate-100 hover:bg-slate-900/40",
+                      "mt-1 block text-xs",
+                      isActive ? TAB_STYLES[tab.id].accent : "text-slate-500",
                     ].join(" ")}
                   >
-                    <span className="block text-sm font-semibold tracking-wide">{tab.label}</span>
-                    <span
-                      className={[
-                        "mt-1 block text-xs",
-                        isActive ? TAB_STYLES[tab.id].accent : "text-slate-500",
-                      ].join(" ")}
-                    >
-                      {tab.description}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+                    {tab.description}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
@@ -237,7 +297,7 @@ function ServiceGrid({ title, cards }: { title: string; cards: ServiceCardData[]
   return (
     <div className="space-y-6">
       <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-500">{title}</p>
-      <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3">
+      <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3 justify-items-center">
         {cards.map((card) => (
           <ServiceCard key={card.id} card={card} />
         ))}
@@ -280,23 +340,42 @@ function ServiceCard({ card }: { card: ServiceCardData }) {
               {card.icon ?? "•"}
             </span>
           )}
-          <h3 className="text-base font-semibold leading-tight text-slate-50 whitespace-nowrap">{card.title}</h3>
+          <h3 className="text-base font-semibold leading-tight text-slate-50 whitespace-nowrap sm:whitespace-normal">{card.title}</h3>
         </div>
       </div>
 
       <ul className="mt-4 space-y-2 text-xs text-slate-300">
-        {card.bullets.map((b) => (
-          <li key={b} className="flex gap-2">
-            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-sky-400" />
-            <span>{b}</span>
-          </li>
-        ))}
+        {card.bullets.map((b) => {
+          const text = typeof b === "string" ? b : b.text;
+          const hint = typeof b === "string" ? undefined : b.hint;
+
+          return (
+            <li
+              key={text}
+              className="flex items-center gap-2 text-left md:items-start md:gap-2 md:text-left"
+            >
+              <span className="self-center md:self-center h-1.5 w-1.5 rounded-full bg-sky-400" />
+              <span className="flex-1 whitespace-nowrap sm:whitespace-normal">{text}</span>
+              {hint && (
+                <span
+                  aria-label={hint}
+                  title={hint}
+                  className="hidden sm:flex h-4 w-4 items-center justify-center rounded-full border border-slate-700/70 text-[10px] text-slate-200/80 hover:text-sky-300 hover:border-sky-500/60 transition"
+                >
+                  ?
+                </span>
+              )}
+            </li>
+          );
+        })}
       </ul>
 
-      <p className="mt-4 border-t border-slate-800/70 pt-3 text-[11px] text-slate-400">{card.highlight}</p>
+      <p className="mt-4 border-t border-slate-800/70 pt-3 text-[11px] text-slate-400 whitespace-nowrap sm:whitespace-normal">
+        {card.highlight}
+      </p>
 
       {card.timeline && (
-        <div className="mt-4 rounded-xl border border-slate-800/80 bg-slate-900/50 px-3 py-2 text-xs text-slate-200">
+        <div className="mt-4 rounded-xl border border-slate-800/80 bg-slate-900/50 px-3 py-2 text-center text-xs text-slate-200 whitespace-nowrap">
           {card.timeline}
         </div>
       )}

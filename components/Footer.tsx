@@ -97,16 +97,6 @@ export function Footer() {
                 Studio web indépendant : cadrage d’offre, UX de conversion, sites vitrines et one-page qui transforment vos prospects en clients.
               </p>
             </div>
-            <div className="pt-3">
-              <Link
-                href="/rdv"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-950 shadow-[0_12px_26px_rgba(56,189,248,0.28)] transition hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
-                aria-label="Accéder à la page de prise de rendez-vous"
-              >
-                Prendre rendez-vous
-                <span aria-hidden="true" className="text-base leading-none">↗</span>
-              </Link>
-            </div>
           </div>
 
           <div className={cardClass}>
@@ -115,11 +105,8 @@ export function Footer() {
                 Réseaux
               </h3>
               <div className="h-px w-12 bg-gradient-to-r from-sky-400/70 via-cyan-300/70 to-sky-400/70" />
-              <p className="leading-snug text-slate-100">
-                Suivez KOSMONDE et discutez en direct via nos canaux préférés.
-              </p>
             </div>
-            <div className="flex items-center gap-4 pt-2">
+            <div className="flex items-center justify-center gap-4 pt-2">
               <a
                 href="https://www.instagram.com/kosmonde/"
                 target="_blank"
@@ -161,22 +148,6 @@ export function Footer() {
               <p className="text-[11px] text-slate-300">
                 Lun–Ven, 9h–18h CET. Réponse sous 24h.
               </p>
-              <div className="flex flex-wrap gap-3 pt-3">
-                <Link
-                  href="/rdv"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/60 px-4 py-2 text-[13px] font-semibold text-slate-100 transition hover:border-sky-500 hover:text-sky-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"
-                >
-                  Prendre rendez-vous
-                </Link>
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-emerald-500/80 bg-slate-900/60 px-4 py-2 text-[13px] font-semibold text-emerald-200 transition hover:border-emerald-400 hover:text-emerald-100 hover:bg-emerald-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
-                >
-                  WhatsApp
-                </a>
-              </div>
             </div>
           </div>
 

@@ -1,24 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
+
+type FaqItem = {
+  q: string;
+  a: string;
+  aDisplay?: React.ReactNode;
+};
 
 export function MiniFAQ() {
-  const faq = [
+  const faq: FaqItem[] = [
     {
       q: "Délai de livraison ?",
-      a: "One-page : 3 à 4 semaines si vos contenus sont prêts. Site vitrine complet : 5 à 7 semaines avec ateliers, maquettes et intégration.",
+      a: "One-page : 2–3 semaines si vos contenus sont prêts. Vitrine : 3–5 semaines. Sur-mesure : planning dédié fixé ensemble.",
+      aDisplay: (
+        <>
+          <strong>One-page :</strong> 2–3 semaines si vos contenus sont prêts.{" "}
+          <strong>Vitrine :</strong> 3–5 semaines.{" "}
+          <strong>Sur-mesure :</strong> planning dédié fixé ensemble.
+        </>
+      ),
     },
     {
-      q: "Comment paye-t-on ?",
-      a: "30 % à la signature pour réserver le créneau, 40 % après validation des maquettes, 30 % au moment de la mise en ligne.",
+      q: "Comment se passe le paiement ?",
+      a: "50 % à la signature, 50 % à la mise en ligne.",
     },
     {
-      q: "Site optimisé mobile/SEO ?",
-      a: "Oui. Maquettes mobile-first, optimisation Lighthouse et structure pensée pour le référencement local.",
+      q: "Proposez-vous une maintenance ?",
+      a: "Oui, nous proposons une maintenance mensuelle ou des tickets ponctuels selon vos besoins.",
     },
     {
       q: "Après la mise en ligne ?",
-      a: "Je reste disponible pour une phase de retours inclus et peux proposer des tickets ponctuels ou une formule de suivi.",
+      a: "Je reste disponible pour une phase de retours incluse et peux proposer des tickets ponctuels ou une formule de suivi.",
     },
   ];
 
@@ -65,13 +78,11 @@ export function MiniFAQ() {
             <h2 className="text-2xl font-semibold text-slate-50 sm:text-3xl whitespace-normal">
               Questions fréquentes
             </h2>
-            <p className="text-sm text-slate-400 sm:whitespace-normal sm:overflow-visible sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis">
-              <span className="sm:inline hidden">Process, délais, paiement : tout est transparent dès le départ.</span>
-              <span className="sm:hidden inline">Process, délais, paiement transparents.</span>
+            <p className="text-sm text-slate-400 sm:text-sm whitespace-nowrap sm:whitespace-normal">
+              Process, délais, paiement : transparents dès le départ.
             </p>
-            <div className="text-xs text-slate-500 sm:whitespace-normal sm:overflow-visible whitespace-nowrap overflow-hidden text-ellipsis">
-              <span className="sm:inline hidden">Réponse sous 24&nbsp;h · Créneaux réservés 3 semaines à l’avance</span>
-              <span className="sm:hidden inline">Réponse 24 h · Créneaux sous 3 semaines</span>
+            <div className="text-xs text-slate-500 whitespace-nowrap sm:whitespace-normal">
+              Réponse sous 24 h · Créneaux sous 3 semaines
             </div>
           </div>
 
@@ -87,10 +98,11 @@ export function MiniFAQ() {
         {/* LISTE FAQ */}
         <div className="grid gap-5 md:grid-cols-2">
           {faq.map((item, index) => {
-            const isOpen = openIndex === index;
-            const answerId = `mini-faq-answer-${index}`;
+                const isOpen = openIndex === index;
+                const answerId = `mini-faq-answer-${index}`;
+                const answerDisplay = item.aDisplay ?? item.a;
 
-            return (
+                return (
               <button
                 key={index}
                 type="button"
@@ -114,7 +126,7 @@ export function MiniFAQ() {
                   </div>
                   <div className="flex-1 p-4 sm:p-5 flex flex-col gap-2">
                     <div className="flex items-center justify-between gap-3">
-                      <p className="text-[12px] sm:text-[14px] font-medium text-slate-50 group-hover:text-sky-300 whitespace-nowrap overflow-hidden text-ellipsis">
+                      <p className="text-[12px] sm:text-[14px] font-medium text-slate-50 group-hover:text-sky-300">
                         {item.q}
                       </p>
 
@@ -136,7 +148,7 @@ export function MiniFAQ() {
                           id={answerId}
                           className="text-[12px] sm:text-[13px] leading-relaxed text-slate-400"
                         >
-                          {item.a}
+                          {answerDisplay}
                         </p>
                         <div className="mt-auto" />
                       </>
@@ -153,8 +165,8 @@ export function MiniFAQ() {
             <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
               Encore des questions ?
             </p>
-            <p className="mt-2 text-sm text-slate-50">
-              Réservez un créneau : on clarifie votre feuille de route en 15 minutes.
+            <p className="mt-2 text-sm text-slate-50 whitespace-nowrap sm:whitespace-normal">
+              Réservez un créneau : feuille de route en 15 minutes.
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end">

@@ -33,11 +33,11 @@ export default function Home() {
       {/* 7. Pourquoi : besoins + problèmes */}
       <PourquoiSection />
 
-      {/* 8. FAQ : répondre aux objections */}
-      <MiniFAQ />
-
-      {/* 9. Contact : convertir */}
+      {/* 8. Contact : convertir */}
       <ContactSection />
+
+      {/* 9. FAQ : répondre aux objections */}
+      <MiniFAQ />
 
       {/* 10. Footer */}
       <Footer />

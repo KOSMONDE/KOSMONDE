@@ -10,16 +10,16 @@ export function HeroSection() {
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_60%),radial-gradient(circle_at_bottom,rgba(79,70,229,0.18),transparent_60%)]" />
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-25 mix-blend-screen bg-[radial-gradient(circle_at_top_left,rgba(148,163,184,0.35),transparent_55%)]" />
 
-      {/* MOBILE optimisé / Desktop inchangé */}
-      <div className="container-kosmonde relative flex flex-col gap-8 py-12 sm:py-18 lg:flex-row lg:items-center lg:gap-10">
+      {/* Mise en page responsive */}
+      <div className="container-kosmonde relative flex flex-col gap-8 py-12 sm:py-16 lg:flex-row lg:items-center lg:gap-10">
         
         {/* COLONNE GAUCHE */}
         <div className="max-w-xl space-y-6">
           
           {/* Tag */}
-          <span className="inline-flex items-center gap-2 rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] sm:tracking-[0.28em] text-sky-200/90 shadow-[0_0_0_1px_rgba(8,47,73,0.45)]">
+          <span className="inline-flex items-center gap-2 rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] sm:tracking-[0.3em] text-sky-200/90 shadow-[0_0_0_1px_rgba(8,47,73,0.45)]">
             <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
-            Studio web & SEO · Genève
+            KOSMONDE Studio · Genève
           </span>
 
           {/* Titre */}
@@ -53,7 +53,7 @@ export function HeroSection() {
           </div>
 
           {/* Texte final */}
-          <p className="text-xs text-slate-400 sm:text-xs text-center sm:text-left">
+          <p className="hidden sm:block text-xs text-slate-400 sm:text-left">
             Visio 15 min offerte · plan d’action sous 24 h.
           </p>
         </div>

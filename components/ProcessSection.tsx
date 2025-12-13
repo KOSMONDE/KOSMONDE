@@ -44,7 +44,7 @@ export function ProcessSection() {
             Comment se déroule un projet ?
           </h2>
           <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-            Trois étapes claires pour transformer votre idée en site en ligne, en toute sérénité.
+            Trois étapes claires pour mettre votre idée en ligne.
           </p>
 
           <p className="text-[11px] text-slate-500 uppercase tracking-[0.18em] mt-1">
@@ -80,7 +80,7 @@ export function ProcessSection() {
                 <p className="text-[11px] uppercase tracking-[0.28em] text-slate-500">
                   {item.subtitle}
                 </p>
-                <h3 className="mt-2 text-base font-semibold text-slate-50 whitespace-nowrap">{item.title}</h3>
+                <h3 className="mt-2 text-base font-semibold text-slate-50">{item.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-400">{item.text}</p>
                 <div className="mt-auto" />
               </li>

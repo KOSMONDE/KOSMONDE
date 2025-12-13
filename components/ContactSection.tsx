@@ -116,24 +116,27 @@ export function ContactSection() {
           <div className="space-y-7">
             <div className="space-y-3">
               <p className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1 text-[11px] uppercase tracking-[0.25em] text-sky-100">
-                Studio web & SEO · Genève
+                Une question ?
               </p>
               <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
                 Parlons de votre prochain site vitrine
               </h2>
               <p className="text-sm leading-relaxed text-slate-300 sm:text-base">
-                Partagez votre activité et vos objectifs. Nous vous répondons en moins de 24&nbsp;h avec un plan clair et les meilleures suites possibles.
+                Partagez votre activité et vos objectifs. Réponse en moins de 24&nbsp;h avec un plan clair.
               </p>
             </div>
 
             <ul className="space-y-3 text-sm text-slate-200">
               {[
-                "Un seul interlocuteur du premier message à la mise en ligne.",
-                "Plan d’action orienté conversion, contenu et SEO local.",
-                "Créneau visio de 15 min possible dès cette semaine.",
+                "Un interlocuteur unique jusqu’à la mise en ligne.",
+                "Plan axé conversion + SEO local.",
+                "Visio 15 min dispo dès cette semaine.",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-2 text-left">
-                  <span className="mt-1 h-1.5 w-1.5 rounded-full bg-sky-400" aria-hidden="true" />
+                <li
+                  key={item}
+                  className="flex items-start gap-2 text-left whitespace-nowrap sm:whitespace-normal"
+                >
+                  <span className="self-center h-1.5 w-1.5 rounded-full bg-sky-400" aria-hidden="true" />
                   <span>{item}</span>
                 </li>
               ))}

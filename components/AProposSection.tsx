@@ -3,24 +3,30 @@
 export function AProposSection() {
   const valeurs = [
     {
-      label: "Ce qui compte pour moi",
+      label: "Ce qui compte pour nous",
       text: [
-        "Sites utiles ancrés dans le réel",
-        "Prioriser ce qui apporte de la clarté",
+        "Satisfaire la demande cliente",
+        "Design moderne et adapté",
+        "Site rapide, facile à utiliser",
+        "Message clair orienté action",
       ],
     },
     {
       label: "Ce que je vous apporte",
       text: [
-        "Un cadre simple à comprendre",
-        "Explications claires à chaque étape",
+        "Présence en ligne claire et crédible",
+        "Design cohérent et moderne",
+        "Parcours qui convertit",
+        "Site fiable et rapide",
       ],
     },
     {
       label: "Comment on avance",
       text: [
-        "Rythme posé, étapes visibles",
-        "Décisions prises ensemble",
+        "On écoute vos objectifs",
+        "On propose un plan simple",
+        "On ajuste avec vos retours",
+        "On finalise et on met en ligne",
       ],
     },
   ];
@@ -44,26 +50,26 @@ export function AProposSection() {
         <div className="mx-auto max-w-3xl space-y-3 text-center sm:space-y-4">
           <span className="inline-flex w-fit items-center justify-center rounded-full border border-sky-500/40 bg-sky-500/10 pl-4 pr-3 py-1 text-[10px] font-medium uppercase tracking-[0.25em] text-sky-200/90 shadow-[0_0_0_1px_rgba(8,47,73,0.45)] sm:text-[11px]">
             <span className="mr-1.5 h-1.5 w-1.5 rounded-full bg-sky-400" />
-            Studio web & SEO · petites structures
+            Pour indépendants & petites équipes
           </span>
           <h2 className="text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl">
-            À propos de KOSMONDE
+            À propos de nous
           </h2>
 
-            <p className="text-sm leading-relaxed text-slate-400 sm:text-base">
-              Studio web à Genève. Nous aidons les indépendants et petites structures à livrer des sites rapides, SEO local, avec un message clair et une mise en ligne sereine.
-            </p>
+          <p className="text-sm leading-relaxed text-slate-400 sm:text-base">
+            Notre équipe accompagne les indépendants et petites équipes pour créer des sites web. Avec 8 ans d’expérience sur le développement de sites vitrines, one-page et sur-mesure, et autres prestations.
+          </p>
           <p className="text-xs italic text-slate-500 sm:text-sm">
             « On simplifie le digital pour les indépendants : un plan clair, un site net, aucune surprise. »
           </p>
 
-          <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">
-            Simplicité · Clarté · Écoute · Structure
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-300">
+            Simplicité · Clarté · Structure
           </p>
         </div>
 
         <div className="mx-auto max-w-3xl space-y-3 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-300">
             Preuves rapides
           </p>
           <div className="grid gap-3 rounded-3xl border border-slate-800/70 bg-slate-950/80 px-6 py-5 sm:grid-cols-3 sm:overflow-visible overflow-x-auto snap-x snap-mandatory [-webkit-overflow-scrolling:touch] sm:justify-items-stretch justify-items-center">
@@ -78,7 +84,7 @@ export function AProposSection() {
 
         {/* MA FAÇON DE TRAVAILLER */}
         <div className="mx-auto max-w-4xl space-y-3 text-center">
-          <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-slate-500">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-300">
             Notre façon de travailler
           </p>
 
@@ -113,13 +119,13 @@ export function AProposSection() {
                     {Array.isArray(v.text)
                       ? v.text.map((item) => (
                           <li key={item} className="flex items-start gap-2">
-                            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-sky-400" />
+                            <span className="self-center h-1.5 w-1.5 rounded-full bg-sky-400" />
                             <span>{item}</span>
                           </li>
                         ))
                       : (
                         <li className="flex items-start gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-sky-400" />
+                          <span className="self-center h-1.5 w-1.5 rounded-full bg-sky-400" />
                           <span>{v.text}</span>
                         </li>
                       )}

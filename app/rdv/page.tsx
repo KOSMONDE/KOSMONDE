@@ -13,9 +13,10 @@ type ServiceCard = {
   title: string;
   badge: string;
   icon: string;
-  bullets: string[];
+  bullets: { text: string; hint?: string }[];
   highlight: string;
   group: string;
+  timeline?: string;
   featured?: boolean;
 };
 
@@ -33,6 +34,10 @@ const YEAR_END = YEAR_START + 1;
 
 const SERVICE_CARDS: ServiceCard[] = SERVICE_CARD_DATA.map((service) => ({
   ...service,
+  // Conserve le texte et l'indice d'aide éventuel pour afficher les "?" comme dans la section Services.
+  bullets: service.bullets.map((b) =>
+    typeof b === "string" ? { text: b } : { text: b.text, hint: b.hint }
+  ),
   group: SITE_SERVICE_IDS.has(service.id) ? "Création de sites" : "Autres accompagnements",
   icon: service.icon ?? "•",
   featured: service.featured ?? false,
@@ -143,6 +148,7 @@ export default function BookingPage() {
   const [currentStep, setCurrentStep] = useState<number>(1);
 
   const router = useRouter();
+  const todayISO = toISO(NOW);
 
   const selectedService = SERVICE_CARDS.find((service) => service.id === selectedServiceId) ?? null;
 
@@ -157,6 +163,9 @@ export default function BookingPage() {
   const canGoNext = weekStart.getTime() < LAST_WEEK_START.getTime();
   const selectedSlotDate = selectedSlot ? slotDateFromISO(selectedSlot.dateISO) : null;
   const selectedSlotLabel = selectedSlotDate ? recapDateFormatter.format(selectedSlotDate) : null;
+  const isCurrentWeek =
+    weekDays.some((day) => day.iso === todayISO) &&
+    weekStart.getTime() === alignToMonday(NOW).getTime();
 
   const hasService = Boolean(selectedService);
   const hasSlot = Boolean(selectedSlot && selectedSlotLabel);
@@ -241,17 +250,45 @@ export default function BookingPage() {
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-35 bg-[linear-gradient(to_right,rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.12)_1px,transparent_1px)] bg-[size:48px_48px]" />
 
       <section className="container-kosmonde py-10">
-        <div className="mx-auto max-w-4xl space-y-6 rounded-[2.5rem] border border-slate-800/70 bg-slate-950/90 p-6 shadow-[0_35px_120px_rgba(14,165,233,0.18)]">
+        <div className="mx-auto max-w-7xl space-y-6 rounded-[2.5rem] border border-slate-800/70 bg-slate-950/90 p-6 lg:p-8 shadow-[0_35px_120px_rgba(14,165,233,0.18)]">
           <header className="space-y-2 text-center">
             <p className="text-[11px] uppercase tracking-[0.35em] text-sky-400">Rendez-vous Kosmonde</p>
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Votre rendez-vous en 3 étapes claires</h1>
-            <p className="text-sm text-slate-400 sm:text-base">
-              Choisissez le service, bloquez un créneau, confirmez au même endroit.
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">En 3 étapes claires</h1>
+            <p className="text-sm text-slate-400 sm:text-base whitespace-nowrap sm:whitespace-normal">
+              Choisissez un service, un créneau, et confirmez.
             </p>
           </header>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 sm:p-5 overflow-x-auto">
-            <ol className="inline-flex min-w-full items-center justify-center gap-3 text-xs sm:text-sm whitespace-nowrap">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 sm:p-5">
+            {/* Mobile steps */}
+            <ol className="flex items-center justify-between gap-2 text-[11px] sm:hidden">
+              {STEPS.map((step) => {
+                const status = stepStatus(step.id);
+                const baseCircle = "flex h-9 w-9 items-center justify-center rounded-full border text-[11px] font-semibold transition";
+                const circleClass =
+                  status === "done"
+                    ? `${baseCircle} border-emerald-400 bg-emerald-500/15 text-emerald-100`
+                    : status === "current"
+                      ? `${baseCircle} border-sky-400 bg-sky-500/20 text-sky-100`
+                      : `${baseCircle} border-slate-700 bg-slate-900 text-slate-500`;
+                const labelClass =
+                  status === "done"
+                    ? "text-emerald-100"
+                    : status === "current"
+                      ? "text-sky-100"
+                      : "text-slate-500";
+
+                return (
+                  <li key={step.id} className="flex flex-1 flex-col items-center gap-1">
+                    <div className={circleClass}>{step.id}</div>
+                    <span className={`${labelClass} whitespace-nowrap text-[10px] leading-none`}>{step.label}</span>
+                  </li>
+                );
+              })}
+            </ol>
+
+            {/* Desktop/tablette steps */}
+            <ol className="hidden sm:inline-flex min-w-full items-center justify-center gap-3 text-xs sm:text-sm whitespace-nowrap">
               {STEPS.map((step, index) => {
                 const status = stepStatus(step.id);
                 const isLast = index === STEPS.length - 1;
@@ -319,65 +356,80 @@ export default function BookingPage() {
                     );
                   })}
                 </div>
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
                   {activeServices.map((service, idx) => {
                     const active = service.id === selectedServiceId;
+                    const isSite = SITE_SERVICE_IDS.has(service.id);
                     return (
-                    <button
-                      key={service.id}
-                      type="button"
-                      onClick={() => setSelectedServiceId(service.id)}
-                      style={{ animationDelay: `${idx * 60}ms` }}
-                      className={[
-                          "relative flex h-full flex-col gap-3 rounded-2xl border p-5 text-left transition-all duration-300 animate-fade hover:scale-[1.01]",
-                          active
-                            ? "border-sky-400/80 bg-gradient-to-br from-slate-950 via-sky-950/15 to-slate-950 text-sky-50 shadow-[0_35px_100px_rgba(14,165,233,0.3)] -translate-y-1"
-                            : SITE_SERVICE_IDS.has(service.id)
-                              ? "border-slate-800 bg-gradient-to-br from-slate-950 via-sky-950/8 to-slate-950 text-slate-300 hover:border-sky-400/40 hover:shadow-[0_20px_60px_rgba(14,165,233,0.2)]"
-                              : "border-slate-800 bg-gradient-to-br from-slate-950 via-violet-950/8 to-slate-950 text-slate-300 hover:border-violet-400/40 hover:shadow-[0_20px_60px_rgba(124,58,237,0.2)]",
-                      ].join(" ")}
-                    >
-                      <span
+                      <button
+                        key={service.id}
+                        type="button"
+                        onClick={() => setSelectedServiceId(service.id)}
+                        style={{ animationDelay: `${idx * 60}ms` }}
                         className={[
-                          "absolute inset-0 pointer-events-none rounded-2xl",
+                          "relative flex h-full w-full min-w-0 flex-col gap-4 rounded-[1.4rem] border px-4 pb-5 text-left transition-all duration-300 animate-fade hover:-translate-y-1",
+                          "pt-8",
+                          "md:min-w-[320px]",
                           active
-                            ? "shadow-[0_0_0_1px_rgba(56,189,248,0.4),0_30px_90px_rgba(14,165,233,0.25)]"
-                            : "",
+                            ? "border-sky-400/80 bg-slate-950/95 shadow-[0_30px_90px_rgba(14,165,233,0.28)]"
+                            : isSite
+                              ? "border-slate-800 bg-slate-950/85 hover:border-sky-400/50 hover:shadow-[0_22px_65px_rgba(14,165,233,0.25)]"
+                              : "border-slate-800 bg-slate-950/85 hover:border-violet-400/50 hover:shadow-[0_22px_65px_rgba(124,58,237,0.25)]",
                         ].join(" ")}
-                        aria-hidden
-                      />
-                      <div className="flex items-center justify-between text-sm">
+                      >
+                        <span
+                          className={[
+                            "absolute inset-0 pointer-events-none rounded-[1.6rem]",
+                            active ? "shadow-[0_0_0_1px_rgba(56,189,248,0.5),0_25px_80px_rgba(56,189,248,0.2)]" : "",
+                          ].join(" ")}
+                          aria-hidden
+                        />
+
                         <div className="flex items-center gap-3">
                           <span
                             aria-hidden
-                            className="relative flex h-11 w-11 items-center justify-center rounded-full border-2 border-slate-700/80 bg-slate-900/70"
+                            className="flex h-12 w-12 items-center justify-center rounded-full border border-slate-700/70 bg-slate-900/70"
                           >
-                            <span className="h-3 w-3 rounded-full bg-sky-400 shadow-[0_0_14px_rgba(56,189,248,0.6)]" />
+                            <span className="h-2.5 w-2.5 rounded-full bg-sky-300" />
                           </span>
-                          <span
-                            className={[
-                              "inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]",
-                              service.featured
-                                ? "border-amber-300/70 bg-amber-500/15 text-amber-50 shadow-[0_0_20px_rgba(251,191,36,0.35)]"
-                                : SITE_SERVICE_IDS.has(service.id)
-                                  ? "border-sky-400/60 bg-sky-500/10 text-sky-100"
-                                  : "border-violet-400/60 bg-violet-500/10 text-violet-100",
-                            ].join(" ")}
-                          >
-                            {service.featured ? "Le plus choisi" : service.badge}
-                          </span>
+                          <div className="flex flex-col">
+                            <p className="text-xl font-semibold text-slate-50 whitespace-nowrap">{service.title}</p>
+                          </div>
                         </div>
-                      </div>
-                      <p className="text-2xl font-semibold text-slate-50">{service.title}</p>
-                      <ul className="space-y-1 text-sm text-slate-300">
-                        {service.bullets.map((bullet) => (
-                          <li key={bullet}>• {bullet}</li>
-                        ))}
-                      </ul>
-                      <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Idéal : {service.highlight}</p>
-                    </button>
-                  );
-                })}
+
+                        <ul className="space-y-2 text-sm text-slate-200">
+                          {service.bullets.map((bullet, bIdx) => (
+                            <li
+                              key={`${service.id}-bullet-${bIdx}`}
+                              className="flex items-start gap-2 md:items-center"
+                            >
+                              <span className="mt-1.5 md:mt-1 h-2 w-2 rounded-full bg-sky-400 flex-shrink-0" aria-hidden="true" />
+                              <span className="flex-1 whitespace-nowrap text-xs sm:text-sm">{bullet.text}</span>
+                              {bullet.hint && (
+                                <span
+                                  aria-label={bullet.hint}
+                                  title={bullet.hint}
+                                  className="hidden sm:flex h-4 w-4 items-center justify-center rounded-full border border-slate-700/70 text-[10px] text-slate-200/80 transition hover:text-sky-300 hover:border-sky-500/60"
+                                >
+                                  ?
+                                </span>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+
+                        <p className="mt-2 border-t border-slate-800/70 pt-3 text-[11px] sm:text-sm text-slate-400 whitespace-nowrap">
+                          {service.highlight}
+                        </p>
+
+                        {service.timeline && (
+                          <div className="mt-3 w-full rounded-2xl border border-slate-800/80 bg-slate-900/60 px-4 py-2.5 text-center text-sm font-semibold text-slate-100 whitespace-nowrap">
+                            {service.timeline}
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
               </div>
             </div>
             )}
@@ -388,7 +440,6 @@ export default function BookingPage() {
                   <div>
                     <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Étape 2 · Créneau</p>
                     <h3 className="text-xl font-semibold text-slate-50">Choisissez votre semaine</h3>
-                    <p className="text-sm text-slate-400">Vert = libre · Gris = complet. Navigation semaine par semaine.</p>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <button
@@ -416,10 +467,20 @@ export default function BookingPage() {
                   </div>
                 </div>
 
-                <div className="text-center">
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Semaine en cours</p>
-                  <p className="text-lg font-semibold text-slate-50">
-                    {rangeFormatter.format(weekStart)} – {rangeFormatter.format(addDays(weekStart, 6))}
+                <div className="text-center space-y-1">
+                  <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Semaine</p>
+                  <div className="flex items-center justify-center gap-2">
+                    <p className="text-lg font-semibold text-slate-50">
+                      {rangeFormatter.format(weekStart)} – {rangeFormatter.format(addDays(weekStart, 6))}
+                    </p>
+                    {isCurrentWeek && (
+                      <span className="inline-flex items-center rounded-full border border-emerald-400/70 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-100">
+                        Cette semaine
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-400">
+                    {selectedSlotLabel ? `Jour choisi : ${selectedSlotLabel}` : "Sélectionnez un jour puis un créneau."}
                   </p>
                 </div>
 
@@ -454,6 +515,7 @@ export default function BookingPage() {
                                   type="button"
                                   onClick={() => setSelectedSlot({ dateISO: day.iso, time: slot })}
                                   aria-label={`Sélectionner le créneau ${slot} le ${recapDateFormatter.format(day.date)}`}
+                                  aria-pressed={isSelected}
                                   className={[
                                     "rounded-full border px-3 py-2 text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900",
                                     isSelected
@@ -483,7 +545,7 @@ export default function BookingPage() {
                 <div className="text-center">
                   <p className="text-[11px] uppercase tracking-[0.3em] text-slate-500">Étape 3 · Confirmation</p>
                   <h3 className="text-xl font-semibold text-slate-50">Vérifiez et validez</h3>
-                  <p className="text-sm text-slate-400">Service, créneau, puis vos coordonnées pour l’invitation.</p>
+                  <p className="hidden text-sm text-slate-400 sm:block">Service, créneau, puis vos coordonnées pour l’invitation.</p>
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
@@ -584,9 +646,6 @@ export default function BookingPage() {
             )}
           </div>
 
-          <div className="mt-3 text-sm text-slate-400 text-center">
-            <p>Vos informations restent privées. Invitation visio et .ics envoyées après validation.</p>
-          </div>
         </div>
 
         <div className="mt-6 flex justify-center">

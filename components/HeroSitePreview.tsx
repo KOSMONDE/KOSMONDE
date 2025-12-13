@@ -95,7 +95,7 @@ export function HeroSitePreview() {
             <div className="absolute inset-0 opacity-35 animate-pulse">
               <div className="absolute inset-x-0 top-4 h-4 bg-slate-800/70" />
               <div className="absolute inset-x-0 top-11 h-4 bg-slate-900/70" />
-              <div className="absolute inset-x-0 top-18 h-4 bg-slate-800/60" />
+              <div className="absolute inset-x-0 top-16 h-4 bg-slate-800/60" />
             </div>
 
             <div className="relative flex h-full items-center">
@@ -199,7 +199,7 @@ export function HeroSitePreview() {
                 onClick={(e) => {
                   if (isBuilding) e.preventDefault();
                 }}
-                className={`flex h-11 w-full sm:w-40 items-center justify-center rounded-full text-xs font-semibold tracking-[0.18em] transition-all duration-500 ${
+                className={`flex h-10 w-full sm:w-36 items-center justify-center rounded-full text-xs font-semibold tracking-[0.14em] transition-all duration-500 ${
                   isBuilding
                     ? "cursor-default bg-sky-500/60 text-slate-900/70"
                     : "bg-gradient-to-r from-sky-500 via-blue-500 to-cyan-400 text-slate-950 shadow-[0_12px_30px_rgba(8,47,73,0.9)] hover:brightness-110"

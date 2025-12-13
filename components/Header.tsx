@@ -14,8 +14,8 @@ const navLinks = [
 ];
 
 export function Header() {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   function getBasePath(href: string) {
     const [path] = href.split("#");
@@ -23,7 +23,11 @@ export function Header() {
   }
 
   function isActive(href: string) {
-    return getBasePath(href) === pathname;
+    const current = pathname || "/";
+
+    if (current === "/") return false;
+
+    return getBasePath(href) === current;
   }
 
   function toggleMenu() {
@@ -37,14 +41,62 @@ export function Header() {
   return (
     <>
       {/* HEADER */}
-      <header className="sticky top-0 z-30 border-b border-slate-900/50 bg-slate-950/85 backdrop-blur-xl">
+      <header className="relative sticky top-0 z-30 border-b border-slate-900/50 bg-slate-950/85 backdrop-blur-xl">
+        {/* Neige légère (désactivable facilement) */}
+        <div className="pointer-events-none absolute inset-x-0 -top-10 bottom-[-80vh]">
+          {[
+            { left: "4%", delay: "0s", duration: "9s", size: "9px" },
+            { left: "12%", delay: "1.2s", duration: "8s", size: "10px" },
+            { left: "20%", delay: "0.6s", duration: "9s", size: "11px" },
+            { left: "28%", delay: "1.8s", duration: "7.5s", size: "9px" },
+            { left: "36%", delay: "0.3s", duration: "8.5s", size: "10px" },
+            { left: "44%", delay: "1.5s", duration: "7.8s", size: "9px" },
+            { left: "52%", delay: "0.9s", duration: "9.2s", size: "11px" },
+            { left: "60%", delay: "0.2s", duration: "8.2s", size: "10px" },
+            { left: "68%", delay: "1.1s", duration: "7.6s", size: "9px" },
+            { left: "76%", delay: "0.7s", duration: "8.8s", size: "10px" },
+            { left: "84%", delay: "1.9s", duration: "7.4s", size: "9px" },
+            { left: "90%", delay: "0.4s", duration: "8.4s", size: "11px" },
+            { left: "96%", delay: "1.6s", duration: "9s", size: "9px" },
+            { left: "8%", delay: "0.9s", duration: "8.6s", size: "9px" },
+            { left: "24%", delay: "1.4s", duration: "7.9s", size: "10px" },
+            { left: "40%", delay: "0.5s", duration: "8.1s", size: "9px" },
+            { left: "56%", delay: "1.7s", duration: "8.9s", size: "11px" },
+            { left: "72%", delay: "0.1s", duration: "7.7s", size: "9px" },
+            { left: "88%", delay: "1.3s", duration: "8.3s", size: "10px" },
+            { left: "98%", delay: "0.6s", duration: "7.8s", size: "9px" },
+          ].map((flake, index) => (
+            <span
+              key={index}
+              aria-hidden="true"
+              className="snowflake"
+              style={{
+                left: flake.left,
+                animationDelay: flake.delay,
+                animationDuration: flake.duration,
+                fontSize: flake.size,
+              }}
+            >
+              *
+            </span>
+          ))}
+        </div>
+
         <div className="container-kosmonde flex h-14 items-center justify-between md:h-20">
           {/* LOGO */}
           <Link
             href="/"
             className="text-[11px] font-semibold uppercase tracking-[0.3em] hover:text-sky-300 transition-colors"
           >
-            KOSMONDE
+            <span className="relative inline-flex items-center gap-1">
+              <span>KOSMONDE</span>
+              <span
+                aria-hidden="true"
+                className="inline-block text-sky-300 animate-[sparkle_1.8s_ease-in-out_infinite]"
+              >
+                ✦
+              </span>
+            </span>
           </Link>
 
           {/* NAV DESKTOP */}
@@ -53,11 +105,17 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative group transition ${isActive(link.href) ? "text-white" : "hover:text-white"}`}
+                className={`relative group transition ${
+                  isActive(link.href) ? "text-white font-semibold" : "text-slate-300 hover:text-white"
+                }`}
                 aria-current={isActive(link.href) ? "page" : undefined}
               >
                 {link.label}
-                <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-sky-400 transition-all duration-300 group-hover:w-full" />
+                <span
+                  className={`absolute left-0 -bottom-1 bg-sky-400 transition-all duration-300 ${
+                    isActive(link.href) ? "h-[2px] w-full" : "h-[1px] w-0 group-hover:w-full"
+                  }`}
+                />
               </Link>
             ))}
           </nav>
@@ -163,7 +221,7 @@ export function Header() {
 
             {/* FOOTER MOBILE */}
             <div className="pt-8 text-[11px] text-center text-slate-400">
-              Studio web basé en Suisse · Disponible à distance
+              KOSMONDE · Disponible à distance
             </div>
           </div>
         </nav>
