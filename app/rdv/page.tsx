@@ -245,7 +245,7 @@ export default function BookingPage() {
   }, [activeServices, selectedServiceId, activeTab]);
 
   return (
-    <main className="relative min-h-screen bg-slate-950 text-slate-50">
+    <main className="relative min-h-screen bg-slate-950 text-slate-50 overflow-x-hidden">
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.25),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(14,165,233,0.18),_transparent_50%)]" />
       <div className="pointer-events-none absolute inset-0 -z-10 opacity-35 bg-[linear-gradient(to_right,rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.12)_1px,transparent_1px)] bg-[size:48px_48px]" />
 

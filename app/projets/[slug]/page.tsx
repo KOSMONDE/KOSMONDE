@@ -3,6 +3,7 @@ import Link from "next/link";
 import { projects } from "../data";
 import { Header } from "../../../components/Header";
 import { Footer } from "../../../components/Footer";
+import { CaseSidebar } from "../../../components/CaseSidebar";
 
 type Params =
   | { slug?: string | string[] }
@@ -153,6 +154,14 @@ export default async function ProjectPage({ params }: Props) {
   const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
   const nextProject =
     currentIndex < projects.length - 1 ? projects[currentIndex + 1] : null;
+
+  const sidebarSections = [
+    { id: "objectifs-client", label: "Objectifs du client" },
+    { id: "description", label: "Description & contexte" },
+    ...(hasBeforeAfter ? [{ id: "avant-apres", label: "Avant / Après" }] : []),
+    { id: "fonctionnalites", label: "Fonctionnalités clés" },
+    { id: "cta-kosmonde", label: "Parler de ton projet" },
+  ].map((s, idx) => ({ ...s, number: String(idx + 1).padStart(2, "0") }));
 
   return (
     <main className="relative min-h-screen bg-slate-950 text-slate-50 flex flex-col">
@@ -333,74 +342,7 @@ export default async function ProjectPage({ params }: Props) {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
           {/* SIDEBAR */}
           <aside className="hidden lg:flex flex-col gap-4 sticky top-28 h-fit text-[12px]">
-            <div className="rounded-2xl border border-slate-800/80 bg-slate-950/90 px-4 py-4 shadow-[0_16px_40px_rgba(15,23,42,0.7)]">
-              <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400 mb-2">
-                Parcours de l’étude de cas
-              </p>
-
-              <div className="h-1 w-full rounded-full bg-slate-800 overflow-hidden mb-4">
-                <div className="h-full w-1/3 bg-gradient-to-r from-sky-400/70 via-sky-300/80 to-sky-400/70" />
-              </div>
-
-              <nav className="space-y-1.5">
-                <a
-                  href="#objectifs-client"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Objectifs du client</span>
-                  <span className="text-slate-600 text-[10px]">01</span>
-                </a>
-                <a
-                  href="#defis-solutions"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Défis & solutions</span>
-                  <span className="text-slate-600 text-[10px]">02</span>
-                </a>
-                <a
-                  href="#description"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Description & contexte</span>
-                  <span className="text-slate-600 text-[10px]">03</span>
-                </a>
-                <a
-                  href="#avant-apres"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Avant / Après</span>
-                  <span className="text-slate-600 text-[10px]">04</span>
-                </a>
-                <a
-                  href="#resultats"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Résultats & preuves</span>
-                  <span className="text-slate-600 text-[10px]">05</span>
-                </a>
-                <a
-                  href="#fonctionnalites"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Fonctionnalités clés</span>
-                  <span className="text-slate-600 text-[10px]">06</span>
-                </a>
-                <a
-                  href="#processus"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Processus KOSMONDE</span>
-                  <span className="text-slate-600 text-[10px]">07</span>
-                </a>
-                <a
-                  href="#cta-kosmonde"
-                  className="flex items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-900/80"
-                >
-                  <span>Parler de ton projet</span>
-                  <span className="text-slate-600 text-[10px]">08</span>
-                </a>
-              </nav>
-            </div>
+            <CaseSidebar sections={sidebarSections} />
 
             {/* Bloc bénéfices synthétiques */}
             <div className="rounded-2xl border border-slate-800/80 bg-slate-950/90 px-4 py-4 text-xs text-slate-300 shadow-[0_12px_30px_rgba(15,23,42,0.7)]">

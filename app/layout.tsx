@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { BackToTop } from "@/components/BackToTop";
 
 export const metadata: Metadata = {
   title: "KOSMONDE – Création de sites web clairs et efficaces",
@@ -56,6 +57,7 @@ export default function RootLayout({
             ))}
           </div>
           <div className="relative z-10">{children}</div>
+          <BackToTop />
         </div>
       </body>
     </html>
