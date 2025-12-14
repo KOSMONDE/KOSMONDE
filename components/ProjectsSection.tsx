@@ -66,6 +66,45 @@ const STATUS_DESCRIPTIONS: Record<StatusFilter, string> = {
   refonte: "Refontes ou évolutions.",
 };
 
+const STATUS_ORDER: Record<NormalizedStatus, number> = {
+  online: 0,
+  progress: 1,
+  queue: 2,
+  refonte: 3,
+};
+
+function getYearValue(year: unknown): number {
+  const num = Number(year);
+  return Number.isFinite(num) ? num : 0;
+}
+
+function sortProjects(list: typeof projects) {
+  return [...list].sort((a, b) => {
+    const aFeatured = a.featured ? 1 : 0;
+    const bFeatured = b.featured ? 1 : 0;
+    if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+
+    const aStatus = STATUS_ORDER[normalizeStatus(a.status)];
+    const bStatus = STATUS_ORDER[normalizeStatus(b.status)];
+    if (aStatus !== bStatus) return aStatus - bStatus;
+
+    const aYear = getYearValue(a.year);
+    const bYear = getYearValue(b.year);
+    return bYear - aYear;
+  });
+}
+
+function getProjectExcerpt(project: (typeof projects)[number]) {
+  return (
+    project.heroSummary ??
+    project.shortDesc ??
+    project.metrics?.[0] ??
+    project.results?.[0] ??
+    project.sector ??
+    null
+  );
+}
+
 function getStatusStyles(status: NormalizedStatus) {
   switch (status) {
     case "online":
@@ -156,6 +195,8 @@ function ProjectServices({
 }) {
   if (!services || services.length === 0) return null;
 
+  const displayed = compact && services.length > 2 ? services.slice(0, 2) : services;
+  const remaining = compact && services.length > 2 ? services.length - 2 : 0;
   const hasPack = services.length > 1;
 
   if (hasPack) {
@@ -174,7 +215,7 @@ function ProjectServices({
         </p>
 
         <div className={pillsLayout}>
-          {services.map((service) => (
+          {displayed.map((service) => (
             <span
               key={service}
               className={[
@@ -186,6 +227,16 @@ function ProjectServices({
               {service}
             </span>
           ))}
+          {remaining > 0 && (
+            <span
+              className={[
+                "inline-flex items-center gap-2 rounded-full border border-slate-700/80 bg-slate-900/80 text-slate-200",
+                pillSize,
+              ].join(" ")}
+            >
+              +{remaining}
+            </span>
+          )}
         </div>
       </div>
     );
@@ -194,7 +245,7 @@ function ProjectServices({
   return (
     <div className="inline-flex w-fit items-center gap-1 rounded-full border border-sky-400/80 bg-sky-500/15 px-3.5 py-1.5 text-[11px] text-slate-100">
       <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
-      {services[0]}
+      {displayed[0]}
     </div>
   );
 }
@@ -206,7 +257,9 @@ function ProjectServices({
 export function ProjectsSection() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
-  const filteredProjects = projects.filter((p) => {
+  const sortedProjects = sortProjects(projects);
+
+  const filteredProjects = sortedProjects.filter((p) => {
     const normalized = normalizeStatus(p.status);
     return statusFilter === "all" || normalized === statusFilter;
   });
@@ -331,29 +384,15 @@ export function ProjectsSection() {
                 const normalizedStatus = normalizeStatus(heroProject.status);
                 const services = heroProject.services ?? [];
                 const statusMeta = getStatusStyles(normalizedStatus);
-                const heroMetric =
-                  heroProject.metrics?.[0] ??
-                  heroProject.results?.[0] ??
-                  heroProject.heroSummary ??
-                  heroProject.sector ??
-                  null;
-                const heroProgress =
-                  typeof heroProject.progress === "number"
-                    ? Math.min(100, Math.max(0, heroProject.progress))
-                    : normalizedStatus === "progress"
-                    ? 99
-                    : null;
-                const heroMeta = [
-                ].filter(Boolean) as string[];
-
+                const heroExcerpt = getProjectExcerpt(heroProject);
                 return (
                   <Link
                     href={`/projets/${heroProject.slug}`}
                     aria-label={`Voir le projet "${heroProject.title}" (${statusMeta.label}) en détail`}
                     className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
                   >
-                    <article className="group relative overflow-hidden rounded-[2.4rem] border border-slate-800/70 bg-slate-950/90 shadow-[0_25px_80px_rgba(8,47,73,0.55)] transition-all duration-500 hover:-translate-y-1 hover:scale-[1.005]">
-                      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.18),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.16),transparent_55%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                    <article className="group relative overflow-hidden rounded-[2rem] border border-slate-800/60 bg-slate-950/80 shadow-[0_18px_50px_rgba(8,47,73,0.4)] transition-all duration-500 hover:-translate-y-1">
+                      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.12),transparent_55%),radial-gradient(circle_at_bottom_right,rgba(59,130,246,0.12),transparent_55%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                       <div className="flex flex-col lg:flex-row">
                         <div className="relative w-full overflow-hidden lg:w-[58%] bg-slate-950">
                           <ProjectStatusBadge
@@ -368,11 +407,11 @@ export function ProjectsSection() {
                               quality={95}
                               className="object-cover object-center"
                             />
-                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-transparent" />
                           </div>
                         </div>
 
-                        <div className="flex flex-1 flex-col gap-6 px-7 py-8 lg:px-10 lg:py-10">
+                        <div className="flex flex-1 flex-col gap-4 px-7 py-8 lg:px-10 lg:py-10">
                           <header className="space-y-2">
                             <p className="text-[11px] uppercase tracking-[0.23em] text-slate-500">
                               {heroProject.type}
@@ -381,46 +420,30 @@ export function ProjectsSection() {
                               <h3 className="text-[1.85rem] font-semibold text-slate-50">
                                 {heroProject.title}
                               </h3>
-                              <span className="rounded-full border border-sky-400/60 bg-sky-500/15 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-sky-100">
+                              <span className="rounded-full border border-sky-400/40 bg-sky-500/10 px-3 py-0.5 text-[10px] uppercase tracking-[0.2em] text-sky-100">
                                 Projet phare
                               </span>
                             </div>
-                            {heroMetric && (
-                              <p className="text-sm text-slate-300">{heroMetric}</p>
+                            {heroExcerpt && (
+                              <p
+                                className="text-sm text-slate-300 min-h-[48px]"
+                                style={{
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 3,
+                                  WebkitBoxOrient: "vertical",
+                                  overflow: "hidden",
+                                }}
+                              >
+                                {heroExcerpt}
+                              </p>
                             )}
                           </header>
 
-                          {heroProgress !== null && (
-                            <div className="space-y-2 rounded-2xl border border-slate-800/70 bg-slate-950/70 p-3 sm:p-4">
-                              <div className="flex items-center justify-between text-xs text-slate-400">
-                                <span>Progression</span>
-                                <span className="font-semibold text-sky-200">{heroProgress}%</span>
-                              </div>
-                              <div className="h-1.5 sm:h-2 w-full rounded-full bg-slate-900/80 border border-slate-800/70">
-                                <div
-                                  className="h-full rounded-full bg-gradient-to-r from-emerald-300 via-sky-300 to-emerald-300 shadow-[0_0_12px_rgba(56,189,248,0.35)] transition-all duration-500"
-                                  style={{ width: `${heroProgress}%` }}
-                                />
-                              </div>
-                            </div>
-                          )}
-
-                          <div className="rounded-2xl border border-slate-800/70 bg-slate-950/70 p-4">
-                            <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
-                              Services livrés
-                            </p>
-                            <div className="mt-3">
-                              <ProjectServices services={services} />
-                            </div>
-                          </div>
-
-                          <div className="mt-auto flex w-full flex-col gap-3 pb-4">
-                            <div className="flex w-full justify-center sm:justify-start lg:pl-1">
-                              <span className="inline-flex items-center gap-2 rounded-full border border-sky-400/50 bg-sky-500/10 px-6 py-2.5 text-[12px] font-semibold text-slate-100 transition group-hover:border-sky-400 group-hover:text-white">
-                                Voir le projet
-                                <span className="text-base">↗</span>
-                              </span>
-                            </div>
+                          <div className="mt-auto flex w-full flex-col gap-2 pb-2">
+                            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-400/50 bg-sky-500/10 px-5 py-2 text-[12px] font-semibold text-slate-100 transition group-hover:border-sky-400 group-hover:text-white">
+                              Voir le projet
+                              <span className="text-base">↗</span>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -433,19 +456,10 @@ export function ProjectsSection() {
               <div className="grid gap-6 md:gap-8 md:grid-cols-3">
                 {timelineProjects.map((proj) => {
                   const normalizedStatus = normalizeStatus(proj.status);
-                  const services = proj.services ?? [];
+                const services = proj.services ?? [];
                   const statusMeta = getStatusStyles(normalizedStatus);
-                  const highlight =
-                    proj.metrics?.[0] ??
-                    proj.results?.[0] ??
-                    proj.sector ??
-                    null;
-                  const progressValue =
-                    typeof proj.progress === "number"
-                      ? Math.min(100, Math.max(0, proj.progress))
-                      : normalizedStatus === "progress"
-                      ? 0
-                      : null;
+                  const highlight = getProjectExcerpt(proj);
+                  const progressValue = null;
 
                   return (
                     <Link
@@ -474,7 +488,7 @@ export function ProjectsSection() {
                             className="absolute right-4 top-4"
                           />
                         </div>
-                        <div className="flex flex-1 flex-col gap-4 px-6 py-5 sm:py-6">
+                        <div className="flex flex-1 flex-col gap-3 px-6 py-5 sm:py-6">
                           <header className="space-y-1">
                             <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">
                               {proj.type}
@@ -483,28 +497,15 @@ export function ProjectsSection() {
                               {proj.title}
                             </h3>
                             {highlight && (
-                              <p className="text-sm text-slate-300">{highlight}</p>
+                              <p className="text-sm text-slate-300 min-h-[48px]">
+                                {highlight}
+                              </p>
                             )}
                           </header>
-                          {progressValue !== null && (
-                            <div className="space-y-2">
-                              <div className="flex items-center justify-between text-xs text-slate-400">
-                                <span>Progression</span>
-                                <span className="font-semibold text-sky-200">
-                                  {progressValue}%
-                                </span>
-                              </div>
-                              <div className="h-2 w-full rounded-full bg-slate-900/80 border border-slate-800/70">
-                                <div
-                                  className="h-full rounded-full bg-gradient-to-r from-amber-300 via-sky-300 to-emerald-300 shadow-[0_0_12px_rgba(56,189,248,0.35)] transition-all duration-500"
-                                  style={{ width: `${progressValue}%` }}
-                                />
-                              </div>
-                            </div>
-                          )}
                           <ProjectServices services={services} compact />
-                          <div className="mt-auto flex items-center justify-end text-xs text-sky-200">
-                            <span className="inline-flex items-center gap-2">
+                          <div className="mt-auto flex items-center justify-between text-xs text-slate-400">
+                            <span>{statusMeta.label}</span>
+                            <span className="inline-flex items-center gap-2 text-sky-200">
                               Voir le projet
                               <span className="text-base">↗</span>
                             </span>

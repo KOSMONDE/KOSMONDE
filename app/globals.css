@@ -18,6 +18,11 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Masque tout fil d’Ariane hérité si encore présent dans un build */
+nav[aria-label="Fil d’Ariane"] {
+  display: none !important;
+}
+
 /* Conteneur max-width réutilisable (un peu plus large) */
 .container-kosmonde {
   @apply mx-auto max-w-6xl px-4;

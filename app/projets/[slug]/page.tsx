@@ -4,11 +4,16 @@ import { projects } from "../data";
 import { Header } from "../../../components/Header";
 import { Footer } from "../../../components/Footer";
 
-type ParamsPromise = Promise<{ slug: string }>;
+type Params =
+  | { slug?: string | string[] }
+  | Promise<{ slug?: string | string[] }>;
 
 type Props = {
-  params: ParamsPromise;
+  params: Params;
 };
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // Normalisation du statut
 function getStatusConfig(rawStatus: unknown) {
@@ -22,6 +27,7 @@ function getStatusConfig(rawStatus: unknown) {
     case "Liste d’attente":
       return { label: "Liste d’attente", dotClass: "bg-violet-400" };
     case "Refont":
+    case "Refonte":
       return { label: "Refonte en cours", dotClass: "bg-sky-400" };
     default:
       return { label: value || "Statut à définir", dotClass: "bg-slate-500" };
@@ -29,17 +35,37 @@ function getStatusConfig(rawStatus: unknown) {
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const { slug } = await params;
-  const cleanSlug = slug.trim();
+  const resolved = await params;
+  const rawSlug = Array.isArray(resolved?.slug)
+    ? resolved.slug[0]
+    : resolved?.slug;
+  const cleanSlug = decodeURIComponent(
+    (rawSlug ?? "").normalize().replace(/\u200b/g, "").trim()
+  );
+  const cleanSlugLower = cleanSlug.toLowerCase();
 
-  const project = projects.find((p) => p.slug === cleanSlug);
+  const project = cleanSlug
+    ? projects.find(
+        (p) => (p.slug ?? "").toLowerCase() === cleanSlugLower
+      )
+    : undefined;
 
   if (!project) {
+    const available = projects.map((p) => p.slug).join(", ");
     return (
       <main className="min-h-screen bg-slate-950 text-slate-50 flex flex-col">
         <Header />
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center px-4">
           <p className="text-sm text-slate-300">Projet introuvable.</p>
+          <p className="text-[11px] text-slate-500">
+            Slug recherché : <code className="text-slate-200">{cleanSlug || "(vide)"}</code>
+          </p>
+          <p className="text-[11px] text-slate-500">
+            Slugs disponibles : <code className="text-slate-200">{available}</code>
+          </p>
+          <p className="text-[11px] text-slate-500">
+            Vérifie l’URL : /projets/&lt;slug&gt;
+          </p>
         </div>
         <Footer />
       </main>
@@ -83,6 +109,8 @@ export default async function ProjectPage({ params }: Props) {
   ].filter((i) => i.value);
 
   const hasQuickInfo = quickInfoItems.length > 0;
+  const quickInfoCompact = quickInfoItems.slice(0, 3);
+  const quickInfoRest = quickInfoItems.slice(3);
 
   // Données avancées
   const clientObjectives = clientObjectivesRaw ?? [];
@@ -90,26 +118,36 @@ export default async function ProjectPage({ params }: Props) {
 
   const challenges = challengesRaw ?? [];
   const solutions = solutionsRaw ?? [];
-  const hasChallengesSolutions =
-    challenges.length > 0 || solutions.length > 0;
 
   const hasBeforeAfter = Boolean(beforeState && afterState);
 
   const results = resultsRaw ?? [];
   const hasResults = results.length > 0;
+  const resultsCompact = results.slice(0, 3);
+  const resultsMore = results.slice(3);
 
   const metrics = metricsRaw ?? [];
   const hasMetrics = metrics.length > 0;
+  const metricsCompact = metrics.slice(0, 3);
+  const metricsMore = metrics.slice(3);
 
   const hasTestimonial = Boolean(testimonial);
 
   const kosmondeRoles = kosmondeRolesRaw ?? [];
   const hasRoles = kosmondeRoles.length > 0;
+  const rolesCompact = kosmondeRoles.slice(0, 3);
+  const rolesMore = kosmondeRoles.slice(3);
 
   const processSteps = processStepsRaw ?? [];
   const hasProcess = processSteps.length > 0;
+  const processCompact = processSteps.slice(0, 3);
+  const processMore = processSteps.slice(3);
 
   const techBadges = techBadgesRaw ?? [];
+  const proofs =
+    techBadges.length > 0
+      ? techBadges.slice(0, 3)
+      : (metrics.length ? metrics : results).slice(0, 3);
 
   const currentIndex = projects.findIndex((p) => p.slug === cleanSlug);
   const prevProject = currentIndex > 0 ? projects[currentIndex - 1] : null;
@@ -129,25 +167,9 @@ export default async function ProjectPage({ params }: Props) {
       ======================================================================= */}
       <section className="border-b border-slate-900/70 pt-16 pb-14">
         <div className="container-kosmonde max-w-6xl mx-auto">
-          {/* Fil d’Ariane */}
-          <nav
-            aria-label="Fil d’Ariane"
-            className="inline-flex items-center gap-2 rounded-full border border-slate-800/70 bg-slate-900/60 px-4 py-1.5 text-[11px] text-slate-400 shadow-[0_12px_40px_rgba(15,23,42,0.6)] mb-6"
-          >
-            <Link href="/" className="hover:text-slate-100">
-              Accueil
-            </Link>
-            <span>·</span>
-            <Link href="/#projets" className="hover:text-slate-100">
-              Projets
-            </Link>
-            <span>·</span>
-            <span className="text-slate-200">{project.title}</span>
-          </nav>
-
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] items-start">
             {/* Colonne gauche : titre + pitch */}
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div className="inline-flex items-center gap-3 rounded-full border border-slate-800/80 bg-slate-900/70 px-3 py-1.5 text-[11px] uppercase tracking-[0.23em] text-slate-400/90">
                 <span>{project.type}</span>
                 <span className="h-0.5 w-4 rounded-full bg-slate-600/70" />
@@ -168,50 +190,63 @@ export default async function ProjectPage({ params }: Props) {
                 </p>
               </div>
 
-              {/* Mini bénéfice business */}
-              <div className="inline-flex items-center gap-3 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 px-4 py-2 text-[11px] text-emerald-100 shadow-[0_12px_40px_rgba(16,185,129,0.25)]">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-500/10 text-[12px]">
-                  +
-                </span>
-                <span>
-                  Un projet pensé pour clarifier ton offre, rassurer tes
-                  visiteurs et faciliter la prise de contact.
-                </span>
+              {proofs.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {proofs.map((proof) => (
+                    <span
+                      key={proof}
+                      className="inline-flex items-center gap-2 rounded-full border border-slate-700/80 bg-slate-900/70 px-3 py-1 text-[11px] text-slate-100"
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+                      {proof}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                {project.link && (
+                  <Link
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="inline-flex items-center gap-2 rounded-full border border-sky-400/70 bg-sky-500/15 px-5 py-2 text-[12px] font-semibold text-sky-100 shadow-[0_10px_30px_rgba(56,189,248,0.3)] transition hover:translate-y-0.5 hover:border-sky-300"
+                  >
+                    Voir le site ↗
+                  </Link>
+                )}
+                <Link
+                  href="/rdv"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-700/80 bg-slate-900/70 px-4 py-2 text-[11px] text-slate-200 hover:border-slate-500 transition"
+                >
+                  Discuter de mon projet
+                  <span aria-hidden="true" className="text-base">
+                    →
+                  </span>
+                </Link>
               </div>
             </div>
 
-            {/* Colonne droite : infos rapides */}
-            <div className="rounded-2xl border border-slate-800/70 bg-slate-950/80 px-5 py-4 shadow-[0_20px_60px_rgba(15,23,42,0.85)]">
-              <div className="flex items-center justify-between mb-3">
+            {/* Colonne droite : résumé compact */}
+            <div className="rounded-2xl border border-slate-800/70 bg-slate-950/80 px-5 py-4 shadow-[0_20px_60px_rgba(15,23,42,0.85)] space-y-4">
+              <div className="flex items-center justify-between">
                 <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-slate-400">
-                  Carte du projet
+                  En bref
                 </p>
-                {techBadges.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 justify-end">
-                    {techBadges.slice(0, 3).map((badge) => (
-                      <span
-                        key={badge}
-                        className="rounded-full border border-slate-700/80 bg-slate-900/90 px-2.5 py-0.5 text-[10px] text-slate-300"
-                      >
-                        {badge}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                <span className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                  3 infos clés
+                </span>
               </div>
 
               {hasQuickInfo && (
-                <dl className="space-y-2 text-[12px]">
-                  {quickInfoItems.map((item) => (
+                <dl className="space-y-1.5 text-[12px]">
+                  {quickInfoCompact.map((item) => (
                     <div
                       key={item.label}
-                      className="flex items-baseline justify-between gap-4"
+                      className="flex items-baseline justify-between gap-3"
                     >
-                      <dt className="flex items-center gap-2 text-slate-400">
-                        <span className="h-1.5 w-1.5 rounded-full bg-slate-500/80" />
-                        {item.label}
-                      </dt>
-                      <dd className="text-slate-100 font-medium text-right">
+                      <dt className="text-slate-500">{item.label}</dt>
+                      <dd className="text-slate-100 font-semibold text-right">
                         {item.value}
                       </dd>
                     </div>
@@ -219,20 +254,26 @@ export default async function ProjectPage({ params }: Props) {
                 </dl>
               )}
 
-              {project.link && (
-                <div className="mt-4 pt-3 border-t border-slate-800/70 flex items-center justify-between gap-3">
-                  <p className="text-[11px] text-slate-400">
-                    Voir le site en ligne
-                  </p>
-                  <Link
-                    href={project.link}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-sky-400/90 px-4 py-1.5 text-[11px] font-semibold text-slate-950 hover:bg-sky-300 transition-transform hover:-translate-y-0.5"
-                  >
-                    Ouvrir le site ↗
-                  </Link>
-                </div>
+              {quickInfoRest.length > 0 && (
+                <details className="rounded-xl border border-slate-800/80 bg-slate-900/70 px-3 py-2 text-[11px] text-slate-300">
+                  <summary className="flex cursor-pointer items-center justify-between font-medium text-slate-200">
+                    Voir les détails
+                    <span aria-hidden="true">+</span>
+                  </summary>
+                  <dl className="mt-2 space-y-1.5 text-[12px]">
+                    {quickInfoRest.map((item) => (
+                      <div
+                        key={item.label}
+                        className="flex items-baseline justify-between gap-3"
+                      >
+                        <dt className="text-slate-500">{item.label}</dt>
+                        <dd className="text-slate-100 text-right">
+                          {item.value}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </details>
               )}
             </div>
           </div>
@@ -423,54 +464,6 @@ export default async function ProjectPage({ params }: Props) {
               )}
             </section>
 
-            {/* DÉFIS & SOLUTIONS */}
-            <section
-              id="defis-solutions"
-              className="rounded-2xl border border-slate-800 bg-slate-950/80 p-6 shadow-[0_16px_40px_rgba(15,23,42,0.7)]"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
-                <h2 className="text-sm font-semibold tracking-[0.18em] uppercase text-slate-400">
-                  Défis du projet & réponses apportées
-                </h2>
-              </div>
-              {hasChallengesSolutions ? (
-                <div className="grid gap-6 lg:grid-cols-2 text-sm">
-                  <div className="rounded-xl border border-rose-500/25 bg-rose-500/5 p-4">
-                    <h3 className="text-xs font-semibold text-rose-100 uppercase tracking-[0.16em] mb-3">
-                      Défis
-                    </h3>
-                    <ul className="space-y-2 text-slate-100/90">
-                      {challenges.map((c) => (
-                        <li key={c} className="flex gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-rose-400" />
-                          <span>{c}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-4">
-                    <h3 className="text-xs font-semibold text-emerald-100 uppercase tracking-[0.16em] mb-3">
-                      Solutions
-                    </h3>
-                    <ul className="space-y-2 text-slate-100/90">
-                      {solutions.map((s) => (
-                        <li key={s} className="flex gap-2">
-                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                          <span>{s}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ) : (
-                <p className="text-sm text-slate-300">
-                  Le projet a consisté à clarifier la structure, aligner le
-                  design avec l’image de la marque et rendre le parcours plus
-                  fluide pour les visiteurs.
-                </p>
-              )}
-            </section>
-
             {/* DESCRIPTION & CONTEXTE + APPROCHE + POINTS CLÉS */}
             <section
               id="description"
@@ -497,13 +490,18 @@ export default async function ProjectPage({ params }: Props) {
                   )}
 
                   {/* Points clés du contexte (remplit le vide) */}
-                  {(hasClientObjectives || hasResults) && (
+                  {(hasClientObjectives || hasResults || hasMetrics) && (
                     <div className="space-y-2 pt-2 border-t border-slate-800/80">
                       <p className="text-[11px] font-semibold tracking-[0.24em] uppercase text-slate-400">
                         Points clés à retenir
                       </p>
                       <ul className="space-y-1.5 text-[13px] text-slate-200">
-                        {(hasClientObjectives ? clientObjectives : results)
+                        {(hasClientObjectives
+                          ? clientObjectives
+                          : hasResults
+                          ? results
+                          : metrics
+                        )
                           .slice(0, 3)
                           .map((item) => (
                             <li key={item} className="flex gap-2">
@@ -608,13 +606,28 @@ export default async function ProjectPage({ params }: Props) {
                         Résultats qualitatifs
                       </h3>
                       <ul className="mt-3 space-y-2 text-xs text-slate-300">
-                        {results.map((r) => (
+                        {resultsCompact.map((r) => (
                           <li key={r} className="flex gap-2">
                             <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400/90" />
                             <span>{r}</span>
                           </li>
                         ))}
                       </ul>
+                      {resultsMore.length > 0 && (
+                        <details className="mt-3 text-xs text-slate-400">
+                          <summary className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-slate-800/80 bg-slate-900/60 px-3 py-1.5">
+                            Afficher {resultsMore.length} de plus
+                          </summary>
+                          <ul className="mt-2 space-y-2 text-slate-300">
+                            {resultsMore.map((r) => (
+                              <li key={r} className="flex gap-2">
+                                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
+                                <span>{r}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </details>
+                      )}
                     </div>
                   )}
 
@@ -626,13 +639,28 @@ export default async function ProjectPage({ params }: Props) {
                           Résultats chiffrés
                         </h3>
                         <ul className="mt-3 space-y-2 text-xs text-emerald-50">
-                          {metrics.map((m) => (
+                          {metricsCompact.map((m) => (
                             <li key={m} className="flex gap-2">
                               <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400/90" />
                               <span>{m}</span>
                             </li>
                           ))}
                         </ul>
+                        {metricsMore.length > 0 && (
+                          <details className="mt-3 text-[11px] text-emerald-100">
+                            <summary className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5">
+                              Afficher {metricsMore.length} de plus
+                            </summary>
+                            <ul className="mt-2 space-y-2 text-emerald-50">
+                              {metricsMore.map((m) => (
+                                <li key={m} className="flex gap-2">
+                                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-emerald-400/80" />
+                                  <span>{m}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </details>
+                        )}
                       </div>
                     </div>
                   )}
@@ -661,13 +689,28 @@ export default async function ProjectPage({ params }: Props) {
                         Rôle de KOSMONDE
                       </h3>
                       <ul className="mt-3 space-y-2 text-xs text-slate-300">
-                        {kosmondeRoles.map((r) => (
+                        {rolesCompact.map((r) => (
                           <li key={r} className="flex gap-2">
                             <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-sky-400/90" />
                             <span>{r}</span>
                           </li>
                         ))}
                       </ul>
+                      {rolesMore.length > 0 && (
+                        <details className="mt-3 text-[11px] text-slate-300">
+                          <summary className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-slate-800/80 bg-slate-900/70 px-3 py-1.5">
+                            Afficher {rolesMore.length} de plus
+                          </summary>
+                          <ul className="mt-2 space-y-2">
+                            {rolesMore.map((r) => (
+                              <li key={r} className="flex gap-2">
+                                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-slate-400" />
+                                <span>{r}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </details>
+                      )}
                     </div>
                   )}
                 </div>
@@ -707,19 +750,41 @@ export default async function ProjectPage({ params }: Props) {
 
               <div className="mt-5">
                 {hasProcess ? (
-                  <div className="grid gap-4 md:grid-cols-3 text-[11px] text-slate-300">
-                    {processSteps.map((step, index) => (
-                      <div
-                        key={step}
-                        className="relative rounded-xl border border-slate-800/80 bg-slate-950/95 px-3.5 py-3 flex flex-col gap-1"
-                      >
-                        <span className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
-                          Étape {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <p className="text-slate-100">{step}</p>
-                      </div>
-                    ))}
-                  </div>
+                  <>
+                    <div className="grid gap-4 md:grid-cols-3 text-[11px] text-slate-300">
+                      {processCompact.map((step, index) => (
+                        <div
+                          key={step}
+                          className="relative rounded-xl border border-slate-800/80 bg-slate-950/95 px-3.5 py-3 flex flex-col gap-1"
+                        >
+                          <span className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                            Étape {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <p className="text-slate-100">{step}</p>
+                        </div>
+                      ))}
+                    </div>
+                    {processMore.length > 0 && (
+                      <details className="mt-3 text-[11px] text-slate-300">
+                        <summary className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-slate-800/80 bg-slate-900/70 px-3 py-1.5">
+                          Afficher {processMore.length} étape(s) de plus
+                        </summary>
+                        <div className="mt-3 grid gap-3 md:grid-cols-3">
+                          {processMore.map((step, idx) => (
+                            <div
+                              key={step}
+                              className="relative rounded-xl border border-slate-800/80 bg-slate-950/95 px-3.5 py-3 flex flex-col gap-1"
+                            >
+                              <span className="text-[10px] uppercase tracking-[0.18em] text-slate-500">
+                                Étape {String(processCompact.length + idx + 1).padStart(2, "0")}
+                              </span>
+                              <p className="text-slate-100">{step}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </details>
+                    )}
+                  </>
                 ) : (
                   <p className="text-sm text-slate-300">
                     Le projet suit un processus clair : échanges, structure,

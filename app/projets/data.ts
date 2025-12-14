@@ -3,7 +3,7 @@
 // ============================================================================
 
 // Statut global du projet (affiché en haut : En ligne, En cours, etc.)
-export type ProjectStatus = "En ligne" | "En cours" | "Liste d’attente" | "Refont";
+export type ProjectStatus = "En ligne" | "En cours" | "Liste d’attente" | "Refonte";
 // En ligne        = projet en ligne (terminé, visible)
 // En cours        = projet en cours de réalisation
 // Liste d’attente = projet accepté, pas encore démarré
@@ -26,6 +26,7 @@ export type Project = {
   title: string;
   type: string;
   status: ProjectStatus;
+  featured?: boolean;
   shortDesc: string;
   desc: string;
   context: string;
@@ -80,6 +81,7 @@ export const projects: Project[] = [
     title: "SEKOBA COIFFURE",
     type: "Site vitrine",
     status: "En ligne",
+    featured: true,
     shortDesc:
       "Site vitrine complet pour un salon de coiffure avec prise de rendez-vous en ligne.",
     desc:
@@ -314,7 +316,7 @@ export const projects: Project[] = [
     slug: "gbm-avocats",
     title: "GBM Avocats",
     type: "Site vitrine",
-    status: "Refont",
+    status: "Refonte",
     shortDesc:
       "Site vitrine structuré pour un cabinet d’avocats, actuellement en refonte moderne.",
     desc:
