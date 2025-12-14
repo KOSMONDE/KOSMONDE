@@ -161,7 +161,7 @@ export function ContactSection() {
                   </dd>
                 </div>
                 <div className="text-center">
-                  <dt className="text-2xl font-semibold text-slate-50 motion-safe:animate-[pulse_3s_ease-in-out_infinite]">95%</dt>
+                  <dt className="text-2xl font-semibold text-slate-50 motion-safe:animate-[pulse_3s_ease-in-out_infinite]">99%</dt>
                   <dd className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
                     Satisf. clients
                   </dd>
@@ -200,7 +200,7 @@ export function ContactSection() {
 
           {status === "success" && (
             <p className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-300">
-              Merci, votre message a bien été envoyé. Je vous réponds dès que possible.
+              Merci pour votre message. Notre équipe reviendra vers vous rapidement.
             </p>
           )}
 
@@ -257,7 +257,7 @@ export function ContactSection() {
 
           <div className="space-y-2">
             <label className="text-[11px] font-medium text-slate-100">
-              Téléphone (optionnel)
+              Téléphone
             </label>
             <input
               name="phone"

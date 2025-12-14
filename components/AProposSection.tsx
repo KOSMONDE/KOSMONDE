@@ -5,28 +5,28 @@ export function AProposSection() {
     {
       label: "Ce qui compte pour nous",
       text: [
-        "Satisfaire la demande cliente",
+        "Satisfaire la demande",
         "Design moderne et adapté",
-        "Site rapide, facile à utiliser",
+        "Site rapide et simple",
         "Message clair orienté action",
       ],
     },
     {
-      label: "Ce que je vous apporte",
+      label: "Ce que nous apportons",
       text: [
-        "Présence en ligne claire et crédible",
+        "Présence en ligne claire",
         "Design cohérent et moderne",
-        "Parcours qui convertit",
-        "Site fiable et rapide",
+        "Parcours pensés pour convertir",
+        "Sites fiables, rapides et prêts",
       ],
     },
     {
       label: "Comment on avance",
       text: [
-        "On écoute vos objectifs",
-        "On propose un plan simple",
-        "On ajuste avec vos retours",
-        "On finalise et on met en ligne",
+        "Écoute de vos objectifs",
+        "Plan simple proposé",
+        "Ajustements selon vos retours",
+        "Finalisation et mise en ligne",
       ],
     },
   ];
@@ -117,14 +117,14 @@ export function AProposSection() {
                   <span className="mt-2 block h-px w-full bg-slate-800/50" />
                   <ul className="mt-2 space-y-2 text-xs leading-relaxed text-slate-400">
                     {Array.isArray(v.text)
-                      ? v.text.map((item) => (
-                          <li key={item} className="flex items-start gap-2">
+                    ? v.text.map((item) => (
+                        <li key={item} className="flex items-start gap-2 whitespace-nowrap">
                             <span className="self-center h-1.5 w-1.5 rounded-full bg-sky-400" />
                             <span>{item}</span>
                           </li>
                         ))
                       : (
-                        <li className="flex items-start gap-2">
+                        <li className="flex items-start gap-2 whitespace-nowrap">
                           <span className="self-center h-1.5 w-1.5 rounded-full bg-sky-400" />
                           <span>{v.text}</span>
                         </li>

@@ -162,11 +162,20 @@ export const SERVICE_CARD_DATA: ServiceCardData[] = [
       id: "logo",
         title: "Création de logo",
         badge: "Identité visuelle",
-        bullets: [
-          "Logo simple et lisible",
-          "Formats web + impression",
-          "Couleurs/typo alignées",
-      ],
+    bullets: [
+      {
+        text: "Logo simple et lisible",
+        hint: "Formes et typographies pensées pour tous supports."
+      },
+      {
+        text: "Formats web + impression",
+        hint: "Fichiers vectoriels et PNG optimisés."
+      },
+      {
+        text: "Couleurs/typo alignées",
+        hint: "Palette et caractère cohérents avec votre identité."
+      },
+    ],
     highlight:
       "Base visuelle cohérente en ligne.",
     featured: false,
@@ -178,9 +187,18 @@ export const SERVICE_CARD_DATA: ServiceCardData[] = [
       title: "Cartes de visite",
       badge: "Supports imprimés",
     bullets: [
-      "Design aligné à votre site",
-      "Recto/verso, formats standards",
-      "Fichiers prêts à imprimer (PDF)",
+      {
+        text: "Design aligné à votre site",
+        hint: "Couleurs, aires et typographies reprises pour cohérence."
+      },
+      {
+        text: "Recto/verso, formats standards",
+        hint: "Prêt à l’impression (85x55, 300 dpi, marges incluses)."
+      },
+      {
+        text: "Fichiers prêts à imprimer (PDF)",
+        hint: "Versions CMJN + PDF/X-1a livrées."
+      },
     ],
     highlight: "Identité cohérente pour vos cartes.",
     featured: true,
@@ -194,9 +212,18 @@ export const SERVICE_CARD_DATA: ServiceCardData[] = [
       title: "Maintenance",
     badge: "Suivi continu",
     bullets: [
-      "Corrections régulières",
-      "Mises à jour techniques",
-      "Optimisations sécu/perf",
+      {
+        text: "Corrections régulières",
+        hint: "Élimination de bogues et ajustements contenus."
+      },
+      {
+        text: "Mises à jour techniques",
+        hint: "Frameworks, plugins et CMS gardés à jour."
+      },
+      {
+        text: "Optimisations sécu/perf",
+        hint: "Surveillance perfs, sauvegardes et sécurité renforcée."
+      },
     ],
     highlight:
       "Site stable, à jour et agréable à utiliser.",
@@ -218,7 +245,7 @@ export function ServicesSection() {
   return (
     <section
       id="services"
-      className="scroll-mt-16 md:scroll-mt-20 relative overflow-hidden border-b border-slate-900/40 bg-slate-950"
+      className="scroll-mt-16 md:scroll-mt-20 relative border-b border-slate-900/40 bg-slate-950"
     >
       {/* Glows */}
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.18),transparent_65%),radial-gradient(circle_at_bottom,rgba(79,70,229,0.18),transparent_65%)]" />
@@ -297,7 +324,7 @@ function ServiceGrid({ title, cards }: { title: string; cards: ServiceCardData[]
   return (
     <div className="space-y-6">
       <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-500">{title}</p>
-      <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3 justify-items-center">
+      <div className="mx-auto grid max-w-5xl gap-5 md:grid-cols-3 justify-items-center overflow-visible service-grid">
         {cards.map((card) => (
           <ServiceCard key={card.id} card={card} />
         ))}
@@ -310,11 +337,11 @@ function ServiceCard({ card }: { card: ServiceCardData }) {
   return (
     <div
       className={[
-        "relative rounded-2xl border bg-slate-950/85 px-5 py-6 transition-transform duration-300 shadow-[0_14px_40px_rgba(15,23,42,0.85)] hover:-translate-y-1 hover:shadow-[0_20px_55px_rgba(8,47,73,0.9)]",
+        "group relative z-0 w-full max-w-[340px] overflow-visible rounded-2xl border bg-slate-950/85 px-6 py-7 transition duration-300 shadow-[0_16px_45px_rgba(15,23,42,0.9)] hover:z-20 hover:-translate-y-1 hover:shadow-[0_22px_60px_rgba(8,47,73,0.95)] focus-within:z-20 focus-within:-translate-y-1 focus-within:shadow-[0_22px_60px_rgba(8,47,73,0.95)]",
         card.featured ? "border-sky-500/60" : "border-slate-800/70",
       ].join(" ")}
     >
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_70%)] opacity-0 transition-opacity duration-500 hover:opacity-100" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.22),transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       {card.featured && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
           <span className="inline-flex items-center justify-center rounded-full border border-sky-400/60 bg-sky-500/10 px-3 py-0.5 text-[9px] font-medium uppercase tracking-[0.16em] text-sky-200 whitespace-nowrap shadow-[0_0_20px_rgba(56,189,248,0.35)] backdrop-blur-md">
@@ -345,26 +372,51 @@ function ServiceCard({ card }: { card: ServiceCardData }) {
       </div>
 
       <ul className="mt-4 space-y-2 text-xs text-slate-300">
-        {card.bullets.map((b) => {
+        {card.bullets.map((b, idx) => {
           const text = typeof b === "string" ? b : b.text;
           const hint = typeof b === "string" ? undefined : b.hint;
 
           return (
             <li
-              key={text}
-              className="flex items-center gap-2 text-left md:items-start md:gap-2 md:text-left"
+              key={`${card.id}-${idx}`}
+              className="flex items-center gap-2 text-left md:items-start md:gap-2 md:text-left group overflow-visible"
             >
               <span className="self-center md:self-center h-1.5 w-1.5 rounded-full bg-sky-400" />
               <span className="flex-1 whitespace-nowrap sm:whitespace-normal">{text}</span>
-              {hint && (
-                <span
-                  aria-label={hint}
-                  title={hint}
-                  className="hidden sm:flex h-4 w-4 items-center justify-center rounded-full border border-slate-700/70 text-[10px] text-slate-200/80 hover:text-sky-300 hover:border-sky-500/60 transition"
-                >
-                  ?
-                </span>
-              )}
+                  {hint && (
+                    <span className="relative hidden sm:inline-flex group/tt self-center">
+                      <span
+                        aria-label={hint}
+                        className="flex h-4 w-4 items-center justify-center rounded-full border border-slate-700/70 text-[10px] text-slate-200/80 hover:text-sky-300 hover:border-sky-500/60 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
+                        tabIndex={0}
+                      >
+                        ?
+                      </span>
+
+                      <span
+                        role="tooltip"
+                        className="
+                          pointer-events-none absolute top-1/2 z-[999] w-[220px] -translate-y-1/2 rounded
+                          border border-slate-800 bg-slate-950/95 px-3 py-2 text-[10px] text-slate-200
+                          opacity-0 scale-[0.98] transition
+                          group-hover/tt:opacity-100 group-hover/tt:scale-100
+                          group-focus-within/tt:opacity-100 group-focus-within/tt:scale-100
+
+                          left-full ml-2 translate-x-1
+                          group-hover/tt:translate-x-0
+
+                          md:[.service-grid>div:nth-child(3n)_&]:right-full
+                          md:[.service-grid>div:nth-child(3n)_&]:left-auto
+                          md:[.service-grid>div:nth-child(3n)_&]:mr-2
+                          md:[.service-grid>div:nth-child(3n)_&]:ml-0
+                          md:[.service-grid>div:nth-child(3n)_&]:-translate-x-1
+                          md:[.service-grid>div:nth-child(3n)_&]:group-hover/tt:translate-x-0
+                        "
+                      >
+                        {hint}
+                      </span>
+                    </span>
+                  )}
             </li>
           );
         })}

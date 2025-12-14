@@ -75,27 +75,15 @@ body {
 }
 
 /* Effet neige léger (header) */
-@keyframes snowSlide {
+@keyframes snowFall {
   0% {
-    transform: translateY(-20vh) translateX(0);
+    transform: translate3d(0, -20vh, 0) rotate(0deg);
   }
   50% {
-    transform: translateY(50vh) translateX(10px);
+    transform: translate3d(10px, 50vh, 0) rotate(6deg);
   }
   100% {
-    transform: translateY(120vh) translateX(-8px);
-  }
-}
-
-@keyframes snowDrift {
-  0% {
-    transform: translateX(0) rotate(0deg);
-  }
-  50% {
-    transform: translateX(12px) rotate(6deg);
-  }
-  100% {
-    transform: translateX(-10px) rotate(-6deg);
+    transform: translate3d(-8px, 120vh, 0) rotate(-6deg);
   }
 }
 
@@ -104,8 +92,16 @@ body {
   top: -10%;
   color: rgba(255, 255, 255, 0.7);
   text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
-  animation: snowSlide linear infinite, snowDrift ease-in-out infinite;
+  animation: snowFall linear infinite;
   will-change: transform;
+}
+
+/* Garantit l'animation même si le navigateur force la réduction des mouvements */
+@media (prefers-reduced-motion: reduce) {
+  .snowflake {
+    animation-duration: 9s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 @keyframes sparkle {

@@ -367,7 +367,7 @@ export default function BookingPage() {
                         onClick={() => setSelectedServiceId(service.id)}
                         style={{ animationDelay: `${idx * 60}ms` }}
                         className={[
-                          "relative flex h-full w-full min-w-0 flex-col gap-4 rounded-[1.4rem] border px-4 pb-5 text-left transition-all duration-300 animate-fade hover:-translate-y-1",
+                          "relative flex h-full w-full min-w-0 flex-col gap-4 rounded-[1.4rem] border px-5 pb-6 text-left transition-all duration-300 animate-fade hover:-translate-y-1",
                           "pt-8",
                           "md:min-w-[320px]",
                           active
@@ -406,13 +406,21 @@ export default function BookingPage() {
                               <span className="mt-1.5 md:mt-1 h-2 w-2 rounded-full bg-sky-400 flex-shrink-0" aria-hidden="true" />
                               <span className="flex-1 whitespace-nowrap text-xs sm:text-sm">{bullet.text}</span>
                               {bullet.hint && (
+                              <div className="relative">
                                 <span
                                   aria-label={bullet.hint}
-                                  title={bullet.hint}
-                                  className="hidden sm:flex h-4 w-4 items-center justify-center rounded-full border border-slate-700/70 text-[10px] text-slate-200/80 transition hover:text-sky-300 hover:border-sky-500/60"
+                                  className="hidden sm:flex h-4 w-4 items-center justify-center rounded-full border border-slate-700/70 text-[10px] text-slate-200/80 transition hover:text-sky-300 hover:border-sky-500/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+                                  tabIndex={0}
                                 >
                                   ?
                                 </span>
+                                <span
+                                  role="tooltip"
+                                  className="absolute left-full top-1/2 -translate-y-1/2 ml-2 hidden w-[220px] rounded border border-slate-800 bg-slate-950/95 px-3 py-2 text-[10px] text-slate-200 opacity-0 transition sm:block group-hover:opacity-100 group-focus-within:opacity-100 z-30 pointer-events-none"
+                                >
+                                  {bullet.hint}
+                                </span>
+                              </div>
                               )}
                             </li>
                           ))}
