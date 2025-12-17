@@ -78,6 +78,12 @@ function getYearValue(year: unknown): number {
   return Number.isFinite(num) ? num : 0;
 }
 
+function clampProgress(value: unknown): number | null {
+  const num = Math.round(Number(value));
+  if (!Number.isFinite(num)) return null;
+  return Math.min(100, Math.max(0, num));
+}
+
 function sortProjects(list: typeof projects) {
   return [...list].sort((a, b) => {
     const aFeatured = a.featured ? 1 : 0;
@@ -117,6 +123,7 @@ function getStatusStyles(status: NormalizedStatus) {
         cardBorder: "border-emerald-400/50",
         glow: "from-emerald-400/25 to-transparent",
         timelineDot: "bg-emerald-300",
+        progressBarClass: "from-emerald-400 via-emerald-300 to-emerald-100",
       };
     case "progress":
       return {
@@ -128,6 +135,7 @@ function getStatusStyles(status: NormalizedStatus) {
         cardBorder: "border-amber-300/60",
         glow: "from-amber-300/25 to-transparent",
         timelineDot: "bg-amber-300",
+        progressBarClass: "from-amber-300 via-amber-200 to-amber-50",
       };
     case "queue":
       return {
@@ -139,6 +147,7 @@ function getStatusStyles(status: NormalizedStatus) {
         cardBorder: "border-violet-400/60",
         glow: "from-violet-400/20 to-transparent",
         timelineDot: "bg-violet-400",
+        progressBarClass: "from-violet-400 via-violet-300 to-violet-100",
       };
     case "refonte":
     default:
@@ -151,6 +160,7 @@ function getStatusStyles(status: NormalizedStatus) {
         cardBorder: "border-sky-300/60",
         glow: "from-sky-400/20 to-transparent",
         timelineDot: "bg-sky-300",
+        progressBarClass: "from-sky-300 via-sky-200 to-white",
       };
   }
 }
@@ -246,6 +256,52 @@ function ProjectServices({
     <div className="inline-flex w-fit items-center gap-1 rounded-full border border-sky-400/80 bg-sky-500/15 px-3.5 py-1.5 text-[11px] text-slate-100">
       <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
       {displayed[0]}
+    </div>
+  );
+}
+
+function ProjectProgressBar({
+  value,
+  status,
+  compact = false,
+}: {
+  value?: number;
+  status: NormalizedStatus;
+  compact?: boolean;
+}) {
+  const normalizedValue = clampProgress(value);
+  const { progressBarClass } = getStatusStyles(status);
+  if (normalizedValue === null) return null;
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between text-[11px] text-slate-400">
+        <span>Avancement</span>
+        <span className="font-semibold text-slate-100">{normalizedValue}%</span>
+      </div>
+      <div
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={normalizedValue}
+        aria-label={`Avancement du projet : ${normalizedValue}%`}
+        className={[
+          "relative w-full overflow-hidden rounded-full border border-slate-800/80 bg-slate-950/85",
+          compact ? "h-2" : "h-2.5",
+        ].join(" ")}
+      >
+        <div
+          className={`absolute inset-0 opacity-50 blur-sm bg-gradient-to-r ${progressBarClass}`}
+          aria-hidden="true"
+        />
+        <div
+          className={[
+            "relative h-full rounded-full bg-gradient-to-r",
+            progressBarClass,
+          ].join(" ")}
+          style={{ width: `${normalizedValue}%` }}
+        />
+      </div>
     </div>
   );
 }
@@ -382,7 +438,6 @@ export function ProjectsSection() {
             {heroProject &&
               (() => {
                 const normalizedStatus = normalizeStatus(heroProject.status);
-                const services = heroProject.services ?? [];
                 const statusMeta = getStatusStyles(normalizedStatus);
                 const heroExcerpt = getProjectExcerpt(heroProject);
                 return (
@@ -439,6 +494,11 @@ export function ProjectsSection() {
                             )}
                           </header>
 
+                          <ProjectProgressBar
+                            status={normalizedStatus}
+                            value={heroProject.progress}
+                          />
+
                           <div className="mt-auto flex w-full flex-col gap-2 pb-2">
                             <span className="inline-flex w-fit items-center gap-2 rounded-full border border-sky-400/50 bg-sky-500/10 px-5 py-2 text-[12px] font-semibold text-slate-100 transition group-hover:border-sky-400 group-hover:text-white">
                               Voir le projet
@@ -456,10 +516,9 @@ export function ProjectsSection() {
               <div className="grid gap-6 md:gap-8 md:grid-cols-3">
                 {timelineProjects.map((proj) => {
                   const normalizedStatus = normalizeStatus(proj.status);
-                const services = proj.services ?? [];
+                  const services = proj.services ?? [];
                   const statusMeta = getStatusStyles(normalizedStatus);
                   const highlight = getProjectExcerpt(proj);
-                  const progressValue = null;
 
                   return (
                     <Link
@@ -502,6 +561,11 @@ export function ProjectsSection() {
                               </p>
                             )}
                           </header>
+                          <ProjectProgressBar
+                            status={normalizedStatus}
+                            value={proj.progress}
+                            compact
+                          />
                           <ProjectServices services={services} compact />
                           <div className="mt-auto flex items-center justify-between text-xs text-slate-400">
                             <span>{statusMeta.label}</span>
