@@ -1,0 +1,194 @@
+"use client";
+
+import React, { useState } from "react";
+
+type FaqItem = {
+  q: string;
+  a: string;
+  aDisplay?: React.ReactNode;
+};
+
+export function MiniFAQ() {
+  const faq: FaqItem[] = [
+    {
+      q: "Délai de livraison ?",
+      a: "One-page : 2–3 semaines si vos contenus sont prêts. Vitrine : 3–5 semaines. Sur-mesure : planning dédié fixé ensemble.",
+      aDisplay: (
+        <>
+          <strong>One-page :</strong> 2–3 semaines si vos contenus sont prêts.{" "}
+          <strong>Vitrine :</strong> 3–5 semaines.{" "}
+          <strong>Sur-mesure :</strong> planning dédié fixé ensemble.
+        </>
+      ),
+    },
+    {
+      q: "Comment se passe le paiement ?",
+      a: "50 % à la signature, 50 % à la mise en ligne.",
+    },
+    {
+      q: "Proposez-vous une maintenance ?",
+      a: "Oui, nous proposons une maintenance mensuelle ou des tickets ponctuels selon vos besoins.",
+    },
+    {
+      q: "Après la mise en ligne ?",
+      a: "Je reste disponible pour une phase de retours incluse et peux proposer des tickets ponctuels ou une formule de suivi.",
+    },
+  ];
+
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  function toggleFaq(index: number) {
+    setOpenIndex((current) => (current === index ? null : index));
+  }
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
+  };
+
+  return (
+    <section
+      id="mini-faq"
+      className="relative overflow-hidden border-b border-slate-900/40 bg-slate-950"
+    >
+      {/* Glows */}
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_65%),radial-gradient(circle_at_bottom_right,rgba(79,70,229,0.18),transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(148,163,184,0.25),transparent_60%)] opacity-25 mix-blend-screen" />
+
+      <div className="relative">
+        <div className="absolute inset-x-4 top-16 -z-10 h-[420px] rounded-[32px] bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 opacity-70 blur-3xl sm:inset-x-20" />
+      </div>
+
+      <div className="container-kosmonde space-y-10 py-16 sm:py-20">
+        {/* HEADER */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-center sm:text-left">
+          <div className="space-y-1">
+            <span className="inline-flex items-center gap-2 rounded-full border border-sky-500/40 bg-sky-500/10 px-4 py-1 text-[11px] uppercase tracking-[0.2em] text-sky-100 shadow-[0_0_0_1px_rgba(8,47,73,0.4)]">
+              <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+              FAQ express
+            </span>
+            <h2 className="text-2xl font-semibold text-slate-50 sm:text-3xl whitespace-normal">
+              Questions fréquentes
+            </h2>
+            <p className="text-sm text-slate-400 sm:text-sm whitespace-nowrap sm:whitespace-normal">
+              Process, délais, paiement : transparents dès le départ.
+            </p>
+            <div className="text-xs text-slate-500 whitespace-nowrap sm:whitespace-normal">
+              Réponse sous 24 h · Créneaux sous 3 semaines
+            </div>
+          </div>
+
+          {/* Lien simple : visible surtout desktop/tablette */}
+          <a
+            href="/faq"
+            className="hidden text-[11px] uppercase tracking-[0.22em] text-sky-300 transition-colors hover:text-sky-200 sm:inline-block"
+          >
+            Voir tout →
+          </a>
+        </div>
+
+        {/* LISTE FAQ */}
+        <div className="grid gap-5 md:grid-cols-2">
+          {faq.map((item, index) => {
+                const isOpen = openIndex === index;
+                const answerId = `mini-faq-answer-${index}`;
+                const answerDisplay = item.aDisplay ?? item.a;
+
+                return (
+              <button
+                key={index}
+                type="button"
+                onClick={() => toggleFaq(index)}
+                aria-expanded={isOpen}
+                aria-controls={answerId}
+                className={`group w-full overflow-hidden rounded-[1.8rem] border border-slate-800/70 bg-gradient-to-br from-slate-950 via-slate-950/90 to-slate-950 p-0 text-left shadow-[0_18px_50px_rgba(8,47,73,0.55)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950 ${
+                  isOpen
+                    ? "border-sky-500/50"
+                    : "hover:-translate-y-0.5 hover:border-sky-400/60"
+                }`}
+              >
+                <div className="flex items-stretch h-full">
+                  <div
+                    className={[
+                      "relative flex w-12 flex-col items-center justify-center border-r border-slate-900 bg-slate-950/95 text-[11px] font-semibold tracking-[0.26em] text-slate-500 transition-all py-2.5 sm:py-3",
+                      isOpen ? "text-sky-200" : "",
+                    ].join(" ")}
+                  >
+                    <span>0{index + 1}</span>
+                  </div>
+                  <div className="flex-1 p-4 sm:p-5 flex flex-col gap-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-[12px] sm:text-[14px] font-medium text-slate-50 group-hover:text-sky-300">
+                        {item.q}
+                      </p>
+
+                      <span
+                        className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border text-[10px] transition-all ${
+                          isOpen
+                            ? "border-sky-400/70 bg-sky-500/10 text-sky-300 rotate-180"
+                            : "border-slate-700 bg-slate-900/60 text-slate-400 group-hover:border-sky-500/60 group-hover:text-sky-300"
+                        }`}
+                      >
+                        {isOpen ? "–" : "+"}
+                      </span>
+                    </div>
+
+                    {isOpen && (
+                      <>
+                        <div className="h-px w-full bg-slate-800/70" />
+                        <p
+                          id={answerId}
+                          className="text-[12px] sm:text-[13px] leading-relaxed text-slate-400"
+                        >
+                          {answerDisplay}
+                        </p>
+                        <div className="mt-auto" />
+                      </>
+                    )}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-slate-800/70 bg-slate-950/80 px-6 py-5 text-center shadow-[0_18px_55px_rgba(8,47,73,0.55)] sm:flex-row sm:text-left">
+          <div>
+            <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
+              Encore des questions ?
+            </p>
+            <p className="mt-2 text-sm text-slate-50 whitespace-nowrap sm:whitespace-normal">
+              Planifiez un appel de 15 minutes pour clarifier votre projet.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end">
+            <a
+              href="/faq"
+              className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900/40 px-5 py-2 text-[11px] font-medium text-slate-100 transition-colors hover:border-slate-500 hover:bg-slate-900/70"
+            >
+              Voir toutes les questions →
+            </a>
+            <a
+              href="/rdv"
+              className="inline-flex items-center justify-center rounded-full bg-sky-500/90 px-5 py-2 text-[11px] font-semibold text-slate-950 shadow-[0_12px_35px_rgba(14,165,233,0.35)] transition hover:bg-sky-400"
+            >
+              Planifier un appel ↗
+            </a>
+          </div>
+        </div>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      </div>
+    </section>
+  );
+}

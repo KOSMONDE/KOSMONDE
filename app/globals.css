@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* Thème de base KOSMONDE */
+@theme {
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", sans-serif;
+
+  --color-kosmonde-primary: rgb(56 189 248); /* sky-400 */
+  --color-kosmonde-primary-soft: rgb(8 47 73); /* sky-900 */
+  --color-kosmonde-accent: rgb(244 244 245); /* zinc-100 */
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Masque tout fil d’Ariane hérité si encore présent dans un build */
+nav[aria-label="Fil d’Ariane"] {
+  display: none !important;
+}
+
+/* Conteneur max-width réutilisable (un peu plus large) */
+.container-kosmonde {
+  @apply mx-auto max-w-6xl px-4;
+}
+
+@keyframes heroPulse {
+  0% {
+    box-shadow: 0 18px 40px rgba(8, 47, 73, 0.4);
+  }
+  50% {
+    box-shadow: 0 22px 50px rgba(8, 47, 73, 0.6);
+  }
+  100% {
+    box-shadow: 0 18px 40px rgba(8, 47, 73, 0.4);
+  }
+}
+
+.animate-heroPulse {
+  animation: heroPulse 3.5s ease-in-out infinite;
+}
+
+/* Petits helpers */
+.badge {
+  @apply inline-flex items-center rounded-full border border-slate-700/70 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-300/80;
+}
+
+.section-title {
+  @apply text-2xl font-semibold tracking-tight text-slate-50 sm:text-3xl;
+}
+
+.section-subtitle {
+  @apply mt-2 max-w-xl text-sm text-slate-400;
+}
+
+/* Cartes réutilisables */
+.card {
+  @apply rounded-2xl border border-slate-800 bg-slate-900/40 p-4;
+}
+
+.card-soft {
+  @apply rounded-2xl border border-slate-800/80 bg-slate-900/30 p-5 shadow-sm;
+}
+
+/* Accordéon FAQ simple */
+.faq-item {
+  @apply rounded-xl border border-slate-800 bg-slate-900/40 p-4;
+}
+
+.faq-question {
+  @apply text-sm font-medium text-slate-100;
+}
+
+.faq-answer {
+  @apply mt-2 text-sm text-slate-400;
+}
+
+/* Effet neige léger (header) */
+@keyframes snowFall {
+  0% {
+    transform: translate3d(0, -20vh, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(10px, 50vh, 0) rotate(6deg);
+  }
+  100% {
+    transform: translate3d(-8px, 120vh, 0) rotate(-6deg);
+  }
+}
+
+.snowflake {
+  position: absolute;
+  top: -10%;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+  animation: snowFall linear infinite;
+  will-change: transform;
+}
+
+/* Garantit l'animation même si le navigateur force la réduction des mouvements */
+@media (prefers-reduced-motion: reduce) {
+  .snowflake {
+    animation-duration: 9s !important;
+    animation-iteration-count: infinite !important;
+  }
+}
+
+@keyframes sparkle {
+  0% {
+    transform: scale(0.9) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.15) rotate(12deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9) rotate(0deg);
+    opacity: 0.7;
+  }
+}
+
+/* --------- CAROUSEL CONFIANCE (version JS) --------- */
+
+/* ============================
+   TRUST CAROUSEL — KOSMONDE
+   ============================ */
+
+/* ============================
+   TRUST CAROUSEL — KOSMONDE
+   ============================ */
+
+/* Conteneur du carrousel */
+.trust-marquee {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0; /* ≈ py-2 */
+}
+
+/* Piste des logos / noms */
+.trust-track {
+  display: inline-flex;
+  gap: 1rem; /* ≈ gap-4 */
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Accessibilité : moins d’animations si demandé */
+@media (prefers-reduced-motion: reduce) {
+  .trust-track {
+    transform: none !important;
+  }
+}
